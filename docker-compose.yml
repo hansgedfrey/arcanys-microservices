@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  productdb:
+    container_name: product-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password1234@
+    ports:
+      - 18001:1433
+
+  arc.product:
+    image: ${DOCKER_REGISTRY-}arcproduct
+    build:
+      context: .
+      dockerfile: ARC.MicroServices/ARC.Product/Dockerfile
+    ports:
+        - 8001:80
+    environment:
+    - DB_HOST=productdb
+    - DB_NAME=product
+    - DB_SA_PASSWORD=password1234@ 
+
+  arc.usermanagement:
+    image: ${DOCKER_REGISTRY-}arcusermanagement
+    build:
+      context: .
+      dockerfile: ARC.MicroServices/ARC.UserManagement/Dockerfile
+    ports:
+        - 8002:80
+    environment:
+    - DB_HOST=productdb
+    - DB_NAME=product
+    - DB_SA_PASSWORD=password1234@ 

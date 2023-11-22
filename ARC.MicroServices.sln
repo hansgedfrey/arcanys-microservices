@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Products", "Products", "{95C53002-FFE9-4AE9-804F-A7D4E6659B95}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserManagement", "UserManagement", "{C9613164-5D91-44F5-AA17-A6C0E1EDF47D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product", "ARC.MicroServices\ARC.Product\ARC.Product.csproj", "{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserManagement", "ARC.MicroServices\ARC.UserManagement\ARC.UserManagement.csproj", "{A46FA942-4527-48CE-8A03-A2BD7EE2C452}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroServices", "MicroServices", "{6D544DF0-6BB3-4178-ABB3-D5D840599937}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A46FA942-4527-48CE-8A03-A2BD7EE2C452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46FA942-4527-48CE-8A03-A2BD7EE2C452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46FA942-4527-48CE-8A03-A2BD7EE2C452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46FA942-4527-48CE-8A03-A2BD7EE2C452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{95C53002-FFE9-4AE9-804F-A7D4E6659B95} = {6D544DF0-6BB3-4178-ABB3-D5D840599937}
+		{C9613164-5D91-44F5-AA17-A6C0E1EDF47D} = {6D544DF0-6BB3-4178-ABB3-D5D840599937}
+		{8B00E7AA-9E48-422A-9122-2E56BC4EC2BF} = {95C53002-FFE9-4AE9-804F-A7D4E6659B95}
+		{A46FA942-4527-48CE-8A03-A2BD7EE2C452} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B827902-5F23-4671-85BF-7BAAFF045FB6}
+	EndGlobalSection
+EndGlobal

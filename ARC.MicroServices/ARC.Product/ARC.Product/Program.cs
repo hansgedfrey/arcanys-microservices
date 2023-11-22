@@ -5,7 +5,7 @@ using ARC.Product.Core.DependencyInjection;
 using ARC.Product.Infrastructure;
 using ARC.Product.Web;
 using ARC.Infrastructure;
-using Grpc.Net.Client;
+using Grpc.Net.Client; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +13,15 @@ builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.NotFou
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
+
+builder.Services.AddGrpcClient<ARC.UserAuthManagement.Authentication.AuthenticationClient>((services, options) =>
+{
+    options.Address = new Uri("http://host.docker.internal:8003");
 });
 
 var app = builder.Build();
@@ -37,9 +43,5 @@ app
     .MapCategoryEndpoints()
     .MapCartEndpoints()
     .MapInventoryItemEndpoints();
-
-var channel = GrpcChannel.ForAddress("http://host.docker.internal:8003");
-var authClient = new ARC.UserAuthManagement.Authentication.AuthenticationClient(channel);
-var authResponse = await authClient.AuthenticateAsync(new ARC.UserAuthManagement.AuthenticationRequest { UserName = "Hans", Password = "Maligro" });
 
 app.Run();

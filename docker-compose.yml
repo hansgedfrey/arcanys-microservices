@@ -22,20 +22,24 @@ services:
     - DB_SA_PASSWORD=password1234@ 
     depends_on: 
     - productdb
+    ports:
+        - 8002:80
 
-  arc.usermanagement:
-    container_name: arc-usermanagement
-    image: ${DOCKER_REGISTRY-}arcusermanagement
+  arc.userauthmanagement:
+    container_name: arc-userauthmanagement
+    image: ${DOCKER_REGISTRY-}userauthmanagement
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserManagement.Web/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/Dockerfile
     environment:
         - DB_HOST=productdb
         - DB_NAME=product
         - DB_SA_PASSWORD=password1234@ 
     depends_on: 
         - productdb
-
+    ports:
+        - 8003:80
+ 
   arc.apigateway:
     container_name: arc-api-gateway
     image: ${DOCKER_REGISTRY-}arcapigateway

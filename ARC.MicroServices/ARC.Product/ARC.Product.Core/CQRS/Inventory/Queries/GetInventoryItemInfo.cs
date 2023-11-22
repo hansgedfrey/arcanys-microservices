@@ -37,7 +37,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.GetInventoryItem
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (inventoryItem == null)
-                throw new Exceptions.NotFoundException(nameof(inventoryItem), request.InventoryItemId);
+                throw new ARC.Infrastructure.NotFoundException(nameof(inventoryItem), request.InventoryItemId);
 
             return inventoryItem;
         }

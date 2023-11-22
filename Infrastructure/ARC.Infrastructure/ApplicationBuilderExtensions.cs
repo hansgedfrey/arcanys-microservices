@@ -1,6 +1,7 @@
 ﻿using ARC.Product.Infrastructure;
+using Microsoft.AspNetCore.Builder;
 
-namespace ARC.Product.Web.Infrastructure
+namespace ARC.Infrastructure
 { 
     public static class ApplicationBuilderExtensions
     {

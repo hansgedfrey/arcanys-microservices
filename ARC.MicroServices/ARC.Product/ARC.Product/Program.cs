@@ -1,15 +1,14 @@
-using ARC.Product.Core.Exceptions;
 using ARC.Product.Core;
 using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
 using ARC.Product.Infrastructure;
 using ARC.Product.Web;
-using ARC.Product.Web.Infrastructure;
+using ARC.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
+builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

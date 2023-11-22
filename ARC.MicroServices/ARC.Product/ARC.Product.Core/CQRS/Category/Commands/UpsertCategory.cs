@@ -40,7 +40,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.UpsertCategory
             else
                 categoryToUpsert = await _applicationDbContext.Categories
                           .Where(p => p.CategoryId == categoryId)
-                          .SingleOrDefaultAsync(cancellationToken) ?? throw new Exceptions.NotFoundException(nameof(Persistence.Entities.Category));
+                          .SingleOrDefaultAsync(cancellationToken) ?? throw new ARC.Infrastructure.NotFoundException(nameof(Persistence.Entities.Category));
 
             categoryToUpsert.Name = request.CategoryName;
             categoryToUpsert.Description = request.Description;

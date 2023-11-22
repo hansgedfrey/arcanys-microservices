@@ -53,7 +53,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.UpsertInventoryItem
             {
                 inventoryItemToInsert = await _applicationDbContext.InventoryItems
                              .Where(p => p.InventoryItemId == inventoryItemId)
-                             .SingleOrDefaultAsync(cancellationToken) ?? throw new Exceptions.NotFoundException(nameof(Persistence.Entities.Category));
+                             .SingleOrDefaultAsync(cancellationToken) ?? throw new ARC.Infrastructure.NotFoundException(nameof(Persistence.Entities.Category));
 
                 inventoryItemToInsert.AppendEvent(new Persistence.Events.InventoryItem.UpdateInventoryItemEvent { Occurred = DateTime.Now, Quantity = request.Quantity });
             }

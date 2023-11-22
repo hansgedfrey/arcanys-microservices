@@ -1,4 +1,6 @@
-﻿namespace ARC.Product.Infrastructure
+﻿using ARC.Product.Infrastructure;
+
+namespace ARC.Product.Web.Infrastructure
 { 
     public static class ApplicationBuilderExtensions
     {

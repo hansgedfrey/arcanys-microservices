@@ -2,7 +2,7 @@
 
 namespace ARC.Product.Core.Models
 {
-    public record CartItemDto : DependencyInjection.IMapFrom<Persistence.Entities.CartItem>
+    public record CartItemDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.CartItem>
     { 
         public Guid CartItemId { get; set; } 
         public required ProductDto Product { get; set; }

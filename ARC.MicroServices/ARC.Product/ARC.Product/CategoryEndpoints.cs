@@ -2,7 +2,7 @@
 using ARC.Product.Core.CQRS.Category.Queries.GetCategoryInfo;
 using MediatR;
 
-namespace ARC.Product
+namespace ARC.Product.Web
 {
     internal static class CategoryEndpoints
     {

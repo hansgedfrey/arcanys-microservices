@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace ARC.Product.Core.DependencyInjection
+namespace ARC.Infrastructure
 {
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace ARC.Product.Core.DependencyInjection
         /// <returns>Returns the service collection with Automapper registered.</returns>
         public static IServiceCollection AddAutoMapperAndProfile(this IServiceCollection services, params Assembly[] assemblies)
         {
-            var profile = new AutoMapperProfile();
+            var profile = new AutoMapperProfile(assemblies);
 
             services.AddAutoMapper(cfg =>
             {
@@ -36,17 +36,20 @@ namespace ARC.Product.Core.DependencyInjection
 
     public class AutoMapperProfile : Profile
     {
-        public AutoMapperProfile()
+        public AutoMapperProfile(Assembly[] assemblies)
         {
-            ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+            ApplyMappingsFromAssembly(assemblies);
         }
 
-        private void ApplyMappingsFromAssembly(Assembly assembly)
+        private void ApplyMappingsFromAssembly(Assembly[] assembly)
         {
-            var types = assembly.GetExportedTypes()
-            .Where(t => t.GetInterfaces()
-            .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
-            .ToList();
+            //var types = assembly.GetExportedTypes()
+            //.Where(t => t.GetInterfaces()
+            //.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>)))
+            //.ToList();
+
+            var types = assembly.SelectMany(p => p.GetExportedTypes()).Where(p => p.GetInterfaces()
+            .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IMapFrom<>))).ToList();
 
             foreach (var type in types)
             {

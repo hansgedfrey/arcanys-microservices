@@ -28,7 +28,7 @@ services:
     image: ${DOCKER_REGISTRY-}arcusermanagement
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.UserManagement/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserManagement.Web/Dockerfile
     environment:
         - DB_HOST=productdb
         - DB_NAME=product

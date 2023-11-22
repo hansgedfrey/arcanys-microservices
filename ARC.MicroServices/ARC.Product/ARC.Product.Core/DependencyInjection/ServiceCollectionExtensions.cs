@@ -4,6 +4,7 @@ using System.Reflection;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Persistence.Entities;
+using ARC.Infrastructure;
 
 namespace ARC.Product.Core.DependencyInjection
 {

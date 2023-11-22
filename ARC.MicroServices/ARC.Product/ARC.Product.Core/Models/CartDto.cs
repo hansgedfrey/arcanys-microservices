@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 namespace ARC.Product.Core.Models
 {
-    public record CartDto : DependencyInjection.IMapFrom<Persistence.Entities.Cart>
+    public record CartDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.Cart>
     {
         public required Guid CartId { get; set; }
         public DateTime Created { get; set; }

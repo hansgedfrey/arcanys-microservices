@@ -4,7 +4,8 @@ using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
 using ARC.Product.Infrastructure;
-using ARC.Product;
+using ARC.Product.Web;
+using ARC.Product.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,10 @@ using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
 await db!.Database.MigrateAsync();
  
 app.UseValidationExceptionHandling();
-app.MapCategoryEndpoints();
+app
+    .MapProductEndpoints()
+    .MapCategoryEndpoints()
+    .MapCartEndpoints()
+    .MapInventoryItemEndpoints();
 
 app.Run();

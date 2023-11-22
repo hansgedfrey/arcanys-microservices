@@ -9,16 +9,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ARC.Product/ARC.Product.csproj", "ARC.Product/"]
-RUN dotnet restore "ARC.Product/ARC.Product.csproj"
+COPY ["ARC.UserManagement/ARC.UserManagement.Web.csproj", "ARC.UserManagement/"]
+RUN dotnet restore "ARC.UserManagement/ARC.UserManagement.Web.csproj"
 COPY . .
-WORKDIR "/src/ARC.Product"
-RUN dotnet build "ARC.Product.csproj" -c Release -o /app/build
+WORKDIR "/src/ARC.UserManagement"
+RUN dotnet build "ARC.UserManagement.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ARC.Product.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ARC.UserManagement.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ARC.Product.dll"]
+ENTRYPOINT ["dotnet", "ARC.UserManagement.Web.dll"]

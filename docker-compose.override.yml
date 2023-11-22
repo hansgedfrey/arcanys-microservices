@@ -6,7 +6,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
-
+  arc.usermanagement:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
   arc.apigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

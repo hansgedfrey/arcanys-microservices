@@ -2,7 +2,7 @@
 
 namespace ARC.Product.Core.Models
 {
-    public record CategoryDto : DependencyInjection.IMapFrom<Persistence.Entities.Category>
+    public record CategoryDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.Category>
     {
         public required Guid CategoryId { get; set; }
         public required string Name { get; set; }

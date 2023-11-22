@@ -2,7 +2,7 @@
 
 namespace ARC.Product.Core.Models
 {
-    public record InventoryItemDto : DependencyInjection.IMapFrom<Persistence.Entities.InventoryItem>
+    public record InventoryItemDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.InventoryItem>
     {
         public required Guid InventoryItemId { get; set; }
         public DateTime Created { get; set; }

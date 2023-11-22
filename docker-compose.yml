@@ -11,25 +11,33 @@ services:
       - 18001:1433
 
   arc.product:
+    container_name: arc-product
     image: ${DOCKER_REGISTRY-}arcproduct
     build:
       context: .
       dockerfile: ARC.MicroServices/ARC.Product/Dockerfile
-    ports:
-        - 8001:80
     environment:
     - DB_HOST=productdb
     - DB_NAME=product
     - DB_SA_PASSWORD=password1234@ 
 
   arc.usermanagement:
+    container_name: arc-usermanagement
     image: ${DOCKER_REGISTRY-}arcusermanagement
     build:
       context: .
       dockerfile: ARC.MicroServices/ARC.UserManagement/Dockerfile
-    ports:
-        - 8002:80
     environment:
     - DB_HOST=productdb
     - DB_NAME=product
     - DB_SA_PASSWORD=password1234@ 
+    
+  arc.apigateway:
+    container_name: arc-api-gateway
+    image: ${DOCKER_REGISTRY-}arcapigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Gateway/ARC.ApiGateway/Dockerfile
+    ports:
+      - 8001:80
+

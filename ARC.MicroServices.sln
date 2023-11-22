@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product.Persistence", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product.Core", "ARC.MicroServices\ARC.Product\ARC.Product.Core\ARC.Product.Core.csproj", "{7A3558AC-D485-4156-8E57-25B1A3EA16D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product", "ARC.MicroServices\ARC.Product\ARC.Product\ARC.Product.csproj", "{F98B7536-68EF-4787-9006-005995743DA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product.Web", "ARC.MicroServices\ARC.Product\ARC.Product\ARC.Product.Web.csproj", "{F98B7536-68EF-4787-9006-005995743DA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

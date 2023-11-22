@@ -8,9 +8,6 @@ using ARC.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
 builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
@@ -21,25 +18,19 @@ builder.Services.AddMediatR(cfg => {
 });
 
 var app = builder.Build();
-
-app.UseValidationExceptionHandling();
-
-
+ 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-//await using var scope = app.Services.CreateAsyncScope();
-//using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
-//await db!.Database.MigrateAsync();
-
+ 
+await using var scope = app.Services.CreateAsyncScope();
+using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
+await db!.Database.MigrateAsync();
+ 
+app.UseValidationExceptionHandling();
 app.MapCategoryEndpoints();
 
 app.Run();

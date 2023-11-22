@@ -15,11 +15,13 @@ services:
     image: ${DOCKER_REGISTRY-}arcproduct
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.Product/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
     environment:
     - DB_HOST=productdb
     - DB_NAME=product
     - DB_SA_PASSWORD=password1234@ 
+    depends_on: 
+    - productdb
 
   arc.usermanagement:
     container_name: arc-usermanagement
@@ -28,10 +30,12 @@ services:
       context: .
       dockerfile: ARC.MicroServices/ARC.UserManagement/Dockerfile
     environment:
-    - DB_HOST=productdb
-    - DB_NAME=product
-    - DB_SA_PASSWORD=password1234@ 
-    
+        - DB_HOST=productdb
+        - DB_NAME=product
+        - DB_SA_PASSWORD=password1234@ 
+    depends_on: 
+        - productdb
+
   arc.apigateway:
     container_name: arc-api-gateway
     image: ${DOCKER_REGISTRY-}arcapigateway

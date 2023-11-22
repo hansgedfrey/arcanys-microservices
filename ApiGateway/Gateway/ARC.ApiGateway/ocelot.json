@@ -11,6 +11,30 @@
           "Port": 80
         }
       ]
+    },
+    {
+      "UpstreamPathTemplate": "/categories",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put" ],
+      "DownstreamPathTemplate": "/categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "arc-product",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/category/{categoryId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/category/{categoryId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "arc-product",
+          "Port": 80
+        }
+      ]
     }
   ],
   "GlobalConfiguration": {

@@ -1,4 +1,5 @@
-﻿using ARC.UserManagement.Core.CQRS.User.Commands.Register;
+﻿using ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword;
+using ARC.UserManagement.Core.CQRS.User.Commands.Register;
 using ARC.UserManagement.Core.CQRS.User.Commands.UpdateProfile;
 using MediatR;
 
@@ -21,17 +22,10 @@ namespace ARC.UserAuthManagement.Web
                 .WithDescription("Update user profile")
                 .ProducesValidationProblem();
 
-            //group.MapPost("login", async (ISender sender) => { })
-            //    .WithName("Login")
-            //    .WithDescription("Login using username and password and returns a JWT token for authetication to other endpoints.")
-            //    .ProducesValidationProblem();
-
-
-
-            //group.MapPost("change-password", async (ISender sender) => { })
-            //    .WithName("ChangePassword")
-            //    .WithDescription("Change an existing user's password")
-            //    .ProducesValidationProblem();
+            group.MapPost("change-password", async (ISender sender, ChangePasswordCommand command) => await sender.Send(command))
+                .WithName("ChangePassword")
+                .WithDescription("Change an existing user's password")
+                .ProducesValidationProblem();
 
             return app;
         }

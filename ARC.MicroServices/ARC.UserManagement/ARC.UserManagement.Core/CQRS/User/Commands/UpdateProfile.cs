@@ -14,9 +14,9 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.UpdateProfile
         public required string LastName { get; init; }
     }
 
-    public class RegisterCommandValidator : AbstractValidator<UpdateProfileCommand>
+    public class UpdateProfileCommandValidator : AbstractValidator<UpdateProfileCommand>
     {
-        public RegisterCommandValidator()
+        public UpdateProfileCommandValidator()
         {
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.FirstName).NotEmpty();

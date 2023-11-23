@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ARC.Product.Infrastructure
+namespace ARC.Infrastructure
 {
     [Serializable]
     internal class ValidationException : Exception

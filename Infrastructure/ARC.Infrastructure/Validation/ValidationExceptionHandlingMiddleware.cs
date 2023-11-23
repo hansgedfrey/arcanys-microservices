@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ARC.Product.Infrastructure
+namespace ARC.Infrastructure
 {
     /// <summary>
     /// Handles the exception thrown by our defined Validation behavior in the MediatR pipeline.

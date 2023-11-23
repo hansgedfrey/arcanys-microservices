@@ -1,4 +1,4 @@
-﻿namespace ARC.Product.Infrastructure
+﻿namespace ARC.Infrastructure
 {
     internal class ValidationError
     {

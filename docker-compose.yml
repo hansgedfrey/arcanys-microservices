@@ -33,7 +33,7 @@ services:
       dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/Dockerfile
     environment:
         - DB_HOST=productdb
-        - DB_NAME=product
+        - DB_NAME=users
         - DB_SA_PASSWORD=password1234@ 
     depends_on: 
         - productdb

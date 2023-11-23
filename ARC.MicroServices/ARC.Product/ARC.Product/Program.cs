@@ -2,14 +2,12 @@ using ARC.Product.Core;
 using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
-using ARC.Product.Infrastructure;
-using ARC.Product.Web;
 using ARC.Infrastructure;
-using Grpc.Net.Client; 
+using ARC.Product.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
+builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,7 +19,7 @@ builder.Services.AddMediatR(cfg => {
 
 builder.Services.AddGrpcClient<ARC.UserAuthManagement.Authentication.AuthenticationClient>((services, options) =>
 {
-    options.Address = new Uri("http://host.docker.internal:8003");
+    options.Address = new Uri(builder.Configuration["InternalGRPCServerUrl"]!);
 });
 
 var app = builder.Build();

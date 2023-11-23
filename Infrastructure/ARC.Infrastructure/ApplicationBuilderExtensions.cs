@@ -1,5 +1,4 @@
-﻿using ARC.Product.Infrastructure;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace ARC.Infrastructure
 { 

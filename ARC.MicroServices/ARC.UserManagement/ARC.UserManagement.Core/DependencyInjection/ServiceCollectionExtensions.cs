@@ -23,7 +23,7 @@ namespace ARC.UserManagement.Core.DependencyInjection
             services.AddValidatorsFromAssemblies(assemblies);
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
             services.AddAutoMapperAndProfile(assemblies);
-           
+            services.AddDataProtection();
             return services;
         }
     }

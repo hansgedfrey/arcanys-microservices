@@ -5,30 +5,26 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword
+namespace ARC.UserManagement.Core.CQRS.User.Commands.Login
 {
-    public record ChangePasswordCommand : IRequest<Guid>
+    public record LoginCommand : IRequest<Guid>
     {
         [LogMasked(ShowFirst = 3)]
         public required string UserName { get; init; } 
         [LogMasked(Text = "***REDACTED***")]
-        public required string Password { get; init; }
-        [LogMasked(Text = "***REDACTED***")]
-        public required string ConfirmPassword { get; init; }
+        public required string Password { get; init; } 
     }
 
-    public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
+    public class RegisterCommandValidator : AbstractValidator<LoginCommand>
     {
-        public ChangePasswordCommandValidator()
+        public RegisterCommandValidator()
         {
             RuleFor(x => x.UserName).NotEmpty().EmailAddress();
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required");
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Please enter a password");
-            RuleFor(x => x.Password).Equal(x => x.ConfirmPassword).WithMessage("Password mismatch");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required"); 
         }
     }
 
-    public class Handler : IRequestHandler<ChangePasswordCommand, Guid>
+    public class Handler : IRequestHandler<LoginCommand, Guid>
     {
         private readonly Persistence.Entities.ApplicationDbContext _applicationDbContext;
         private readonly IDataProtector _dataProtector;
@@ -41,19 +37,18 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword
             _dataProtector = dataProtectionProvider.CreateProtector(_dataProtectPurpose);
         }
 
-        public async Task<Guid> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
-        { 
+        public async Task<Guid> Handle(LoginCommand request, CancellationToken cancellationToken)
+        {  
             var existingUser = await _applicationDbContext.Users
                           .Where(p => p.Username.ToLower() == request.UserName.ToLower())
+                          .AsNoTracking()
                           .SingleOrDefaultAsync(cancellationToken);
             
             if(existingUser == null) throw new Infrastructure.Exceptions.NotFoundException(nameof(Persistence.Entities.User));
 
-            existingUser.Username = request.UserName;
-            existingUser.Password = _dataProtector.Protect(request.Password);
-            existingUser.AppendEvent(new Persistence.Events.ChangePasswordEvent { Occurred = DateTime.Now });
- 
-            await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            var password = _dataProtector.Unprotect(existingUser.Password);
+
+            if (request.Password != password) throw new InvalidOperationException("Password mismatch");
 
             return existingUser.UserId;
         }

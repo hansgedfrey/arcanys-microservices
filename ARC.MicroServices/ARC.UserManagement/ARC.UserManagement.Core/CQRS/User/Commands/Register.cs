@@ -1,7 +1,9 @@
 ﻿using Destructurama.Attributed;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ARC.UserManagement.Core.CQRS.User.Commands.Register
 {
@@ -31,10 +33,14 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.Register
     public class Handler : IRequestHandler<RegisterCommand, Guid>
     {
         private readonly Persistence.Entities.ApplicationDbContext _applicationDbContext;
-    
-        public Handler(Persistence.Entities.ApplicationDbContext applicationDbContext)
+        private readonly IDataProtector _dataProtector;
+        private readonly string _dataProtectPurpose;
+
+        public Handler(Persistence.Entities.ApplicationDbContext applicationDbContext, IDataProtectionProvider dataProtectionProvider, IConfiguration configuration)
         {
             _applicationDbContext = applicationDbContext;
+            _dataProtectPurpose = configuration["DataProtectionPurposeSetting"] ?? string.Empty;
+            _dataProtector = dataProtectionProvider.CreateProtector(_dataProtectPurpose);
         }
 
         public async Task<Guid> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -47,7 +53,7 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.Register
             if(existingUser != null) throw new Infrastructure.Exceptions.AlreadyExistsException(nameof(Persistence.Entities.User));
 
             user.Username = request.UserName;
-            user.Password = request.Password; //Encrypt
+            user.Password = _dataProtector.Protect(request.Password);
             user.PhoneNumber = request.PhoneNumber;
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;

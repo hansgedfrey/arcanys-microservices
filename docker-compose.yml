@@ -25,12 +25,12 @@ services:
     ports:
         - 8002:80
 
-  arc.userauthmanagement:
-    container_name: arc-userauthmanagement
-    image: ${DOCKER_REGISTRY-}userauthmanagement
+  arc.userauthmanagementgrpc:
+    container_name: arc-userauthmanagement-grpc
+    image: ${DOCKER_REGISTRY-}userauthmanagement-grpc
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.gRPC/Dockerfile
     environment:
         - DB_HOST=productdb
         - DB_NAME=users

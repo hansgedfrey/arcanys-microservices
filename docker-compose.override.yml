@@ -6,7 +6,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
-  arc.userauthmanagement:
+  arc.userauthmanagementgrpc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

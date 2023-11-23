@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserManagement.Persiste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserManagement.Core", "ARC.MicroServices\ARC.UserManagement\ARC.UserManagement.Core\ARC.UserManagement.Core.csproj", "{C25D42DC-C32D-4546-89B5-D28A908E8B55}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserAuthManagement", "ARC.MicroServices\ARC.UserManagement\ARC.UserAuthManagement\ARC.UserAuthManagement.csproj", "{537EF83F-C97C-4576-B480-56164D4785E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserAuthManagement.gRPC", "ARC.MicroServices\ARC.UserManagement\ARC.UserAuthManagement.gRPC\ARC.UserAuthManagement.gRPC.csproj", "{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,10 +71,10 @@ Global
 		{C25D42DC-C32D-4546-89B5-D28A908E8B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C25D42DC-C32D-4546-89B5-D28A908E8B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C25D42DC-C32D-4546-89B5-D28A908E8B55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{537EF83F-C97C-4576-B480-56164D4785E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{537EF83F-C97C-4576-B480-56164D4785E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{537EF83F-C97C-4576-B480-56164D4785E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{537EF83F-C97C-4576-B480-56164D4785E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,7 +90,7 @@ Global
 		{80A43830-ADC5-488B-B142-73D718D60C0D} = {9A9451B3-E27B-4E54-9062-EE2FD4460298}
 		{1356D44D-79D7-4FA9-8E40-99E15C5FECF3} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
 		{C25D42DC-C32D-4546-89B5-D28A908E8B55} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
-		{537EF83F-C97C-4576-B480-56164D4785E7} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
+		{B95AE3A5-2DF0-4E16-9F4E-522DEA6E864B} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B827902-5F23-4671-85BF-7BAAFF045FB6}

@@ -39,7 +39,7 @@ namespace ARC.Product.Core.CQRS.Cart.Commands.RemoveFromCart
                             .FirstOrDefaultAsync();
 
             if (cart == null)
-                throw new ARC.Infrastructure.NotFoundException(nameof(cart), request.CartId);
+                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(cart), request.CartId);
 
             var existingCartItem = cart.CartItems.Where(c => c.CartItemId == request.CartItemId).FirstOrDefault();
 

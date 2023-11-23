@@ -10,12 +10,15 @@ namespace ARC.UserManagement.Persistence.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid UserId { get; set; }
         [Required]
-        public required string Username { get; set; }
+        [EmailAddress]
+        public string Username { get; set; } = null!;
         [Required]
-        public required string Password { get; set; }
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public required string Email { get; set; }
+        public string Password { get; set; } = null!;
+        public string? PhoneNumber { get; set; }
+        [Required]
+        public string FirstName { get; set; } = null!;
+        [Required]
+        public string LastName { get; set; } = null!;
         public virtual ICollection<AbstractEvent> Events { get; private set; } = new HashSet<AbstractEvent>();
 
         public void AppendEvent(AbstractEvent @event)

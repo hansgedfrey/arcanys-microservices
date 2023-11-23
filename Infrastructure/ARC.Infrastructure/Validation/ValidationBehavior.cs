@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace ARC.Infrastructure
+namespace ARC.Infrastructure.Validation
 {
     /// <summary>
     /// The is registered againts our MediatR pipeline. This is used to intercept all the validation failures by all the validation classes which derives from <AbstractValidator>.

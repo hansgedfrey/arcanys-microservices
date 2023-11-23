@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿
+using Microsoft.AspNetCore.Builder;
 
 namespace ARC.Infrastructure
 { 
@@ -9,7 +10,7 @@ namespace ARC.Infrastructure
             if (app == null)
                 throw new ArgumentNullException(nameof(app));
 
-            app.UseMiddleware<ValidationExceptionHandlingMiddleware>();
+            app.UseMiddleware<Validation.ValidationExceptionHandlingMiddleware>();
 
             return app;
         }

@@ -38,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Cart.Queries.ViewCart
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (cart == null)
-                throw new ARC.Infrastructure.NotFoundException(nameof(cart), request.CartId);
+                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(cart), request.CartId);
 
             return cart;
         }

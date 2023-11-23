@@ -37,7 +37,7 @@ namespace ARC.Product.Core.CQRS.Category.Queries.GetCategoryInfo
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (category == null)
-                throw new ARC.Infrastructure.NotFoundException(nameof(category), request.CategoryId);
+                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(category), request.CategoryId);
 
             return category;
         }

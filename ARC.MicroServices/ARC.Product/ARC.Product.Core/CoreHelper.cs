@@ -44,7 +44,7 @@ namespace ARC.Product.Core
                         .Where(p => p.ProductId == productId)
                         .SingleOrDefaultAsync(cancellationToken);
 
-            if (inventoryItem == null) throw new ARC.Infrastructure.NotFoundException(nameof(inventoryItem), productId);
+            if (inventoryItem == null) throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(inventoryItem), productId);
              
             return  inventoryItem.Quantity > 0;
         }

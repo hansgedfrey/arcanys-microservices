@@ -1,4 +1,3 @@
-using ARC.UserAuthManagement;
 using Grpc.Core;
 
 namespace ARC.UserAuthManagement.Services

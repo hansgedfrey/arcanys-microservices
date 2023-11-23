@@ -37,7 +37,7 @@ namespace ARC.Product.Core.CQRS.Product.Queries.GetProductInfo
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (product == null)
-                throw new ARC.Infrastructure.NotFoundException(nameof(product), request.ProductId);
+                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(product), request.ProductId);
 
             return product;
         }

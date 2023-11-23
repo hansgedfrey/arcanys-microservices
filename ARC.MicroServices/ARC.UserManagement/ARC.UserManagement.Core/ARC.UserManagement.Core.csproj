@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Destructurama.Attributed" Version="3.1.0" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
@@ -28,6 +29,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Infrastructure\ARC.Infrastructure\ARC.Infrastructure.csproj" />
     <ProjectReference Include="..\ARC.UserManagement.Persistence\ARC.UserManagement.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\User\Queries\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

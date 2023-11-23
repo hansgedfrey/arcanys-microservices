@@ -1,5 +1,6 @@
 using ARC.Infrastructure;
 using ARC.UserAuthManagement.Services;
+using ARC.UserAuthManagement.Web;
 using ARC.UserManagement.Core;
 using ARC.UserManagement.Core.DependencyInjection;
 using ARC.UserManagement.Persistence.Entities;
@@ -7,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
+builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Exceptions.NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ARC.Infrastructure.Validation.ValidationBehavior<,>));
 });
 
 var app = builder.Build();
@@ -32,9 +33,11 @@ await db!.Database.MigrateAsync();
 
 app.UseValidationExceptionHandling();
 
-//Map gRPC servers
+//Map gRPC services
 app.MapGrpcService<GreeterService>();
 app.MapGrpcService<AuthenticationService>();
-app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
+//Map endpoints
+app.MapUserEndpoints();
 
 app.Run();

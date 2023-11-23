@@ -1,5 +1,5 @@
 ﻿
-namespace ARC.Infrastructure
+namespace ARC.Infrastructure.Exceptions
 {
     public class NotFoundException : Exception
     {

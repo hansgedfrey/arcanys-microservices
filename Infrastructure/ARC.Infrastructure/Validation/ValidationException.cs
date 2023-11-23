@@ -1,6 +1,7 @@
-﻿using System.Runtime.Serialization;
+﻿
+using System.Runtime.Serialization;
 
-namespace ARC.Infrastructure
+namespace ARC.Infrastructure.Validation
 {
     [Serializable]
     internal class ValidationException : Exception

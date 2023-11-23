@@ -1,4 +1,5 @@
-﻿using ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword;
+﻿using ARC.UserAuthManagement.Web.Services.Http;
+using ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword;
 using ARC.UserManagement.Core.CQRS.User.Commands.Login;
 using ARC.UserManagement.Core.CQRS.User.Commands.Register;
 using ARC.UserManagement.Core.CQRS.User.Commands.UpdateProfile;
@@ -32,6 +33,20 @@ namespace ARC.UserAuthManagement.Web
                  .WithName("Login")
                  .WithDescription("Try login using username and password")
                  .ProducesValidationProblem();
+
+            group.MapGet("category-http", async (ISender sender, ICategoryHttpClient categoryHttpClient) =>
+            {
+                var categoryId = await categoryHttpClient.InsertCategoryAsync(new Models.CategoryDto { Name = "Category Name", Description = "Category description" });
+
+                // check if we're getting the inserted category
+                if (categoryId != Guid.Empty)
+                {
+                    var category = await categoryHttpClient.GetCategoryAsync(categoryId);
+                }
+            })
+            .WithName("CategoryHttp")
+            .WithDescription("Test http client for categories (POST and GET)")
+            .ProducesValidationProblem();
 
             return app;
         }

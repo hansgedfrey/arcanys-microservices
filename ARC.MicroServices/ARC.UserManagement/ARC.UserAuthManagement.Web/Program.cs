@@ -1,6 +1,7 @@
 using ARC.Infrastructure;
 using ARC.UserAuthManagement.Services;
 using ARC.UserAuthManagement.Web;
+using ARC.UserAuthManagement.Web.Services.Http;
 using ARC.UserManagement.Core;
 using ARC.UserManagement.Core.DependencyInjection;
 using ARC.UserManagement.Persistence.Entities;
@@ -12,6 +13,7 @@ builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Except
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
+builder.Services.AddHttpClient<ICategoryHttpClient, CategoryHttpClient>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);

@@ -7,7 +7,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.UpsertCategory
     public record UpsertCategoryCommand : IRequest<Guid>
     {
         public Guid? CategoryId { get; init; }
-        public required string CategoryName { get; init; }
+        public required string Name { get; init; }
         public string? Description { get; init; }
     }
 
@@ -15,7 +15,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.UpsertCategory
     {
         public UpsertCategoryCommandValidator()
         {
-            RuleFor(x => x.CategoryName).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty();
         }
     } 
 
@@ -42,7 +42,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.UpsertCategory
                           .Where(p => p.CategoryId == categoryId)
                           .SingleOrDefaultAsync(cancellationToken) ?? throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(Persistence.Entities.Category));
 
-            categoryToUpsert.Name = request.CategoryName;
+            categoryToUpsert.Name = request.Name;
             categoryToUpsert.Description = request.Description;
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

@@ -7,14 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/ARC.UserAuthManagement.gRPC.csproj", "ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/"]
-RUN dotnet restore "ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/ARC.UserAuthManagement.gRPC.csproj"
+COPY ["ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/ARC.UserAuthManagement.Web.csproj", "ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/"]
+RUN dotnet restore "ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement/ARC.UserAuthManagement.Web.csproj"
 COPY . .
 WORKDIR "/src/ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement"
-RUN dotnet build "ARC.UserAuthManagement.gRPC.csproj" -c Release -o /app/build
+RUN dotnet build "ARC.UserAuthManagement.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ARC.UserAuthManagement.gRPC.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ARC.UserAuthManagement.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

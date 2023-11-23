@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Hosting.Server;
 
-namespace ARC.UserAuthManagement
+namespace ARC.UserAuthManagement.Web
 {
     internal static class UserEndpoints
     {
@@ -14,6 +13,7 @@ namespace ARC.UserAuthManagement
             group.MapPost("register", async (ISender sender) => { })
                 .WithName("RegisterUser")
                 .WithDescription("Register a new user")
+                .WithOpenApi()
                 .ProducesValidationProblem();
 
             group.MapPost("login", async (ISender sender) => { })

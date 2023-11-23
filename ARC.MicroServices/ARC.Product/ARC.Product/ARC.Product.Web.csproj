@@ -31,7 +31,6 @@
     <ProjectReference Include="..\ARC.Product.Persistence\ARC.Product.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\authentication.proto" GrpcServices="Client" />
   </ItemGroup>
 </Project>

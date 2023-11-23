@@ -34,7 +34,6 @@ await db!.Database.MigrateAsync();
 app.UseValidationExceptionHandling();
 
 //Map gRPC services
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<AuthenticationService>();
 
 //Map endpoints

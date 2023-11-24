@@ -24,6 +24,7 @@ namespace ARC.UserAuthManagement.Web.Services.Http
             if (!response.IsSuccessStatusCode) throw new InvalidOperationException("Failed fetch");
             
             var responseContent = await response.Content.ReadAsStringAsync();
+
             var category = JsonSerializer.Deserialize<CategoryDto>(responseContent,
                 new JsonSerializerOptions
                 {
@@ -35,12 +36,10 @@ namespace ARC.UserAuthManagement.Web.Services.Http
 
         public async Task<Guid> InsertCategoryAsync(CategoryDto category)
         {
-            var httpContent = new StringContent(
-                JsonSerializer.Serialize(category),
-                Encoding.UTF8,
-                "application/json");
-              
+            var httpContent = new StringContent(JsonSerializer.Serialize(category), Encoding.UTF8, "application/json");
+
             var response = await _httpClient.PostAsync(new Uri(new Uri(_baseUrl), "categories/upsert-category"), httpContent);
+
             var responseContent = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode) throw new InvalidOperationException("Post failed");

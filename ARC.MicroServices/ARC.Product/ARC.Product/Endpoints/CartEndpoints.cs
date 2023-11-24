@@ -4,7 +4,7 @@ using ARC.Product.Core.CQRS.Cart.Commands.RemoveFromCart;
 using ARC.Product.Core.CQRS.Cart.Queries.ViewCart;
 using MediatR;
 
-namespace ARC.Product.Web
+namespace ARC.Product.Web.Endpoints
 {
     internal static class CartEndpoints
     {

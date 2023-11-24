@@ -4,7 +4,6 @@ using System.Text.Json;
 using ARC.UserAuthManagement.Web.Models;
 using RabbitMQ.Client;
 
-
 namespace ARC.UserAuthManagement.Web.Services.RabbitMQ
 {
     public class MessagBusClient : IMessageBusClient

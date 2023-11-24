@@ -7,7 +7,7 @@ using ARC.UserManagement.Core.CQRS.User.Commands.Register;
 using ARC.UserManagement.Core.CQRS.User.Commands.UpdateProfile;
 using MediatR;
 
-namespace ARC.UserAuthManagement.Web
+namespace ARC.UserAuthManagement.Web.Endpoints
 {
     internal static class UserEndpoints
     {
@@ -38,7 +38,7 @@ namespace ARC.UserAuthManagement.Web
 
             group.MapGet("category-http", async (ISender sender, ICategoryHttpClient categoryHttpClient) =>
             {
-                var categoryId = await categoryHttpClient.InsertCategoryAsync(new Models.CategoryDto { Name = "Category Name", Description = "Category description" });
+                var categoryId = await categoryHttpClient.InsertCategoryAsync(new CategoryDto { Name = "Category Name", Description = "Category description" });
 
                 // check if we're getting the inserted category
                 if (categoryId != Guid.Empty)

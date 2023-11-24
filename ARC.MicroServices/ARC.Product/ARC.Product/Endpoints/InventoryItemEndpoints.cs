@@ -3,7 +3,7 @@ using ARC.Product.Core.CQRS.Inventory.Commands.UpsertInventoryItem;
 using ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory;
 using MediatR;
 
-namespace ARC.Product.Web
+namespace ARC.Product.Web.Endpoints
 {
     internal static class InventoryItemEndpoints
     {

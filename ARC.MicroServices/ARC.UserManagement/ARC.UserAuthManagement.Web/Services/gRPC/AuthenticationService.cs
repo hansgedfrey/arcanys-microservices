@@ -15,14 +15,14 @@ namespace ARC.UserAuthManagement.Web.Services.gRPC
         }
 
         /// <summary>
-        /// Still a work in progress. Calls the login command to demonstrate.
+        /// Still a work in progress. Would like to show how JWT authentication would work in this protocol.
         /// </summary>
         public override async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request, ServerCallContext context)
         {
             var result = await _sender.Send(new UserManagement.Core.CQRS.User.Commands.Login.LoginCommand { UserName = request.UserName, Password = request.Password });
 
             //Test response
-            return new AuthenticationResponse { AccessToken = "12345", ExpiresIn = 3 };
+            return new AuthenticationResponse { AccessToken = "Some access token", ExpiresIn = 3 };
         }
     }
 }

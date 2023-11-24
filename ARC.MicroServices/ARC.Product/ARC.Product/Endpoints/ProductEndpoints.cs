@@ -3,7 +3,7 @@ using ARC.Product.Core.CQRS.Product.Queries.GetProductInfo;
 using ARC.Product.Core.CQRS.Product.Queries.SearchProducts;
 using MediatR;
 
-namespace ARC.Product.Web
+namespace ARC.Product.Web.Endpoints
 {
     internal static class ProductEndpoints
     {

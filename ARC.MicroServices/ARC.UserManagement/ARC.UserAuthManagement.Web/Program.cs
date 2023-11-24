@@ -1,5 +1,5 @@
 using ARC.Infrastructure;
-using ARC.UserAuthManagement.Web;
+using ARC.UserAuthManagement.Web.Endpoints;
 using ARC.UserAuthManagement.Web.Services.gRPC;
 using ARC.UserAuthManagement.Web.Services.Http;
 using ARC.UserAuthManagement.Web.Services.RabbitMQ;
@@ -16,7 +16,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 builder.Services.AddHttpClient<ICategoryHttpClient, CategoryHttpClient>();
 builder.Services.AddSingleton<IMessageBusClient, MessagBusClient>();
-
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);
     cfg.AddOpenBehavior(typeof(ARC.Infrastructure.Validation.ValidationBehavior<,>));

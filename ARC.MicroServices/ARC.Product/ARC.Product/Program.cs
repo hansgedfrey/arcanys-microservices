@@ -3,9 +3,9 @@ using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
 using ARC.Infrastructure;
-using ARC.Product.Web; 
 using ARC.Product.Web.Services;
 using ARC.Product.Web.Services.RabbitMQEventProcessing;
+using ARC.Product.Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 

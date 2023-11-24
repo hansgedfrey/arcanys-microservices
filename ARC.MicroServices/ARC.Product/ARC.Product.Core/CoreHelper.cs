@@ -36,17 +36,5 @@ namespace ARC.Product.Core
 
             return category != null ? true : false;
         }
-
-        public async Task<bool> ProductIsInStockAsync(Guid productId, CancellationToken cancellationToken)
-        {
-            var inventoryItem = await _applicationDbContext.InventoryItems
-                        .Include(p=>p.Events)
-                        .Where(p => p.ProductId == productId)
-                        .SingleOrDefaultAsync(cancellationToken);
-
-            if (inventoryItem == null) throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(inventoryItem), productId);
-             
-            return  inventoryItem.Quantity > 0;
-        }
     }
 }

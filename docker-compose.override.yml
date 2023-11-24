@@ -6,10 +6,20 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
-
+  arc.userauthmanagementweb:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
   arc.apigateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "80"
+  rabbitmq:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5672"
+      - "15672"
 

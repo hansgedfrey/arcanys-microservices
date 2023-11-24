@@ -7,6 +7,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerfileContext>..\..\..</DockerfileContext>
+    <!--<DockerfileRunArguments>-d — name dev-rabbit — hostname rabbitmq-dev -p 15672:15672 -p 5672:5672 rabbitmq:management</DockerfileRunArguments>-->
   </PropertyGroup>
 
   <ItemGroup>

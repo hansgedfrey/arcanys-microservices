@@ -15,23 +15,32 @@ services:
     image: ${DOCKER_REGISTRY-}arcproduct
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.Product/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
     environment:
     - DB_HOST=productdb
     - DB_NAME=product
     - DB_SA_PASSWORD=password1234@ 
+    depends_on: 
+    - productdb
+    ports:
+        - 8002:80
 
-  arc.usermanagement:
-    container_name: arc-usermanagement
-    image: ${DOCKER_REGISTRY-}arcusermanagement
+  arc.userauthmanagementweb:
+    container_name: arc-userauthmanagement-web
+    image: ${DOCKER_REGISTRY-}userauthmanagement-web
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.UserManagement/Dockerfile
+      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/Dockerfile
     environment:
-    - DB_HOST=productdb
-    - DB_NAME=product
-    - DB_SA_PASSWORD=password1234@ 
-    
+        - DB_HOST=productdb
+        - DB_NAME=users
+        - DB_SA_PASSWORD=password1234@ 
+    depends_on: 
+        - productdb
+    ports:
+        - 8004:666
+        - 8005:80
+
   arc.apigateway:
     container_name: arc-api-gateway
     image: ${DOCKER_REGISTRY-}arcapigateway
@@ -40,4 +49,12 @@ services:
       dockerfile: ApiGateway/Gateway/ARC.ApiGateway/Dockerfile
     ports:
       - 8001:80
+ 
+  rabbitmq:
+    container_name: rabbit-mq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
 
+       

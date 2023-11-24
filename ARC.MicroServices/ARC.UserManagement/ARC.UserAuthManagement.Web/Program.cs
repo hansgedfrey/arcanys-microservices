@@ -1,7 +1,8 @@
 using ARC.Infrastructure;
-using ARC.UserAuthManagement.Services;
 using ARC.UserAuthManagement.Web;
+using ARC.UserAuthManagement.Web.Services.gRPC;
 using ARC.UserAuthManagement.Web.Services.Http;
+using ARC.UserAuthManagement.Web.Services.RabbitMQ;
 using ARC.UserManagement.Core;
 using ARC.UserManagement.Core.DependencyInjection;
 using ARC.UserManagement.Persistence.Entities;
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 builder.Services.AddHttpClient<ICategoryHttpClient, CategoryHttpClient>();
+builder.Services.AddSingleton<IMessageBusClient, MessagBusClient>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);

@@ -1,4 +1,6 @@
-﻿using ARC.UserAuthManagement.Web.Services.Http;
+﻿using ARC.UserAuthManagement.Web.Models;
+using ARC.UserAuthManagement.Web.Services.Http;
+using ARC.UserAuthManagement.Web.Services.RabbitMQ;
 using ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword;
 using ARC.UserManagement.Core.CQRS.User.Commands.Login;
 using ARC.UserManagement.Core.CQRS.User.Commands.Register;
@@ -46,6 +48,30 @@ namespace ARC.UserAuthManagement.Web
             })
             .WithName("CategoryHttp")
             .WithDescription("Test http client for categories (POST and GET)")
+            .ProducesValidationProblem();
+
+            group.MapPost("publish-category", async (ISender sender, IMessageBusClient messageBusClient) =>
+            {
+                //Send Async Message
+                try
+                {
+                    var category = new PublishCategoryDto
+                    {
+                        CategoryId = null,
+                        Name = "Test category",
+                        Description = "Publish a new category async",
+                        Event = "Category_Published"
+                    };
+
+                    messageBusClient.PublishNewCategory(category);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"--> Could not send asynchronously: {ex.Message}");
+                }
+            })
+            .WithName("PublishCategory")
+            .WithDescription("Publishes a new event asyncronously using RabbitMQ")
             .ProducesValidationProblem();
 
             return app;

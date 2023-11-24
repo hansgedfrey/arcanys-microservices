@@ -3,7 +3,9 @@ using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
 using ARC.Infrastructure;
-using ARC.Product.Web;
+using ARC.Product.Web; 
+using ARC.Product.Web.Services;
+using ARC.Product.Web.Services.RabbitMQEventProcessing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Except
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHostedService<MessageBusSubscriber>();
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblies(typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);

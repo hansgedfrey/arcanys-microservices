@@ -1,7 +1,7 @@
 using Grpc.Core;
 using MediatR;
 
-namespace ARC.UserAuthManagement.Services
+namespace ARC.UserAuthManagement.Web.Services.gRPC
 {
     public class AuthenticationService : Authentication.AuthenticationBase
     {

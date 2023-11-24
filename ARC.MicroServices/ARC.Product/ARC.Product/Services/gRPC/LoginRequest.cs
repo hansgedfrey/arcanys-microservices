@@ -2,9 +2,9 @@
 using FluentValidation;
 using MediatR;
 
-namespace ARC.Product.Web
+namespace ARC.Product.Web.Services.gRPC
 {
-    public record LoginCommand : IRequest<bool>
+    public record LoginRequestCommand : IRequest<bool>
     {
         [LogMasked(ShowFirst = 3)]
         public required string UserName { get; init; }
@@ -12,7 +12,7 @@ namespace ARC.Product.Web
         public required string Password { get; init; }
     }
 
-    public class RegisterCommandValidator : AbstractValidator<LoginCommand>
+    public class RegisterCommandValidator : AbstractValidator<LoginRequestCommand>
     {
         public RegisterCommandValidator()
         {
@@ -21,7 +21,7 @@ namespace ARC.Product.Web
         }
     }
 
-    public class Handler : IRequestHandler<LoginCommand, bool>
+    public class Handler : IRequestHandler<LoginRequestCommand, bool>
     {
         private readonly UserAuthManagement.Authentication.AuthenticationClient _authenticationClient;
 
@@ -30,7 +30,7 @@ namespace ARC.Product.Web
             _authenticationClient = authenticationClient;
         }
 
-        public async Task<bool> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(LoginRequestCommand request, CancellationToken cancellationToken)
         {
             var result = await _authenticationClient.AuthenticateAsync(new UserAuthManagement.AuthenticationRequest { UserName = request.UserName, Password = request.Password });
 

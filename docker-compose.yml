@@ -46,7 +46,7 @@ services:
     image: ${DOCKER_REGISTRY-}arcapigateway
     build:
       context: .
-      dockerfile: ApiGateway/Gateway/ARC.ApiGateway/Dockerfile
+      dockerfile: ApiGateway/ARC.ApiGateway/Dockerfile
     ports:
       - 8001:80
  

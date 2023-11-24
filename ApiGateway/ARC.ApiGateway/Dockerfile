@@ -6,10 +6,10 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ApiGateway/Gateway/ARC.ApiGateway/ARC.ApiGateway.csproj", "ApiGateway/Gateway/ARC.ApiGateway/"]
-RUN dotnet restore "ApiGateway/Gateway/ARC.ApiGateway/ARC.ApiGateway.csproj"
+COPY ["ApiGateway/ARC.ApiGateway/ARC.ApiGateway.csproj", "ApiGateway/ARC.ApiGateway/"]
+RUN dotnet restore "ApiGateway/ARC.ApiGateway/ARC.ApiGateway.csproj"
 COPY . .
-WORKDIR "/src/ApiGateway/Gateway/ARC.ApiGateway"
+WORKDIR "/src/ApiGateway/ARC.ApiGateway"
 RUN dotnet build "ARC.ApiGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish

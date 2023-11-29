@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\HMaligro\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.30.0 (9d8dcb518)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: arc-userauthmanagementweb
+  name: arc.userauthmanagementweb
+  namespace: default
+spec:
+  ports:
+    - name: "8004"
+      port: 8004
+      targetPort: 666
+    - name: "8005"
+      port: 8005
+      targetPort: 80
+  selector:
+    io.kompose.service: arc-userauthmanagementweb
+status:
+  loadBalancer: {}

@@ -15,7 +15,7 @@ services:
     image: ${DOCKER_REGISTRY-}arcproduct
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
+      dockerfile: ../ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
     environment:
     - DB_HOST=productdb
     - DB_NAME=product
@@ -30,7 +30,7 @@ services:
     image: ${DOCKER_REGISTRY-}userauthmanagement-web
     build:
       context: .
-      dockerfile: ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/Dockerfile
+      dockerfile: ../ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/Dockerfile
     environment:
         - DB_HOST=productdb
         - DB_NAME=users
@@ -46,7 +46,7 @@ services:
     image: ${DOCKER_REGISTRY-}arcapigateway
     build:
       context: .
-      dockerfile: ApiGateway/ARC.ApiGateway/Dockerfile
+      dockerfile: ../ApiGateway/ARC.ApiGateway/Dockerfile
     ports:
       - 8001:80
  

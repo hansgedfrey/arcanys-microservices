@@ -11,7 +11,12 @@ namespace ARC.Product.Web.Endpoints
 
             group.MapPost("try-login", async (ISender sender, LoginRequestCommand command) => await sender.Send(command))
                 .WithName("TryLogin")
-                .WithDescription("Demonstrates a communication between the UserManagement service using gRPC")
+                .WithOpenApi(config => new(config) 
+                {
+                     Summary = "Demonstrates a communication between the UserManagement service using gRPC",
+                     Description = "Calls the Authentication Service in UserAuthManagement microservice. " +
+                     "Please see Services/gRPC/AuthenticationService.cs for the handler."
+                })
                 .ProducesValidationProblem();
 
             return app;

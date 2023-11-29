@@ -52,18 +52,17 @@ namespace ARC.UserAuthManagement.Web.Endpoints
             group.MapGet("category-http", async (ISender sender, ICategoryHttpClient categoryHttpClient) =>
             {
                 var categoryId = await categoryHttpClient.InsertCategoryAsync(new CategoryDto { Name = "Category Name", Description = "Category description" });
+                var category = categoryId != Guid.Empty ? await categoryHttpClient.GetCategoryAsync(categoryId) : default;
 
-                // check if we're getting the inserted category
-                if (categoryId != Guid.Empty)
-                {
-                    var category = await categoryHttpClient.GetCategoryAsync(categoryId);
-                }
+                if (category != null)
+                    Console.WriteLine($"Category with name {category.Name} was inserted successfully.");
             })
             .WithName("CategoryHttp") 
             .WithOpenApi(config => new(config)
             {
                 Summary = "Insert and get a new category thru http.",
-                Description = "Test http client for categories (POST and GET)"
+                Description = "Test http client for categories (POST and GET)." +
+                "Please see Services/Http/CategoryHttpClient.cs for the implementation."
             })
             .ProducesValidationProblem();
 
@@ -91,7 +90,8 @@ namespace ARC.UserAuthManagement.Web.Endpoints
             .WithOpenApi(config => new(config)
             {
                 Summary = "Publish a new event asyncronously using RabbitMQ",
-                Description = "This a test endpoint for the RabbitMQ message bus implementation.",
+                Description = "This a test endpoint for the RabbitMQ message bus." +
+                "Please see Services/RabbitMQ/MessageBusClient.cs and Services/RabbitMQEventProcessing/EventProcessor.cs for the implementation.",
             })
             .ProducesValidationProblem();
 

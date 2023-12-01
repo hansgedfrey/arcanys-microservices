@@ -28,4 +28,12 @@ services:
       dockerfile: ../ApiGateway/ARC.ApiGateway/Dockerfile
     ports:
       - 8006:80
+ 
+  rabbitmq:
+    container_name: rabbit-mq
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 5672:5672
+
        

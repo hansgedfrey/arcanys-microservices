@@ -5,8 +5,6 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-ENV ASPNETCORE_ENVIRONMENT=Development
-
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/ARC.UserAuthManagement.Web.csproj", "ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/"]

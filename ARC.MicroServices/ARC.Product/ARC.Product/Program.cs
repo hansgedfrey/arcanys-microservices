@@ -6,7 +6,6 @@ using ARC.Infrastructure;
 using ARC.Product.Web.Services;
 using ARC.Product.Web.Services.RabbitMQEventProcessing;
 using ARC.Product.Web.Endpoints;
-using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +13,8 @@ builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Except
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddHostedService<MessageBusSubscriber>();
-//builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+builder.Services.AddHostedService<MessageBusSubscriber>();
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblies(typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);
@@ -28,14 +27,17 @@ builder.Services.AddGrpcClient<ARC.UserAuthManagement.Authentication.Authenticat
 });
 
 var app = builder.Build();
- 
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
- 
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 await using var scope = app.Services.CreateAsyncScope();
 using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
 await db!.Database.MigrateAsync();

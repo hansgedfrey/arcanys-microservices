@@ -35,7 +35,7 @@ spec:
           name: product-db
           ports:
             - containerPort: 1433
-              hostPort: 18001
+              hostPort: 1433
               protocol: TCP
           resources: {}
       restartPolicy: Always

@@ -11,8 +11,8 @@ metadata:
   namespace: default
 spec:
   ports:
-    - name: "18001"
-      port: 18001
+    - name: "1433"
+      port: 1433
       targetPort: 1433
   selector:
     io.kompose.service: productdb

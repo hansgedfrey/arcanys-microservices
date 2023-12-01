@@ -26,11 +26,11 @@ spec:
         io.kompose.service: arc-apigateway
     spec:
       containers:
-        - image: arcapigateway
+        - image: hmaligro/apigateway:latest
           name: arc-api-gateway
           ports:
             - containerPort: 80
-              hostPort: 8001
+              hostPort: 8006
               protocol: TCP
           resources: {}
       restartPolicy: Always

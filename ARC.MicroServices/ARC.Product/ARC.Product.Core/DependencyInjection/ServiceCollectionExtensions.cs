@@ -15,14 +15,9 @@ namespace ARC.Product.Core.DependencyInjection
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCore(this IServiceCollection services, IConfiguration configuration, params Assembly[] assemblies)
-        {
-            var connectionString = 
-                $"Data Source={Environment.GetEnvironmentVariable("DB_HOST")};" +
-                $"Initial Catalog={Environment.GetEnvironmentVariable("DB_NAME")};" +
-                $"User ID=sa;Password={Environment.GetEnvironmentVariable("DB_SA_PASSWORD")};TrustServerCertificate=true";
-
+        { 
             services.AddValidatorsFromAssemblies(assemblies);
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")!));
             services.AddAutoMapperAndProfile(assemblies);
             services.AddScoped<CoreHelper>();
 

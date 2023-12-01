@@ -1,60 +1,31 @@
 version: '3.4'
 
 services:
-  productdb:
-    container_name: product-db
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=password1234@
-    ports:
-      - 18001:1433
-
   arc.product:
     container_name: arc-product
-    image: ${DOCKER_REGISTRY-}arcproduct
+    image: hmaligro/arcproduct:latest
     build:
-      context: .
+      context: ../
       dockerfile: ../ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
-    environment:
-    - DB_HOST=productdb
-    - DB_NAME=product
-    - DB_SA_PASSWORD=password1234@ 
-    depends_on: 
-    - productdb
     ports:
         - 8002:80
 
   arc.userauthmanagementweb:
     container_name: arc-userauthmanagement-web
-    image: ${DOCKER_REGISTRY-}userauthmanagement-web
+    image: hmaligro/arcuserauthmanagement:latest
     build:
       context: .
       dockerfile: ../ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/Dockerfile
-    environment:
-        - DB_HOST=productdb
-        - DB_NAME=users
-        - DB_SA_PASSWORD=password1234@ 
-    depends_on: 
-        - productdb
     ports:
         - 8004:666
         - 8005:80
 
   arc.apigateway:
     container_name: arc-api-gateway
-    image: ${DOCKER_REGISTRY-}arcapigateway
+    image: hmaligro/apigateway:latest
     build:
       context: .
       dockerfile: ../ApiGateway/ARC.ApiGateway/Dockerfile
     ports:
-      - 8001:80
- 
-  rabbitmq:
-    container_name: rabbit-mq
-    image: rabbitmq:management
-    ports:
-      - 15672:15672
-      - 5672:5672
-
+      - 8006:80
        

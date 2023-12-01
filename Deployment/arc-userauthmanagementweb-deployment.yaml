@@ -33,7 +33,7 @@ spec:
               value: users
             - name: DB_SA_PASSWORD
               value: password1234@
-          image: userauthmanagement-web
+          image: hmaligro/arcuserauthmanagement:latest
           name: arc-userauthmanagement-web
           ports:
             - containerPort: 666

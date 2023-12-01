@@ -33,7 +33,7 @@ spec:
               value: product
             - name: DB_SA_PASSWORD
               value: password1234@
-          image: arcproduct
+          image: hmaligro/arcproduct:latest
           name: arc-product
           ports:
             - containerPort: 80

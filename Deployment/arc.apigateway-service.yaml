@@ -11,8 +11,8 @@ metadata:
   namespace: default
 spec:
   ports:
-    - name: "8001"
-      port: 8001
+    - name: "8006"
+      port: 8006
       targetPort: 80
   selector:
     io.kompose.service: arc-apigateway

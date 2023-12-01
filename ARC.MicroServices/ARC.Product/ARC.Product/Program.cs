@@ -6,6 +6,7 @@ using ARC.Infrastructure;
 using ARC.Product.Web.Services;
 using ARC.Product.Web.Services.RabbitMQEventProcessing;
 using ARC.Product.Web.Endpoints;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,8 @@ builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Except
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddHostedService<MessageBusSubscriber>();
-builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+//builder.Services.AddHostedService<MessageBusSubscriber>();
+//builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblies(typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);

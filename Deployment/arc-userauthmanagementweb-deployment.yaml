@@ -26,14 +26,7 @@ spec:
         io.kompose.service: arc-userauthmanagementweb
     spec:
       containers:
-        - env:
-            - name: DB_HOST
-              value: productdb
-            - name: DB_NAME
-              value: users
-            - name: DB_SA_PASSWORD
-              value: password1234@
-          image: hmaligro/arcuserauthmanagement:latest
+        - image: hmaligro/arcuserauthmanagement:latest
           name: arc-userauthmanagement-web
           ports:
             - containerPort: 666

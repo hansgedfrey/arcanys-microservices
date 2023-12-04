@@ -88,4 +88,4 @@ And you should see that it's already up and running.
 
 Doing that, you should now have access to the API documentation and start testing the endpoints
 
-![Alt text](Images/product_endpoints_running?raw=true)
+![Alt text](Images/product_endpoints_running.png?raw=true)

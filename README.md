@@ -29,6 +29,8 @@ Make sure you have the following dependencies installed before running the proje
 
 Docker Desktop with Kubernetes enabled
 
+![Alt text](Images/Docker_with_Kubernetes.png?raw=true)
+
 ## Deploying the projects
 
 The demo applications contains API endpoints to demonstrate data handling, validation and persistence.

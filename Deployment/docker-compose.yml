@@ -1,11 +1,20 @@
 version: '3.4'
 
 services:
+  productdb:
+    container_name: product-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password1234@
+    ports:
+      - 18001:1433
+
   arc.product:
     container_name: arc-product
     image: hmaligro/arcproduct:latest
     build:
-      context: ../
+      context: .
       dockerfile: ../ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile
     ports:
         - 8002:80

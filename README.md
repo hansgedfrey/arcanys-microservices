@@ -6,7 +6,7 @@ An example of how to build microservices in .NET with various forms of communica
 
 - Demonstrate running microservices deployed in Kubernetes on top of Docker.
 - Demonstrate messaging and other communication options between services (Grpc, RabbitMQ, and HTTP).
-- Demonstrate API gateway using Ingress.
+- Demonstrate API gateway with Ingress.
 - API documentation using Swagger.
 - Minimal API implementation.
 - Mediatr and FluentValidation for handling API requests.
@@ -25,10 +25,32 @@ Project main dependency frameworks installed:
   "AutoMapper" : "12.0.1",
 ```
 
+Make sure you have the following dependencies installed before running the project:
+
+Docker Desktop with Kubernetes enabled
+
 ## Deploying the projects
 
 The demo applications contains API endpoints to demonstrate data handling, validation and persistence.
 It also demonstrates communication between services using RabbitMQ, Grpc and HTTP.
+
+## Apply the required services to run the demo projects.
+
+1. Apply the following yaml files to start the dependencies required to run the demo projects.
+
+```
+kubectl apply -f local-pvc.yaml,mssql-plat-depl.yaml,rabbitmq-depl.yaml
+```
+
+2. Wait for a few minutes and run the following command to verify that the MSSQL and RabbitMQ services are running.
+
+```
+kubectl apply -f local-pvc.yaml,mssql-plat-depl.yaml,rabbitmq-depl.yaml
+```
+
+You should see something like the image below:
+
+![Alt text](Images/MSSQL_RABBITMQ_PODS.png?raw=true)
 
 ## ARC.Product
 
@@ -39,4 +61,31 @@ It also demonstrates communication between services using RabbitMQ, Grpc and HTT
 docker build -t hmaligro/arcproduct:latest -f ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile .
 ```
 
-![Alt text](Images/MSSQL_RABBITMQ_PODS.png?raw=true "Title")
+3. Verify the image has been created. Go to your Docker Desktop app and navigated Images.
+
+![Alt text](Images/product_image_created.png?raw=true)
+
+4. When you have verified the image has been created, copy the image ID located just below the Image name. (i.e format 779c4d5a58ec) and run the following commands.
+
+```
+docker tag 779c4d5a58ec hmaligro/arcproduct:latest
+docker push hmaligro/arcproduct:latest
+```
+
+5. Applying the yaml files. Navigate to Deployment folder and run the following commands to create our Product app container and service.
+
+```
+kubectl apply -f arc-product-deployment.yaml,arc-product-node-port-service.yaml
+```
+
+6. To verify our product pod is already running, run `kubectl get pods` again
+
+And you should see that it's already up and running.
+
+![Alt text](Images/product_service_running.png?raw=true)
+
+7. To open the API documentation, navigate to http://localhost:31425/swagger/index.html and copy the PORT from the highlighted value in the screenshot above.
+
+Doing that, you should now have access to the API documentation and start testing the endpoints
+
+![Alt text](Images/product_endpoints_running?raw=true)

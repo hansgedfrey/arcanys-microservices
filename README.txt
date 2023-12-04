@@ -37,3 +37,4 @@ It also demonstrates communication between services using RabbitMQ, Grpc and HTT
 ```
 docker build -t hmaligro/arcproduct:latest -f ARC.MicroServices/ARC.Product/ARC.Product/Dockerfile .
 ```
+![Alt text](../Images/MSSQL_RABBITMQ_PODS.png?raw=true "Title")

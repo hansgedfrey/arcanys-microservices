@@ -54,7 +54,7 @@ You should see something like the image below:
 
 ![Alt text](Images/MSSQL_RABBITMQ_PODS.png?raw=true)
 
-## ARC.Product
+## ARC.Product.Web
 
 1. Navigate to project parent dir
 2. Run the following command
@@ -80,7 +80,7 @@ docker push hmaligro/arcproduct:latest
 kubectl apply -f arc-product-deployment.yaml,arc-product-node-port-service.yaml
 ```
 
-6. To verify our product pod is already running, run `kubectl get pods` again
+6. To verify our product pod and service are already running, run `kubectl get pods` again
 
 And you should see that it's already up and running.
 
@@ -91,3 +91,41 @@ And you should see that it's already up and running.
 Doing that, you should now have access to the API documentation and start testing the endpoints
 
 ![Alt text](Images/product_endpoints_running.png?raw=true)
+
+## ARC..UserAuthManagement.Web
+
+1. Navigate to project parent dir
+2. Run the following command
+
+```
+docker build -t hmaligro/arcuserauthmanagement:latest -f ARC.MicroServices/ARC.UserManagement/ARC.UserAuthManagement.Web/Dockerfile .
+```
+
+3. Verify the image has been created. Go to your Docker Desktop app and navigated Images.
+
+![Alt text](Images/user_management_image_created.png?raw=true)
+
+4. When you have verified the image has been created, copy the image ID located just below the Image name. (i.e format 779c4d5a58ec) and run the following commands.
+
+```
+docker tag c18e9aac26cd hmaligro/arcuserauthmanagement:latest
+docker push hmaligro/arcuserauthmanagement:latest
+```
+
+5. Applying the yaml files. Navigate to Deployment folder and run the following commands to create our User management app container and service.
+
+```
+kubectl apply -f arc-userauthmanagementweb-deployment.yaml,arc-userauthmanagementweb-node-port-service.yaml
+```
+
+6. To verify our user management pod and service are already running, run `kubectl get pods` again
+
+And you should see that it's already up and running.
+
+![Alt text](Images/user_management_service_running.png?raw=true)
+
+7. To open the API documentation, navigate to http://localhost:31425/swagger/index.html and copy the PORT from the highlighted value in the screenshot above.
+
+Doing that, you should now have access to the API documentation and start testing the endpoints
+
+![Alt text](Images/user_management_endpoints_running.png?raw=true)

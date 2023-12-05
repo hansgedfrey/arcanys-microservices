@@ -32,8 +32,12 @@ namespace ARC.Product.Web.Services.gRPC
 
         public async Task<bool> Handle(LoginRequestCommand request, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Calling GRPC Server ");
+           
             var result = await _authenticationClient.AuthenticateAsync(new UserAuthManagement.AuthenticationRequest { UserName = request.UserName, Password = request.Password });
-
+            
+            Console.WriteLine($"Got GRPC response {result.AccessToken}");
+           
             return result != null;
         }
     }

@@ -19,6 +19,8 @@ namespace ARC.UserAuthManagement.Web.Services.gRPC
         /// </summary>
         public override async Task<AuthenticationResponse> Authenticate(AuthenticationRequest request, ServerCallContext context)
         {
+            Console.WriteLine("Receiving GRPC request");
+
             var result = await _sender.Send(new UserManagement.Core.CQRS.User.Commands.Login.LoginCommand { UserName = request.UserName, Password = request.Password });
 
             //Test response

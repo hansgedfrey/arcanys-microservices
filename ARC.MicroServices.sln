@@ -9,10 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserManagement", "UserManag
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroServices", "MicroServices", "{6D544DF0-6BB3-4178-ABB3-D5D840599937}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{F437ED5B-FE46-4725-8464-D6CA733C8F35}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product.Persistence", "ARC.MicroServices\ARC.Product\ARC.Product.Persistence\ARC.Product.Persistence.csproj", "{F07FA55F-1B28-4FAF-A98C-89D42B66FF0E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.Product.Core", "ARC.MicroServices\ARC.Product\ARC.Product.Core\ARC.Product.Core.csproj", "{7A3558AC-D485-4156-8E57-25B1A3EA16D7}"
@@ -29,7 +25,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserManagement.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.UserAuthManagement.Web", "ARC.MicroServices\ARC.UserManagement\ARC.UserAuthManagement.Web\ARC.UserAuthManagement.Web.csproj", "{3377323A-FF90-448A-A558-3F3FF064C5C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ARC.ApiGateway", "ApiGateway\ARC.ApiGateway\ARC.ApiGateway.csproj", "{44A768C2-41FA-4579-872B-3F0B5AD9A4C7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{3ED54930-556F-483E-893F-46BD376A48EB}"
+	ProjectSection(SolutionItems) = preProject
+		Deployment\arc-product-deployment.yaml = Deployment\arc-product-deployment.yaml
+		Deployment\arc-product-node-port-service.yaml = Deployment\arc-product-node-port-service.yaml
+		Deployment\arc-userauthmanagementweb-deployment.yaml = Deployment\arc-userauthmanagementweb-deployment.yaml
+		Deployment\arc-userauthmanagementweb-node-port-service.yaml = Deployment\arc-userauthmanagementweb-node-port-service.yaml
+		Deployment\ingress-srv.yaml = Deployment\ingress-srv.yaml
+		Deployment\local-pvc.yaml = Deployment\local-pvc.yaml
+		Deployment\mssql-plat-depl.yaml = Deployment\mssql-plat-depl.yaml
+		Deployment\rabbitmq-depl.yaml = Deployment\rabbitmq-depl.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +43,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24CE0AC5-2BD7-4C31-808F-5727A795B9D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F07FA55F-1B28-4FAF-A98C-89D42B66FF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F07FA55F-1B28-4FAF-A98C-89D42B66FF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F07FA55F-1B28-4FAF-A98C-89D42B66FF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,10 +71,6 @@ Global
 		{3377323A-FF90-448A-A558-3F3FF064C5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3377323A-FF90-448A-A558-3F3FF064C5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3377323A-FF90-448A-A558-3F3FF064C5C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44A768C2-41FA-4579-872B-3F0B5AD9A4C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44A768C2-41FA-4579-872B-3F0B5AD9A4C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44A768C2-41FA-4579-872B-3F0B5AD9A4C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44A768C2-41FA-4579-872B-3F0B5AD9A4C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,7 +85,6 @@ Global
 		{1356D44D-79D7-4FA9-8E40-99E15C5FECF3} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
 		{C25D42DC-C32D-4546-89B5-D28A908E8B55} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
 		{3377323A-FF90-448A-A558-3F3FF064C5C9} = {C9613164-5D91-44F5-AA17-A6C0E1EDF47D}
-		{44A768C2-41FA-4579-872B-3F0B5AD9A4C7} = {F437ED5B-FE46-4725-8464-D6CA733C8F35}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B827902-5F23-4671-85BF-7BAAFF045FB6}

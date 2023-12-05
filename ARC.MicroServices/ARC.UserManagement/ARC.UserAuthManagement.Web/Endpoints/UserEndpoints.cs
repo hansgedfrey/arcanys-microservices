@@ -17,37 +17,53 @@ namespace ARC.UserAuthManagement.Web.Endpoints
 
             group.MapPost("register", async (ISender sender, RegisterCommand command) => await sender.Send(command))
                 .WithName("RegisterUser")
-                .WithDescription("Register a new user")
-                .WithOpenApi()
+                .WithOpenApi(config => new(config)
+                {
+                    Description = "Adds a new user. Does not support claims at the moment."
+                })
                 .ProducesValidationProblem();
 
             group.MapPost("update-profile", async (ISender sender, UpdateProfileCommand command) => await sender.Send(command))
                 .WithName("UpdateUserProfile")
-                .WithDescription("Update user profile")
+                .WithOpenApi(config => new(config)
+                {
+                    Description = "Update an existing user's profile."
+                })
                 .ProducesValidationProblem();
 
             group.MapPost("change-password", async (ISender sender, ChangePasswordCommand command) => await sender.Send(command))
                 .WithName("ChangePassword")
-                .WithDescription("Change an existing user's password")
+                .WithOpenApi(config => new(config)
+                {
+                    Description = "Update an existing user's password."
+                })
                 .ProducesValidationProblem();
 
             group.MapPost("login", async (ISender sender, LoginCommand command) => await sender.Send(command))
                  .WithName("Login")
-                 .WithDescription("Try login using username and password")
+                 .WithOpenApi(config => new(config)
+                 {
+                     Description = "Try login using an existing user's username and password. " +
+                     "Does not support any login mechanism at the moment, " +
+                     "it just checks the DB for the correct username and password"
+                 })
                  .ProducesValidationProblem();
 
             group.MapGet("category-http", async (ISender sender, ICategoryHttpClient categoryHttpClient) =>
             {
                 var categoryId = await categoryHttpClient.InsertCategoryAsync(new CategoryDto { Name = "Category Name", Description = "Category description" });
+                var category = categoryId != Guid.Empty ? await categoryHttpClient.GetCategoryAsync(categoryId) : default;
 
-                // check if we're getting the inserted category
-                if (categoryId != Guid.Empty)
-                {
-                    var category = await categoryHttpClient.GetCategoryAsync(categoryId);
-                }
+                if (category != null)
+                    Console.WriteLine($"Category with name {category.Name} was inserted successfully.");
             })
-            .WithName("CategoryHttp")
-            .WithDescription("Test http client for categories (POST and GET)")
+            .WithName("CategoryHttp") 
+            .WithOpenApi(config => new(config)
+            {
+                Summary = "Insert and get a new category thru http.",
+                Description = "Test http client for categories (POST and GET)." +
+                "Please see Services/Http/CategoryHttpClient.cs for the implementation."
+            })
             .ProducesValidationProblem();
 
             group.MapPost("publish-category", async (ISender sender, IMessageBusClient messageBusClient) =>
@@ -71,7 +87,12 @@ namespace ARC.UserAuthManagement.Web.Endpoints
                 }
             })
             .WithName("PublishCategory")
-            .WithDescription("Publishes a new event asyncronously using RabbitMQ")
+            .WithOpenApi(config => new(config)
+            {
+                Summary = "Publish a new event asyncronously using RabbitMQ",
+                Description = "This a test endpoint for the RabbitMQ message bus." +
+                "Please see Services/RabbitMQ/MessageBusClient.cs and Services/RabbitMQEventProcessing/EventProcessor.cs for the implementation.",
+            })
             .ProducesValidationProblem();
 
             return app;

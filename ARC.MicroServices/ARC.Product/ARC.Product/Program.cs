@@ -27,14 +27,14 @@ builder.Services.AddGrpcClient<ARC.UserAuthManagement.Authentication.Authenticat
 });
 
 var app = builder.Build();
- 
-// Configure the HTTP request pipeline.
+
+//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
- 
+
 await using var scope = app.Services.CreateAsyncScope();
 using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
 await db!.Database.MigrateAsync();

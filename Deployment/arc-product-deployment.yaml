@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arc-product-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arcproductservice
+  template:
+    metadata:
+      labels:
+        app: arcproductservice
+    spec:
+      containers:
+        - name: arcproductservice
+          image: hmaligro/arcproduct:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: arcproduct-clusterip-service
+spec:
+  type: ClusterIP
+  selector:
+    app: arcproductservice
+  ports:
+    - name: arcproductservice
+      protocol: TCP
+      port: 80
+      targetPort: 80

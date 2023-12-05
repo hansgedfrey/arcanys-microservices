@@ -92,7 +92,7 @@ Doing that, you should now have access to the API documentation and start testin
 
 ![Alt text](Images/product_endpoints_running.png?raw=true)
 
-## ARC..UserAuthManagement.Web
+## ARC.UserAuthManagement.Web
 
 1. Navigate to project parent dir
 2. Run the following command
@@ -129,3 +129,35 @@ And you should see that it's already up and running.
 Doing that, you should now have access to the API documentation and start testing the endpoints
 
 ![Alt text](Images/user_management_endpoints_running.png?raw=true)
+
+## Setting up the API Gateway
+
+For the API Gateway, it was originally Ocelot but switched to Ingress for ease of setup that includes load balancing and routing.
+
+1. To test locally, we need to add our own domain name in the host file. If you check the routing file (ingress-srv.yaml) it's defined as `arc-test.com`.
+
+Add the following in your host file.
+
+```
+127.0.0.1 arc-test.com
+```
+
+2. Run the following command to install the nginx controller. You can find the complete guide here https://kubernetes.github.io/ingress-nginx/deploy/#quick-start.
+
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+The installation may take a few minutes. But you can run the following command (`kubectl get services --namespace=ingress-nginx`)to check if ingress nginx contoller is up and running. You should get the below result
+
+![Alt text](Images/ingress_ngix_cluster_load_balancer.png?raw=true)
+
+3. Finally, we can now apply our routing file.
+
+```
+kubectl apply -f ingress-srv.yaml
+```
+
+4. To verify that the gateway is working properly, navigate to one of the endpoints.
+
+![Alt text](Images/api-gateway.png?raw=true)

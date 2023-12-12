@@ -21,8 +21,9 @@ Project main dependency frameworks installed:
   "RabbitMQ.Client": "6.7.0",
   "Swashbuckle.AspNetCore": "6.5.0",
   "Grpc": "2.55.0",
-  "Microsoft.EntityFrameworkCore": "7.0.13",
-  "AutoMapper" : "12.0.1",
+  "Microsoft.EntityFrameworkCore": "7.0.13", 
+  "Arc.Extension.Automapper" : "0.0.2",
+  "Arc.Extension.ValidationMiddleware" : "0.0.3"
 ```
 
 Make sure you have the following dependencies installed before running the project:

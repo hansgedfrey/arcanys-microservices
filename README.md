@@ -29,7 +29,7 @@ Make sure you have the following dependencies installed before running the proje
 
 - Run the command below to add the Github nuget package source
 
-```JSON
+```
 dotnet nuget add source --username hansgedfrey --password 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 --store-password-in-clear-text --name HansGithub "https://nuget.pkg.github.com/hansgedfrey/index.json"
 ```
 

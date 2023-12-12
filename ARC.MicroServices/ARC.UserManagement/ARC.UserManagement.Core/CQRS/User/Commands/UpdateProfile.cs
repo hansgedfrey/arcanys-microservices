@@ -1,4 +1,5 @@
-﻿using Destructurama.Attributed;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using Destructurama.Attributed;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.UpdateProfile
                           .Where(p => p.UserId == request.UserId)
                           .SingleOrDefaultAsync(cancellationToken);
             
-            if(existingUser == null) throw new Infrastructure.Exceptions.NotFoundException(nameof(Persistence.Entities.User));
+            if(existingUser == null) throw new NotFoundException(nameof(Persistence.Entities.User));
 
             existingUser.PhoneNumber = request.PhoneNumber;
             existingUser.LastName = request.LastName;

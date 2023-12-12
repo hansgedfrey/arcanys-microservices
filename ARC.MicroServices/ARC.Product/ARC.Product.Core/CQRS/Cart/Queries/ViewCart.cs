@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ namespace ARC.Product.Core.CQRS.Cart.Queries.ViewCart
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (cart == null)
-                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(cart), request.CartId);
+                throw new NotFoundException(nameof(cart), request.CartId);
 
             return cart;
         }

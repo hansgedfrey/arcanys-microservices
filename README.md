@@ -30,7 +30,7 @@ Make sure you have the following dependencies installed before running the proje
 - Run the command below to add the Github nuget package source
 
 ```
-dotnet nuget add source --username hansgedfrey --password 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 --store-password-in-clear-text --name HansGithub "https://nuget.pkg.github.com/hansgedfrey/index.json"
+dotnet nuget add source --username hansgedfrey --password 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 --store-password-in-clear-text --name HansGithub "https://nuget.pkg.github.com/hansgedfrey/index.json"
 ```
 
 - Docker Desktop with Kubernetes enabled

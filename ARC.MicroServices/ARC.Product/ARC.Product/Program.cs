@@ -2,14 +2,16 @@ using ARC.Product.Core;
 using ARC.Product.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 using ARC.Product.Core.DependencyInjection;
-using ARC.Infrastructure;
 using ARC.Product.Web.Services;
 using ARC.Product.Web.Services.RabbitMQEventProcessing;
 using ARC.Product.Web.Endpoints;
+using ARC.Extension.ValidationMiddleWare.Validation;
+using ARC.Extension.ValidationMiddleWare;
+using ARC.Extension.ValidationMiddleWare.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Exceptions.NotFoundException).Assembly, typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);
+builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,7 +20,7 @@ builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblies(typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);
-    cfg.AddOpenBehavior(typeof(ARC.Infrastructure.Validation.ValidationBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
 builder.Services.AddGrpcClient<ARC.UserAuthManagement.Authentication.AuthenticationClient>((services, options) =>

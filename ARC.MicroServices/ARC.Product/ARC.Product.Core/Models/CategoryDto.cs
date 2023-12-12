@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using Arc.Common.Automapper;
+using AutoMapper;
 
 namespace ARC.Product.Core.Models
 {
-    public record CategoryDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.Category>
+    public record CategoryDto : IMapFrom<Persistence.Entities.Category>
     {
         public required Guid CategoryId { get; set; }
         public required string Name { get; set; }

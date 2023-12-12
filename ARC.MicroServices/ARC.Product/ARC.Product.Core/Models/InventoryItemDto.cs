@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using Arc.Common.Automapper;
+using AutoMapper;
 
 namespace ARC.Product.Core.Models
 {
-    public record InventoryItemDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.InventoryItem>
+    public record InventoryItemDto : IMapFrom<Persistence.Entities.InventoryItem>
     {
         public required Guid InventoryItemId { get; set; }
         public DateTime Created { get; set; }

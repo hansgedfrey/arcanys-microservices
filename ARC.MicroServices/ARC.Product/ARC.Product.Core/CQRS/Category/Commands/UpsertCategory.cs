@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +41,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.UpsertCategory
             else
                 categoryToUpsert = await _applicationDbContext.Categories
                           .Where(p => p.CategoryId == categoryId)
-                          .SingleOrDefaultAsync(cancellationToken) ?? throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(Persistence.Entities.Category));
+                          .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Category));
 
             categoryToUpsert.Name = request.Name;
             categoryToUpsert.Description = request.Description;

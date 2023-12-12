@@ -1,4 +1,5 @@
-﻿using Destructurama.Attributed;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using Destructurama.Attributed;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
@@ -47,7 +48,7 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.ChangePassword
                           .Where(p => p.Username.ToLower() == request.UserName.ToLower())
                           .SingleOrDefaultAsync(cancellationToken);
             
-            if(existingUser == null) throw new Infrastructure.Exceptions.NotFoundException(nameof(Persistence.Entities.User));
+            if(existingUser == null) throw new NotFoundException(nameof(Persistence.Entities.User));
 
             existingUser.Username = request.UserName;
             existingUser.Password = _dataProtector.Protect(request.Password);

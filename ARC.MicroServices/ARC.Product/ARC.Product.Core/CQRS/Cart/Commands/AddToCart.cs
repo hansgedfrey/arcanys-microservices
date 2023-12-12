@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,10 +46,10 @@ namespace ARC.Product.Core.CQRS.Cart.Commands.AddToCart
                             .FirstOrDefaultAsync();
 
             if (cart == null)
-                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(cart), request.CartId);
+                throw new NotFoundException(nameof(cart), request.CartId);
 
             if (inventoryItem == null)
-                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(inventoryItem), request.ProductId);
+                throw new NotFoundException(nameof(inventoryItem), request.ProductId);
              
             if (inventoryItem?.Quantity <= 0)
                 throw new InvalidOperationException("Item is currently out of stock.");

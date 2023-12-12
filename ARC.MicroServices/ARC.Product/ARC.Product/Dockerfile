@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["ARC.MicroServices/ARC.Product/ARC.Product/ARC.Product.Web.csproj", "ARC.MicroServices/ARC.Product/ARC.Product/"]
 COPY ["ARC.MicroServices/ARC.Product/ARC.Product.Core/ARC.Product.Core.csproj", "ARC.MicroServices/ARC.Product/ARC.Product.Core/"]
-COPY ["Infrastructure/ARC.Infrastructure/ARC.Infrastructure.csproj", "Infrastructure/ARC.Infrastructure/"]
 COPY ["ARC.MicroServices/ARC.Product/ARC.Product.Persistence/ARC.Product.Persistence.csproj", "ARC.MicroServices/ARC.Product/ARC.Product.Persistence/"]
 RUN dotnet restore "ARC.MicroServices/ARC.Product/ARC.Product/ARC.Product.Web.csproj"
 COPY ./ ./

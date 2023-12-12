@@ -1,4 +1,6 @@
-using ARC.Infrastructure;
+using ARC.Extension.ValidationMiddleWare;
+using ARC.Extension.ValidationMiddleWare.Exceptions;
+using ARC.Extension.ValidationMiddleWare.Validation;
 using ARC.UserAuthManagement.Web.Endpoints;
 using ARC.UserAuthManagement.Web.Services.gRPC;
 using ARC.UserAuthManagement.Web.Services.Http;
@@ -10,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCore(builder.Configuration, typeof(ARC.Infrastructure.Exceptions.NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
+builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
@@ -18,7 +20,7 @@ builder.Services.AddHttpClient<ICategoryHttpClient, CategoryHttpClient>();
 builder.Services.AddSingleton<IMessageBusClient, MessagBusClient>();
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssembly(typeof(RequestLogger<>).Assembly);
-    cfg.AddOpenBehavior(typeof(ARC.Infrastructure.Validation.ValidationBehavior<,>));
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
 var app = builder.Build();

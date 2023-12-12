@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿using Arc.Common.Automapper;
+using AutoMapper;
 
 namespace ARC.Product.Core.Models
 {
-    public record ProductDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.Product>
+    public record ProductDto : IMapFrom<Persistence.Entities.Product>
     {
         public required Guid ProductId { get; set; }
         public required string ProductName { get; set; }

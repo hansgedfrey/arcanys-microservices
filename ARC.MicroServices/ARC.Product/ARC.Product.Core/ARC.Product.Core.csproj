@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Arc.Extension.Automapper" Version="0.0.1" />
+    <PackageReference Include="Arc.Extension.Automapper" Version="0.0.2" />
+    <PackageReference Include="Arc.Extension.ValidationMiddleware" Version="0.0.3" />
     <PackageReference Include="Destructurama.Attributed" Version="3.1.0" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
@@ -26,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Infrastructure\ARC.Infrastructure\ARC.Infrastructure.csproj" />
     <ProjectReference Include="..\ARC.Product.Persistence\ARC.Product.Persistence.csproj" />
   </ItemGroup>
 

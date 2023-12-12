@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Product.Queries.GetProductInfo
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (product == null)
-                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(product), request.ProductId);
+                throw new NotFoundException(nameof(product), request.ProductId);
 
             return product;
         }

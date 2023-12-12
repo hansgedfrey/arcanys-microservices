@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.GetInventoryItem
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (inventoryItem == null)
-                throw new ARC.Infrastructure.Exceptions.NotFoundException(nameof(inventoryItem), request.InventoryItemId);
+                throw new NotFoundException(nameof(inventoryItem), request.InventoryItemId);
 
             return inventoryItem;
         }

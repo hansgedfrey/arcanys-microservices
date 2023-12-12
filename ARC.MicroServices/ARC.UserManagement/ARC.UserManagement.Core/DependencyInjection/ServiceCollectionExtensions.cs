@@ -1,10 +1,11 @@
-﻿using ARC.UserManagement.Persistence.Entities;
+﻿using Arc.Common.Automapper;
+using ARC.UserManagement.Persistence.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using ARC.Infrastructure;
+
 namespace ARC.UserManagement.Core.DependencyInjection
 {
     /// <summary>

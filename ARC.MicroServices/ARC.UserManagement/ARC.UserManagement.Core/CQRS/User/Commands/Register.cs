@@ -1,4 +1,5 @@
-﻿using Destructurama.Attributed;
+﻿using ARC.Extension.ValidationMiddleWare.Exceptions;
+using Destructurama.Attributed;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
@@ -50,7 +51,7 @@ namespace ARC.UserManagement.Core.CQRS.User.Commands.Register
                           .Where(p => p.Username.ToLower() == request.UserName.ToLower())
                           .SingleOrDefaultAsync(cancellationToken);
             
-            if(existingUser != null) throw new Infrastructure.Exceptions.AlreadyExistsException(nameof(Persistence.Entities.User));
+            if(existingUser != null) throw new AlreadyExistsException(nameof(Persistence.Entities.User));
 
             user.Username = request.UserName;
             user.Password = _dataProtector.Protect(request.Password);

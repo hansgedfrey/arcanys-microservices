@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using Arc.Common.Automapper;
+using AutoMapper;
 namespace ARC.Product.Core.Models
 {
-    public record CartDto : ARC.Infrastructure.IMapFrom<Persistence.Entities.Cart>
+    public record CartDto : IMapFrom<Persistence.Entities.Cart>
     {
         public required Guid CartId { get; set; }
         public DateTime Created { get; set; }

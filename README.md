@@ -27,8 +27,9 @@ Project main dependency frameworks installed:
 
 Make sure you have the following dependencies installed before running the project:
 
-- Run the command below to add the Github nuget package source
+There are two nuget packages that needs to be added in this project. First is the Validation middleware, and the second is the Automapper extension which are both hosted in a private repository.
 
+- The following command needs to be ran in order to add the package source for the private repo.
 ```
 dotnet nuget add source --username hansgedfrey --password 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 --store-password-in-clear-text --name HansGithub "https://nuget.pkg.github.com/hansgedfrey/index.json"
 ```

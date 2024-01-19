@@ -4,7 +4,7 @@ import {
   createSlice,
   isRejectedWithValue,
 } from "@reduxjs/toolkit";
-import { ApiException } from "../../api/products-api";
+import { ApiException } from "../api/products-api";
 
 export const API_CALL_ERROR = "API_CALL_ERROR";
 export const apiCallError = (error: string) => ({

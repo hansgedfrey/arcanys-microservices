@@ -3,18 +3,21 @@ import { createBrowserHistory } from "history";
 import { routerMiddleware, connectRouter } from "connected-react-router";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
-//import carts from "./carts";
+import categories from "./categories";
 
-export const history = createBrowserHistory();
+//export const history = createBrowserHistory();
 
 const store = configureStore({
   devTools: process.env.PRODUCTS_ENDPOINT_URL !== "production",
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware({ serializableCheck: false }).concat(
+  //     routerMiddleware(history)
+  //   ),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(
-      routerMiddleware(history)
-    ),
+    getDefaultMiddleware({ serializableCheck: false }),
   reducer: {
-    router: connectRouter(history),
+    categories,
+    //router: connectRouter(history),
   },
 });
 

@@ -5,18 +5,18 @@ import {
   Typography,
 } from "@mui/material";
 import Categories from "./Categories";
+import { useAppSelector } from "../store";
 
 function Products() {
+  const { selectedCategory } = useAppSelector((state) => state.categories);
+
   return (
     <MuiGrid container pl={2} pr={2}>
       <MuiGrid item xs={2}>
         <Categories />
       </MuiGrid>
       <MuiGrid item xs={10}>
-        <Typography variant="h4">Products</Typography>
-        <MuiButton onClick={() => console.log("component 1")}>
-          Add Product
-        </MuiButton>
+        <Typography variant="h6">{selectedCategory?.name}</Typography>
       </MuiGrid>
     </MuiGrid>
   );

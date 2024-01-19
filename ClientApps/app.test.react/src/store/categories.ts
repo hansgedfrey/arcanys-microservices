@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import {
+  CategoryDto,
   HttpValidationProblemDetails,
   SearchCategoriesResponse,
 } from "../api/products-api";
@@ -11,6 +12,7 @@ const initialState: {
   isSuccess: boolean;
   isFailure: boolean;
   categories?: SearchCategoriesResponse;
+  selectedCategory?: CategoryDto;
   problem?: HttpValidationProblemDetails;
 } = {
   isSubmitting: false,
@@ -30,6 +32,18 @@ export const getCategoriesAsync = createAsyncThunk<
       .catch(rejectWithValue)
 );
 
+export const getCategoryInfoAsync = createAsyncThunk<
+  CategoryDto,
+  { categoryId: string },
+  { state: RootState }
+>(
+  "category/{categoryId}",
+  (payload: { categoryId: string }, { getState, rejectWithValue }) =>
+    getApis(getState())
+      .categoriesClient.getCategoryInfo(payload.categoryId)
+      .catch(rejectWithValue)
+);
+
 export const cartsSlice = createSlice({
   name: "categories",
   initialState,
@@ -45,6 +59,18 @@ export const cartsSlice = createSlice({
         state.categories = action.payload;
       })
       .addCase(getCategoriesAsync.rejected, (state) => {
+        state.isSubmitting = false;
+        state.isFailure = false;
+      })
+      .addCase(getCategoryInfoAsync.pending, (state) => {
+        state.isSubmitting = true;
+      })
+      .addCase(getCategoryInfoAsync.fulfilled, (state, action) => {
+        state.isSubmitting = false;
+        state.isSuccess = true;
+        state.selectedCategory = action.payload;
+      })
+      .addCase(getCategoryInfoAsync.rejected, (state) => {
         state.isSubmitting = false;
         state.isFailure = false;
       });

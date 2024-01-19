@@ -5,7 +5,7 @@ function Products() {
   const classes = useStyles();
 
   return (
-    <Box pt={4} pb={4}>
+    <Box pt={4} pb={4} pl={2} pr={2}>
       <MuiGrid container pl={2} pr={2}>
         <MuiGrid item xs={10}>
           <Typography variant="h4">Arcanys E-Commerce App</Typography>

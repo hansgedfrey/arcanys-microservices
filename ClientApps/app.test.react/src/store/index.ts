@@ -2,7 +2,7 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import categories from "./categories";
 import products from "./products";
-
+import apis from "./apis";
 //export const history = createBrowserHistory();
 
 const store = configureStore({
@@ -16,6 +16,7 @@ const store = configureStore({
   reducer: {
     categories,
     products,
+    apis,
     //router: connectRouter(history),
   },
 });
@@ -28,7 +29,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 

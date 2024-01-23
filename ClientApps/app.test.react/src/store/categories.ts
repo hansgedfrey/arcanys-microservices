@@ -5,7 +5,6 @@ import {
   HttpValidationProblemDetails,
   SearchCategoriesResponse,
 } from "../api/products-api";
-import { getApis } from "./apiSelector";
 
 const initialState: {
   isSubmitting: boolean;
@@ -26,9 +25,12 @@ export const getCategoriesAsync = createAsyncThunk<
   { state: RootState }
 >(
   "categories",
-  (payload: { page: number; query?: string }, { getState, rejectWithValue }) =>
-    getApis(getState())
-      .categoriesClient.categories(payload.query, payload.page)
+  (
+    payload: { page: number; query?: string },
+    { getState, rejectWithValue, signal }
+  ) =>
+    getState()
+      .apis.categoriesClient.categories(payload.query, payload.page)
       .catch(rejectWithValue)
 );
 
@@ -38,9 +40,9 @@ export const getCategoryInfoAsync = createAsyncThunk<
   { state: RootState }
 >(
   "category/{categoryId}",
-  (payload: { categoryId: string }, { getState, rejectWithValue }) =>
-    getApis(getState())
-      .categoriesClient.getCategoryInfo(payload.categoryId)
+  (payload: { categoryId: string }, { getState, rejectWithValue, signal }) =>
+    getState()
+      .apis.categoriesClient.getCategoryInfo(payload.categoryId)
       .catch(rejectWithValue)
 );
 

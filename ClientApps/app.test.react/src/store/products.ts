@@ -5,7 +5,6 @@ import {
   ProductDto,
   SearchProductsResponse,
 } from "../api/products-api";
-import { getApis } from "./apiSelector";
 
 const initialState: {
   isSubmitting: boolean;
@@ -30,8 +29,12 @@ export const getProductsAsync = createAsyncThunk<
     payload: { page?: number; query?: string; categoryId?: string },
     { getState, rejectWithValue }
   ) =>
-    getApis(getState())
-      .productsClient.products(payload.query, payload.categoryId, payload.page)
+    getState()
+      .apis.productsClient.products(
+        payload.query,
+        payload.categoryId,
+        payload.page
+      )
       .catch(rejectWithValue)
 );
 
@@ -42,8 +45,8 @@ export const getProductinfoAsync = createAsyncThunk<
 >(
   "product/{productId}",
   (payload: { productId: string }, { getState, rejectWithValue }) =>
-    getApis(getState())
-      .productsClient.getProductInfo(payload.productId)
+    getState()
+      .apis.productsClient.getProductInfo(payload.productId)
       .catch(rejectWithValue)
 );
 

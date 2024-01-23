@@ -20,7 +20,7 @@ export default function Navigator() {
   const location = useLocation();
   const currentRoute = lastPathSegment(location.pathname);
   const currentScreen = screens.find(({ route }) => route === currentRoute);
-  const [value, setValue] = useState<number | undefined>(undefined);
+  const [value, setValue] = useState<number>(0);
   const classes = useStyles();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

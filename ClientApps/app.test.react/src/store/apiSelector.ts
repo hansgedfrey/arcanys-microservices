@@ -26,7 +26,7 @@ export const getApis = createDraftSafeSelector(
       usersClient: new UsersClient(process.env.PRODUCTS_ENDPOINT_URL, {
         fetch: http,
       }),
-      productsClient: new ProductsClient(process.env.PRODUCTS_ENDPOINT_URL, {
+      productsClient: new ProductsClient("http://localhost:5237", {
         fetch: http,
       }),
       categoriesClient: new CategoriesClient("http://localhost:5237", {

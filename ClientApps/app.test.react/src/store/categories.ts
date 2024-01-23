@@ -44,7 +44,7 @@ export const getCategoryInfoAsync = createAsyncThunk<
       .catch(rejectWithValue)
 );
 
-export const cartsSlice = createSlice({
+export const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {},
@@ -77,4 +77,4 @@ export const cartsSlice = createSlice({
   },
 });
 
-export default cartsSlice.reducer;
+export default categoriesSlice.reducer;

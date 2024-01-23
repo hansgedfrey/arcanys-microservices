@@ -765,22 +765,27 @@ export class ProductsClient {
 
   /**
    * @param query (optional)
+   * @param categoryId (optional)
+   * @param page (optional)
    * @return Success
    */
   products(
     query: string | undefined,
-    page: number
+    categoryId: string | undefined,
+    page: number | undefined
   ): Promise<SearchProductsResponse> {
     let url_ = this.baseUrl + "/products?";
     if (query === null)
       throw new Error("The parameter 'query' cannot be null.");
     else if (query !== undefined)
       url_ += "query=" + encodeURIComponent("" + query) + "&";
-    if (page === undefined || page === null)
-      throw new Error(
-        "The parameter 'page' must be defined and cannot be null."
-      );
-    else url_ += "page=" + encodeURIComponent("" + page) + "&";
+    if (categoryId === null)
+      throw new Error("The parameter 'categoryId' cannot be null.");
+    else if (categoryId !== undefined)
+      url_ += "categoryId=" + encodeURIComponent("" + categoryId) + "&";
+    if (page === null) throw new Error("The parameter 'page' cannot be null.");
+    else if (page !== undefined)
+      url_ += "page=" + encodeURIComponent("" + page) + "&";
     url_ = url_.replace(/[?&]$/, "");
 
     let options_: RequestInit = {

@@ -5,12 +5,13 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Button as MuiButton,
-  ButtonProps as MuiButtonProps,
   Typography,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../store";
-import { getCategoriesAsync, getCategoryInfoAsync } from "../store/categories";
+import { useAppDispatch, useAppSelector } from "../../store";
+import {
+  getCategoriesAsync,
+  getCategoryInfoAsync,
+} from "../../store/categories";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 

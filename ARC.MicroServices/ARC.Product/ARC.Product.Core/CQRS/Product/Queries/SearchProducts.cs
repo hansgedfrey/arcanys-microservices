@@ -7,8 +7,9 @@ namespace ARC.Product.Core.CQRS.Product.Queries.SearchProducts
 {
     public record SearchProductsQuery : IRequest<SearchProductsResponse>
     {
-        public int Page { get; init; } = 1;
+        public int? Page { get; set; }
         public string? Query { get; init; }
+        public Guid? CategoryId { get; set; }
     }
 
     public class GetAllProductsQueryValidator : AbstractValidator<SearchProductsQuery>
@@ -42,17 +43,24 @@ namespace ARC.Product.Core.CQRS.Product.Queries.SearchProducts
         public async Task<SearchProductsResponse> Handle(SearchProductsQuery request, CancellationToken cancellationToken)
         {
             var query = _applicationDbContext.Products
+                .Include(c=>c.Category)
                 .Include(e=>e.Events)
                 .AsNoTracking();
+            
+            var requestPage = request.Page ?? 1;
             var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
-            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
+            var page = (requestPage - 1) * PAGE_SIZE > count ? 1 : requestPage;
 
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
                 query = _applicationDbContext.Products
-                    .Where(c => EF.Functions.Like(c.ProductName, $"%{request.Query}%") || !string.IsNullOrWhiteSpace(c.Description) && EF.Functions.Like(c.Description, $"%{request.Query}%"))
+                    .Where(c => EF.Functions.Like(c.ProductName, $"%{request.Query}%") || 
+                    !string.IsNullOrWhiteSpace(c.Description) && EF.Functions.Like(c.Description, $"%{request.Query}%"))
                     .AsNoTracking();
             }
+
+            if (request.CategoryId != null)
+                query = query.Where(c => c.CategoryId == request.CategoryId);
 
             var products = await query
                 .Skip(PAGE_SIZE * (page - 1))

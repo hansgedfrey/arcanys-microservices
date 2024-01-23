@@ -1,9 +1,7 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { createBrowserHistory } from "history";
-import { routerMiddleware, connectRouter } from "connected-react-router";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-
 import categories from "./categories";
+import products from "./products";
 
 //export const history = createBrowserHistory();
 
@@ -17,6 +15,7 @@ const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }),
   reducer: {
     categories,
+    products,
     //router: connectRouter(history),
   },
 });

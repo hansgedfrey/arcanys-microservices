@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from "react";
 import { Box, CssBaseline } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
-import Banner from "../pages/Banner";
+import Banner from "./Banner";
 
 function Layout({ children }: { children?: ReactNode }) {
   const classes = useStyles();

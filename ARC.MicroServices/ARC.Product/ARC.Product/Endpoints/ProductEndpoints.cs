@@ -11,11 +11,12 @@ namespace ARC.Product.Web.Endpoints
         {
             var group = app.MapGroup("/products").WithTags("Products");
 
-            group.MapGet("", async (ISender sender, string? query, int page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, Guid? categoryId, int? page) => await sender.Send(
                 new SearchProductsQuery
                 {
                     Query = query,
-                    Page = page
+                    Page = page,
+                    CategoryId = categoryId,
                 })
             ).WithName("Products");
 

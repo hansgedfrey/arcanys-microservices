@@ -1,13 +1,14 @@
 import React, { FC, ReactNode } from "react";
-import { Box, CssBaseline } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import Banner from "./Banner";
+import darkTheme from "./DarkTheme";
 
 function Layout({ children }: { children?: ReactNode }) {
   const classes = useStyles();
   return (
-    <>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Grid>
         <Row>
@@ -15,7 +16,7 @@ function Layout({ children }: { children?: ReactNode }) {
         </Row>
         <Row>{children ?? ""}</Row>
       </Grid>
-    </>
+    </ThemeProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import { Box, Typography, Grid as MuiGrid, Tabs, Tab } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Primary } from "./Colors";
 
 const screens = [
   { route: "inventory" },
@@ -82,10 +83,7 @@ const useStyles = makeStyles({
       borderBottom: 0,
     },
     "& .Mui-selected": {
-      // borderTop: `1px solid #BDBDBD`,
-      // borderLeft: `1px solid #BDBDBD`,
-      // borderRight: `1px solid #BDBDBD`,
-      borderBottom: `1px solid #BDBDBD`,
+      borderBottom: `1px solid ${Primary}`,
     },
     "& .MuiButtonBase-root": {},
   },

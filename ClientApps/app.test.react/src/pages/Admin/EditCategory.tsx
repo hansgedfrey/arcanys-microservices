@@ -21,7 +21,7 @@ export default function EditCategory() {
   const location = useLocation();
   const { selectedCategory } = useAppSelector((state) => state.categories);
   const categoryId = lastPathSegment(location.pathname);
-  console.log(selectedCategory);
+
   return (
     <MuiGrid container spacing={2} pb={4} pt={2}>
       <MuiGrid item xs={12}>

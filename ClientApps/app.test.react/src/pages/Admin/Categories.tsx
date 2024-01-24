@@ -35,7 +35,7 @@ function Categories() {
   const { categories } = useAppSelector((state) => state.categories);
   const [open, setOpen] = useState<boolean>(false);
   const [params] = useSearchParams();
-  console.log(params);
+
   useEffect(() => {
     dispatch(getCategoriesAsync({ page: 1 }));
   }, [dispatch]);

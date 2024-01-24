@@ -16,11 +16,11 @@ interface AuthenticationState {
 }
 
 const initialState: AuthenticationState = {
-  cartsClient: new CartsClient("http://localhost:5237"),
-  usersClient: new UsersClient("http://localhost:5237"),
-  productsClient: new ProductsClient("http://localhost:5237"),
-  categoriesClient: new CategoriesClient("http://localhost:5237"),
-  inventoryItemsClient: new InventoryItemsClient("http://localhost:5237"),
+  cartsClient: new CartsClient(process.env.REACT_APP_API_URL),
+  usersClient: new UsersClient(process.env.REACT_APP_API_URL),
+  productsClient: new ProductsClient(process.env.REACT_APP_API_URL),
+  categoriesClient: new CategoriesClient(process.env.REACT_APP_API_URL),
+  inventoryItemsClient: new InventoryItemsClient(process.env.REACT_APP_API_URL),
 };
 
 export const apiSlice = createSlice({
@@ -33,20 +33,23 @@ export const apiSlice = createSlice({
         (url: RequestInfo, options?: RequestInit) => Promise<Response>
       >
     ) {
-      state.cartsClient = new CartsClient("http://localhost:5237", {
+      state.cartsClient = new CartsClient(process.env.REACT_APP_API_URL, {
         fetch: action.payload,
       });
-      state.usersClient = new UsersClient("http://localhost:5237", {
+      state.usersClient = new UsersClient(process.env.REACT_APP_API_URL, {
         fetch: action.payload,
       });
-      state.productsClient = new ProductsClient("http://localhost:5237", {
+      state.productsClient = new ProductsClient(process.env.REACT_APP_API_URL, {
         fetch: action.payload,
       });
-      state.categoriesClient = new CategoriesClient("http://localhost:5237", {
-        fetch: action.payload,
-      });
+      state.categoriesClient = new CategoriesClient(
+        process.env.REACT_APP_API_URL,
+        {
+          fetch: action.payload,
+        }
+      );
       state.inventoryItemsClient = new InventoryItemsClient(
-        "http://localhost:5237",
+        process.env.REACT_APP_API_URL,
         {
           fetch: action.payload,
         }

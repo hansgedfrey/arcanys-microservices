@@ -13,8 +13,11 @@ import {
   Stack,
   tableCellClasses,
   styled,
+  Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
@@ -26,14 +29,17 @@ import {
 import AdminScreen from "../../layouts/AdminScreen";
 import { Colors } from "../../layouts";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { DialogBox } from "../../components";
+import { DialogBox, Form } from "../../components";
 import EditCategory from "./EditCategory";
 
 function Categories() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { categories } = useAppSelector((state) => state.categories);
-  const [open, setOpen] = useState<boolean>(false);
+  const { categories, selectedCategory } = useAppSelector(
+    (state) => state.categories
+  );
+  const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
+  const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
   const [params] = useSearchParams();
 
   useEffect(() => {
@@ -98,14 +104,25 @@ function Categories() {
                                     categoryId: item.categoryId!,
                                   })
                                 ).then(() => {
-                                  //   navigate(`/admin/category/${item.categoryId}`);
-                                  setOpen(true);
+                                  setOpenEditCategory(true);
                                 });
                               }}
                             >
                               Edit
                             </Button>
-                            <IconButton aria-label="delete" size="small">
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              onClick={async () => {
+                                await dispatch(
+                                  getCategoryInfoAsync({
+                                    categoryId: item.categoryId!,
+                                  })
+                                ).then(() => {
+                                  setOpenDeleteCategory(true);
+                                });
+                              }}
+                            >
                               <DeleteIcon />
                             </IconButton>
                           </Stack>
@@ -117,22 +134,36 @@ function Categories() {
             </Table>
           </TableContainer>
         </MuiGrid>
-        <MuiGrid item xs={10}>
-          add/edit
-        </MuiGrid>
       </MuiGrid>
       <DialogBox
-        open={open === true}
-        icon={<EditIcon />}
+        open={openEditCategory === true}
+        icon={<EditNoteIcon color="primary" />}
         okLabel="Save"
-        ok={() => setOpen(false)}
+        ok={() => setOpenEditCategory(false)}
         cancelLabel="Cancel"
         cancel={() => {
           navigate(`/admin/categories`);
-          setOpen(false);
+          setOpenEditCategory(false);
         }}
+        title="Edit Category"
       >
         <EditCategory />
+      </DialogBox>
+      <DialogBox
+        open={openDeleteCategory === true}
+        icon={<HighlightOffIcon color="error" />}
+        okLabel="Delete"
+        ok={() => setOpenDeleteCategory(false)}
+        cancelLabel="Cancel"
+        cancel={() => {
+          navigate(`/admin/categories`);
+          setOpenDeleteCategory(false);
+        }}
+        title="Confirm Delete"
+      >
+        <Typography variant="subtitle1">
+          Do you want to delete {selectedCategory?.name} category?
+        </Typography>
       </DialogBox>
     </AdminScreen>
   );

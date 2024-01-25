@@ -5,13 +5,15 @@ import FormErrorMessage from "./FormErrorMessage";
 import ProgressSpinner from "./ProgressSpinner";
 import ScrollToFormError from "./ScrollToFormError";
 import TextField from "./TextField";
+import TextAreaInput from "./TextAreaInput";
 
 export {
-  TextField,
+  Button,
+  DialogBox,
   Form,
   FormErrorMessage,
-  ScrollToFormError,
-  DialogBox,
-  Button,
   ProgressSpinner,
+  ScrollToFormError,
+  TextField,
+  TextAreaInput,
 };

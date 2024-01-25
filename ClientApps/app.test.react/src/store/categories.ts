@@ -4,6 +4,7 @@ import {
   CategoryDto,
   HttpValidationProblemDetails,
   SearchCategoriesResponse,
+  UpsertCategoryCommand,
 } from "../api/products-api";
 
 const initialState: {
@@ -46,6 +47,16 @@ export const getCategoryInfoAsync = createAsyncThunk<
       .catch(rejectWithValue)
 );
 
+export const upsertCategoryAsync = createAsyncThunk<
+  string,
+  UpsertCategoryCommand,
+  { state: RootState }
+>("category/upsertCategory", (payload, { getState, rejectWithValue, signal }) =>
+  getState()
+    .apis.categoriesClient.upsertCategory(payload)
+    .catch(rejectWithValue)
+);
+
 export const categoriesSlice = createSlice({
   name: "categories",
   initialState,
@@ -73,6 +84,17 @@ export const categoriesSlice = createSlice({
         state.selectedCategory = action.payload;
       })
       .addCase(getCategoryInfoAsync.rejected, (state) => {
+        state.isSubmitting = false;
+        state.isFailure = false;
+      })
+      .addCase(upsertCategoryAsync.pending, (state) => {
+        state.isSubmitting = true;
+      })
+      .addCase(upsertCategoryAsync.fulfilled, (state, action) => {
+        state.isSubmitting = false;
+        state.isSuccess = true;
+      })
+      .addCase(upsertCategoryAsync.rejected, (state) => {
         state.isSubmitting = false;
         state.isFailure = false;
       });

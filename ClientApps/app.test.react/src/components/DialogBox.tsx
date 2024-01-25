@@ -3,12 +3,14 @@ import {
   Box,
   Dialog,
   DialogProps,
-  Grid,
+  Stack,
   SvgIcon,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import Button from "./Button";
+import { Colors } from "../layouts";
 
 const DialogBox: FC<
   DialogProps & {
@@ -22,17 +24,18 @@ const DialogBox: FC<
     disableEscapeKeyDown?: boolean;
   }
 > = ({
+  icon,
   cancel,
   children,
   disableBackdropClick,
   disableEscapeKeyDown,
-  icon,
   isSubmitting,
   ok,
   onClose,
   open,
   okLabel,
   cancelLabel,
+  title,
 }) => {
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
 
@@ -51,16 +54,27 @@ const DialogBox: FC<
       }}
       onClick={(event: MouseEvent<HTMLSpanElement>) => event.stopPropagation()}
     >
+      <Box textAlign="center" pt={2}>
+        {icon && (
+          <SvgIcon viewBox="0 0 600 476.6" style={{ width: 120, height: 120 }}>
+            {icon}
+          </SvgIcon>
+        )}
+      </Box>
+      <Box p={2} textAlign="center">
+        <Typography variant="h5">{title}</Typography>
+      </Box>
       <Box p={3}>{children}</Box>
       {(!!cancel || !!ok) && (
-        <Box pb={3} pl={3} pr={3}>
-          <Grid container justifyContent="space-between">
+        <Box p={3}>
+          <Stack direction="row" spacing={2} justifyContent="flex-end">
             {cancel ? (
               <Button
                 key="btnCancelConfirm"
                 variant="contained"
                 onClick={cancel}
                 disabled={isSubmitting}
+                color="secondary"
               >
                 {cancelLabel ?? "Cancel"}
               </Button>
@@ -79,7 +93,7 @@ const DialogBox: FC<
                 {okLabel ?? "OK"}
               </Button>
             )}
-          </Grid>
+          </Stack>
         </Box>
       )}
     </Dialog>

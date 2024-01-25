@@ -43,7 +43,7 @@ export default function TextField({
         ) : (
           <>
             <MuiTextField
-              variant="standard"
+              variant="filled"
               inputProps={{
                 ...field,
                 ref,

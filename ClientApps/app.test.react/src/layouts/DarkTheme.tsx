@@ -1,11 +1,15 @@
-import { createTheme } from "@mui/material";
+import { createTheme, Typography } from "@mui/material";
+import {} from "@mui/material/styles";
 import { Colors } from ".";
 
 const darkTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
     primary: {
       main: Colors.Primary,
+    },
+    secondary: {
+      main: Colors.LightGrey,
     },
   },
   typography: {
@@ -31,6 +35,30 @@ const darkTheme = createTheme({
     fontWeightMedium: 500,
     fontWeightRegular: 400,
     fontWeightLight: 300,
+  },
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiTab: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+    MuiFilledInput: {
+      defaultProps: {
+        disableUnderline: true,
+      },
+      styleOverrides: { root: { borderRadius: 8 } },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: "filled",
+        fullWidth: true,
+      },
+    },
   },
 });
 

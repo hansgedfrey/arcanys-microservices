@@ -66,9 +66,9 @@ export default function Navigator() {
         variant="standard"
         className={classes.tabs}
       >
-        <Tab label="Inventory" disableRipple />
-        <Tab label="Products" disableRipple />
-        <Tab label="Categories" disableRipple />
+        <Tab label="Inventory" />
+        <Tab label="Products" />
+        <Tab label="Categories" />
       </Tabs>
     </Box>
   );

@@ -1,5 +1,6 @@
 import AdminScreen from "./AdminScreen";
 import Banner from "./Banner";
-import * as Colors from "./Colors";
+import * as Colors from "../theme/Colors";
+import Layout from "./Layout";
 
-export { Colors, AdminScreen, Banner };
+export { AdminScreen, Banner, Colors, Layout };

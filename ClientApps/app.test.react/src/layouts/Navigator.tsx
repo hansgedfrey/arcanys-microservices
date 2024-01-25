@@ -1,8 +1,8 @@
-import { Box, Typography, Grid as MuiGrid, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Primary } from "./Colors";
+import { Primary } from "../theme/Colors";
 
 const screens = [
   { route: "inventory" },

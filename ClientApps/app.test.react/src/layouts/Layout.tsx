@@ -3,7 +3,7 @@ import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import Banner from "./Banner";
-import darkTheme from "./DarkTheme";
+import darkTheme from "../theme/Theme";
 
 function Layout({ children }: { children?: ReactNode }) {
   const classes = useStyles();

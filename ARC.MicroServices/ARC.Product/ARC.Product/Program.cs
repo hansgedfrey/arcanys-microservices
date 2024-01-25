@@ -61,6 +61,8 @@ builder.Services.AddCors(cfg =>
         .AllowAnyMethod());
 });
 
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 //Configure the HTTP request pipeline.

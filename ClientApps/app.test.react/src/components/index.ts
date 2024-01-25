@@ -6,6 +6,7 @@ import ProgressSpinner from "./ProgressSpinner";
 import ScrollToFormError from "./ScrollToFormError";
 import TextField from "./TextField";
 import TextAreaInput from "./TextAreaInput";
+import SnackBar from "./SnackBar";
 
 export {
   Button,
@@ -14,6 +15,7 @@ export {
   FormErrorMessage,
   ProgressSpinner,
   ScrollToFormError,
+  SnackBar,
   TextField,
   TextAreaInput,
 };

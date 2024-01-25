@@ -19,28 +19,36 @@ import DeleteIcon from "@mui/icons-material/Backspace";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import EditIcon from "@mui/icons-material/Edit";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   getCategoriesAsync,
   getCategoryInfoAsync,
+  removeCategoryAsync,
 } from "../../store/categories";
 import AdminScreen from "../../layouts/AdminScreen";
 import { Colors } from "../../layouts";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DialogBox, Form } from "../../components";
 import EditCategory from "./EditCategory";
+import { SnackbarContext } from "../../App";
+import {
+  SnackbarSuccessTop,
+  SnackbarWarningTop,
+} from "../../components/SnackBar";
+import { HttpValidationProblemDetails } from "../../api/products-api";
 
 function Categories() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { categories, selectedCategory } = useAppSelector(
+  const { categories, selectedCategory, isSubmitting } = useAppSelector(
     (state) => state.categories
   );
   const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
   const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
   const [params] = useSearchParams();
+  const setSnackbar = useContext(SnackbarContext);
 
   useEffect(() => {
     dispatch(getCategoriesAsync({ page: 1 }));
@@ -153,12 +161,21 @@ function Categories() {
         open={openDeleteCategory === true}
         icon={<HighlightOffIcon color="error" />}
         okLabel="Delete"
-        ok={() => setOpenDeleteCategory(false)}
+        ok={() =>
+          dispatch(
+            removeCategoryAsync({ categoryId: selectedCategory?.categoryId })
+          ).then((result: HttpValidationProblemDetails) => {
+            console.log(result);
+            setSnackbar(SnackbarWarningTop("You're deleting something"));
+            setOpenEditCategory(false);
+          })
+        }
         cancelLabel="Cancel"
         cancel={() => {
           navigate(`/admin/categories`);
           setOpenDeleteCategory(false);
         }}
+        isSubmitting={isSubmitting}
         title="Confirm Delete"
       >
         <Typography variant="subtitle1">

@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Inventory from "./Inventory";
 import Products from "./Products";
-import Categories from "./Categories";
-import EditCategory from "./EditCategory";
+import Categories from "./Category/Categories";
+import EditCategory from "./Category/EditCategory";
 
 export default function Admin() {
   return (

@@ -31,7 +31,7 @@ namespace ARC.Product.Core.CQRS.Category.Queries.SearchCategories
     {
         private readonly Persistence.Entities.ApplicationDbContext _applicationDbContext;
         private readonly AutoMapper.IMapper _mapper;
-        private const int PAGE_SIZE = 15;
+        private const int PAGE_SIZE = 10;
 
         public Handler(AutoMapper.IMapper mapper, Persistence.Entities.ApplicationDbContext applicationDbContext)
         {
@@ -42,15 +42,16 @@ namespace ARC.Product.Core.CQRS.Category.Queries.SearchCategories
         public async Task<SearchCategoriesResponse> Handle(SearchCategoriesQuery request, CancellationToken cancellationToken)
         {
             var query = _applicationDbContext.Categories.AsNoTracking();
-            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
-            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
-
+    
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
                 query = _applicationDbContext.Categories
                     .Where(c => EF.Functions.Like(c.Name, $"%{request.Query}%") || !string.IsNullOrWhiteSpace(c.Description) && EF.Functions.Like(c.Description, $"%{request.Query}%"))
                     .AsNoTracking();
             }
+
+            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
 
             var products = await query
                 .Skip(PAGE_SIZE * (page - 1))

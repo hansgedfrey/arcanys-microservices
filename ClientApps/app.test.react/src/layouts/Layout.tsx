@@ -53,6 +53,7 @@ const useStyles = makeStyles(
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
+      marginBottom: 20,
     },
     row: {
       display: "flex",

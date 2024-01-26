@@ -1,7 +1,7 @@
-import { Typography, Grid as MuiGrid, Button } from "@mui/material";
-import { Form, TextAreaInput, TextField } from "../../components";
+import { Grid as MuiGrid } from "@mui/material";
+import { Form, TextAreaInput, TextField } from "../../../components";
 import { object, string } from "yup";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 
 const validationSchema = object({
   name: string().required("Name is required"),
@@ -9,7 +9,10 @@ const validationSchema = object({
 });
 
 export default function EditCategory() {
+  const dispatch = useAppDispatch();
   const { selectedCategory } = useAppSelector((state) => state.categories);
+  // const [params] = useSearchParams();
+  // const categoryId = useMemo(() => params.get("categoryId"), [params]);
 
   return (
     <Form

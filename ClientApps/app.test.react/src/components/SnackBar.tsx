@@ -1,12 +1,12 @@
-import { Alert, AlertColor } from "@mui/material";
-import MuiSnackbar, {
-  SnackbarCloseReason,
-  SnackbarOrigin,
-} from "@mui/material/Snackbar";
-import { ReactNode, SyntheticEvent } from "react";
+import { Alert, AlertColor, IconButton } from "@mui/material";
+import MuiSnackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import { ReactNode } from "react";
 import ErrorIcon from "@mui/icons-material/HighlightOff";
 import SuccessIcon from "@mui/icons-material/CheckCircle";
+
+import CloseIcon from "@mui/icons-material/Close";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import React from "react";
 
 export interface SnackBarProps {
   anchorOrigin?: SnackbarOrigin | undefined;
@@ -31,16 +31,17 @@ export default function SnackBar({
   severity = "error",
   icon,
 }: SnackBarProps) {
-  function handleOnClose(
-    _: SyntheticEvent<any> | Event,
-    reason: SnackbarCloseReason
-  ) {
+  const handleOnClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway" || reason === "escapeKeyDown") {
       return;
     }
 
     onClose && onClose();
-  }
+  };
+
   return (
     <MuiSnackbar
       anchorOrigin={anchorOrigin}
@@ -48,7 +49,20 @@ export default function SnackBar({
       onClose={handleOnClose}
       open={open}
     >
-      <Alert severity={severity} icon={icon}>
+      <Alert
+        severity={severity}
+        icon={icon}
+        action={
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleOnClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        }
+      >
         {message}
       </Alert>
     </MuiSnackbar>

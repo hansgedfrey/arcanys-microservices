@@ -10,13 +10,17 @@ import {
 
 const initialState: {
   isSubmitting: boolean;
+  isLoadingCategories: boolean;
+  isLoadingCategoryInfo: boolean;
   isSuccess: boolean;
   isFailure: boolean;
   categories?: SearchCategoriesResponse;
   selectedCategory?: CategoryDto;
-  problem?: HttpValidationProblemDetails;
+  errors?: HttpValidationProblemDetails;
 } = {
   isSubmitting: false,
+  isLoadingCategories: false,
+  isLoadingCategoryInfo: false,
   isSuccess: false,
   isFailure: false,
 };
@@ -75,52 +79,54 @@ export const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCategoriesAsync.pending, (state) => {
-        state.isSubmitting = true;
+        state.isLoadingCategories = true;
       })
       .addCase(getCategoriesAsync.fulfilled, (state, action) => {
-        state.isSubmitting = false;
+        state.isLoadingCategories = false;
         state.isSuccess = true;
         state.categories = action.payload;
       })
-      .addCase(getCategoriesAsync.rejected, (state) => {
-        state.isSubmitting = false;
+      .addCase(getCategoriesAsync.rejected, (state, action) => {
+        state.isLoadingCategories = false;
         state.isFailure = false;
+        state.errors = action.payload as HttpValidationProblemDetails;
       })
       .addCase(getCategoryInfoAsync.pending, (state) => {
-        state.isSubmitting = true;
+        state.isLoadingCategoryInfo = true;
       })
       .addCase(getCategoryInfoAsync.fulfilled, (state, action) => {
-        state.isSubmitting = false;
+        state.isLoadingCategoryInfo = false;
         state.isSuccess = true;
         state.selectedCategory = action.payload;
       })
       .addCase(getCategoryInfoAsync.rejected, (state, action) => {
-        state.isSubmitting = false;
+        state.isLoadingCategoryInfo = false;
         state.isFailure = false;
-        state.problem = action.payload;
+        state.errors = action.payload as HttpValidationProblemDetails;
       })
       .addCase(upsertCategoryAsync.pending, (state) => {
         state.isSubmitting = true;
       })
-      .addCase(upsertCategoryAsync.fulfilled, (state, action) => {
+      .addCase(upsertCategoryAsync.fulfilled, (state) => {
         state.isSubmitting = false;
         state.isSuccess = true;
       })
-      .addCase(upsertCategoryAsync.rejected, (state) => {
+      .addCase(upsertCategoryAsync.rejected, (state, action) => {
         state.isSubmitting = false;
         state.isFailure = false;
+        state.errors = action.payload as HttpValidationProblemDetails;
       })
       .addCase(removeCategoryAsync.pending, (state) => {
         state.isSubmitting = true;
       })
-      .addCase(removeCategoryAsync.fulfilled, (state, action) => {
+      .addCase(removeCategoryAsync.fulfilled, (state) => {
         state.isSubmitting = false;
         state.isSuccess = true;
       })
       .addCase(removeCategoryAsync.rejected, (state, action) => {
         state.isSubmitting = false;
         state.isFailure = false;
-        state.problem = action.payload;
+        state.errors = action.payload as HttpValidationProblemDetails;
       });
   },
 });

@@ -17,11 +17,13 @@ import {
   Pagination,
   debounce,
   TextField,
+  InputAdornment,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import EditIcon from "@mui/icons-material/Edit";
+import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { useAppDispatch, useAppSelector } from "../../../store";
@@ -92,6 +94,17 @@ function Categories() {
             label="Search"
             onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
               searchClients(evt.target.value);
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {isLoadingCategories ? (
+                    <ProgressSpinner small />
+                  ) : (
+                    <SearchIcon />
+                  )}
+                </InputAdornment>
+              ),
             }}
           />
         </MuiGrid>

@@ -11,8 +11,6 @@ const validationSchema = object({
 export default function EditCategory() {
   const dispatch = useAppDispatch();
   const { selectedCategory } = useAppSelector((state) => state.categories);
-  // const [params] = useSearchParams();
-  // const categoryId = useMemo(() => params.get("categoryId"), [params]);
 
   return (
     <Form

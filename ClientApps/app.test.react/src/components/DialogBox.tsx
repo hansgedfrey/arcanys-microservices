@@ -10,20 +10,19 @@ import {
   useTheme,
 } from "@mui/material";
 import Button from "./Button";
-import { Colors } from "../layouts";
 
-const DialogBox: FC<
-  DialogProps & {
-    icon?: ReactNode;
-    ok?: () => void;
-    cancel?: () => void;
-    okLabel?: string;
-    cancelLabel?: string;
-    isSubmitting?: boolean;
-    disableBackdropClick?: boolean;
-    disableEscapeKeyDown?: boolean;
-  }
-> = ({
+export interface DialogBoxProps extends DialogProps {
+  icon?: ReactNode;
+  ok?: () => void;
+  cancel?: () => void;
+  okLabel?: string;
+  cancelLabel?: string;
+  isSubmitting?: boolean;
+  disableBackdropClick?: boolean;
+  disableEscapeKeyDown?: boolean;
+}
+
+export default function DialogBox({
   icon,
   cancel,
   children,
@@ -36,7 +35,7 @@ const DialogBox: FC<
   okLabel,
   cancelLabel,
   title,
-}) => {
+}: DialogBoxProps) {
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
 
   return (
@@ -98,6 +97,4 @@ const DialogBox: FC<
       )}
     </Dialog>
   );
-};
-
-export default DialogBox;
+}

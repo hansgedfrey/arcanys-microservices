@@ -9,7 +9,6 @@ import {
   TableBody,
   Paper,
   IconButton,
-  Button,
   Stack,
   tableCellClasses,
   styled,
@@ -28,9 +27,10 @@ import {
 } from "../../../store/categories";
 import AdminScreen from "../../../layouts/AdminScreen";
 import { Colors } from "../../../layouts";
-import { ProgressSpinner } from "../../../components";
+import { Button, ProgressSpinner } from "../../../components";
 import EditCategory from "./EditCategory";
 import DeleteCategory from "./DeleteCategory";
+import AddCategory from "./AddCategory";
 
 interface CategorySearchParams {
   page: number;
@@ -49,6 +49,7 @@ function Categories() {
   );
   const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
   const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
+  const [openAddCategory, setOpenAddCategory] = useState<boolean>(false);
   const [categorySearchParams, setCategorySearchParams] =
     useState<CategorySearchParams>(initialSearchState);
 
@@ -76,23 +77,33 @@ function Categories() {
     <AdminScreen>
       <MuiGrid container spacing={2}>
         <MuiGrid item xs={12}>
-          <TextField
-            label="Search"
-            onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-              searchClients(evt.target.value);
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {isLoadingCategories ? (
-                    <ProgressSpinner small />
-                  ) : (
-                    <SearchIcon />
-                  )}
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Stack direction="row" spacing={2}>
+            <TextField
+              label="Search"
+              onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+                searchClients(evt.target.value);
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {isLoadingCategories ? (
+                      <ProgressSpinner small />
+                    ) : (
+                      <SearchIcon />
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button
+              variant="contained"
+              size="small"
+              color="primary"
+              onClick={() => setOpenAddCategory(true)}
+            >
+              Add new Category
+            </Button>
+          </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
           {categories && !isLoadingCategories ? (
@@ -190,6 +201,11 @@ function Categories() {
           )}
         </MuiGrid>
       </MuiGrid>
+      <AddCategory
+        open={openAddCategory === true}
+        ok={() => setOpenAddCategory(false)}
+        cancel={() => setOpenAddCategory(false)}
+      />
       <EditCategory
         open={openEditCategory === true}
         ok={() => setOpenEditCategory(false)}

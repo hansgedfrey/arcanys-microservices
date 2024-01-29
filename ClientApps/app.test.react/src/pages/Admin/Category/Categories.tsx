@@ -1,3 +1,4 @@
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   Grid as MuiGrid,
   TableContainer,
@@ -12,36 +13,24 @@ import {
   Stack,
   tableCellClasses,
   styled,
-  Typography,
   Box,
   Pagination,
   debounce,
   TextField,
   InputAdornment,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Backspace";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { makeStyles } from "@mui/styles";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   getCategoriesAsync,
   getCategoryInfoAsync,
-  removeCategoryAsync,
 } from "../../../store/categories";
 import AdminScreen from "../../../layouts/AdminScreen";
 import { Colors } from "../../../layouts";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { DialogBox, Form, ProgressSpinner } from "../../../components";
+import { ProgressSpinner } from "../../../components";
 import EditCategory from "./EditCategory";
-import { SnackbarContext } from "../../../App";
-import {
-  SnackbarErrorTop,
-  SnackbarSuccessTop,
-} from "../../../components/SnackBar";
+import DeleteCategory from "./DeleteCategory";
 
 interface CategorySearchParams {
   page: number;
@@ -55,12 +44,9 @@ const initialSearchState: CategorySearchParams = {
 
 function Categories() {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { categories, selectedCategory, isSubmitting, isLoadingCategories } =
-    useAppSelector((state) => state.categories);
-  const [params] = useSearchParams();
-  const setSnackbar = useContext(SnackbarContext);
-
+  const { categories, isLoadingCategories } = useAppSelector(
+    (state) => state.categories
+  );
   const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
   const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
   const [categorySearchParams, setCategorySearchParams] =
@@ -148,7 +134,6 @@ function Categories() {
                             <Stack direction="row" spacing={1}>
                               <Button
                                 variant="contained"
-                                startIcon={<EditIcon />}
                                 size="small"
                                 color="primary"
                                 onClick={() => {
@@ -166,6 +151,7 @@ function Categories() {
                               <IconButton
                                 aria-label="delete"
                                 size="small"
+                                color="error"
                                 onClick={async () => {
                                   await dispatch(
                                     getCategoryInfoAsync({
@@ -204,55 +190,18 @@ function Categories() {
           )}
         </MuiGrid>
       </MuiGrid>
-      <DialogBox
+      <EditCategory
         open={openEditCategory === true}
-        icon={<EditNoteIcon color="primary" />}
-        okLabel="Save"
         ok={() => setOpenEditCategory(false)}
-        cancelLabel="Cancel"
-        cancel={() => {
-          navigate(`/admin/categories`);
-          setOpenEditCategory(false);
-        }}
-        title="Edit Category"
-      >
-        <EditCategory />
-      </DialogBox>
-      <DialogBox
+        cancel={() => setOpenEditCategory(false)}
+      />
+      <DeleteCategory
         open={openDeleteCategory === true}
-        icon={<HighlightOffIcon color="error" />}
-        okLabel="Delete"
-        ok={async () =>
-          dispatch(
-            await removeCategoryAsync({
-              categoryId: selectedCategory?.categoryId,
-            })
-          ).then((result: any) => {
-            if (result.error) {
-              setSnackbar(SnackbarErrorTop(result.payload.detail));
-            } else {
-              setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
-              setOpenDeleteCategory(false);
-              dispatch(getCategoriesAsync({ page: 1 }));
-            }
-          })
-        }
-        cancelLabel="Cancel"
-        cancel={() => {
-          navigate(`/admin/categories`);
-          setOpenDeleteCategory(false);
-        }}
-        isSubmitting={isSubmitting}
-        title="Confirm Delete"
-      >
-        <Typography variant="subtitle1">
-          Do you want to delete {selectedCategory?.name} category?
-        </Typography>
-      </DialogBox>
+        ok={() => setOpenDeleteCategory(false)}
+        cancel={() => setOpenDeleteCategory(false)}
+      />
     </AdminScreen>
   );
 }
-
-const useStyles = makeStyles({});
 
 export default Categories;

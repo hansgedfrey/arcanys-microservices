@@ -24,7 +24,7 @@ const warningMessage = "Warning";
 
 export default function SnackBar({
   anchorOrigin = { horizontal: "center", vertical: "top" },
-  autoHideDuration = 4000,
+  autoHideDuration = 6000,
   message,
   onClose,
   open,

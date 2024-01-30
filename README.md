@@ -88,7 +88,7 @@ docker push hmaligro/arcproduct:latest
 kubectl apply -f arc-product-deployment.yaml,arc-product-node-port-service.yaml
 ```
 
-6. To verify our product pod and service are already running, run `kubectl get pods` again
+6. To verify our product pod and service are already running, run `kubectl get services` again
 
 And you should see that it's already up and running.
 
@@ -126,7 +126,7 @@ docker push hmaligro/arcuserauthmanagement:latest
 kubectl apply -f arc-userauthmanagementweb-deployment.yaml,arc-userauthmanagementweb-node-port-service.yaml
 ```
 
-6. To verify our user management pod and service are already running, run `kubectl get pods` again
+6. To verify our user management pod and service are already running, run `kubectl get services` again
 
 And you should see that it's already up and running.
 

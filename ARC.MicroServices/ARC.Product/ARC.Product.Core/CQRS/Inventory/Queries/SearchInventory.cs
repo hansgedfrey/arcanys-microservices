@@ -45,8 +45,6 @@ namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
                 .Include(p=>p.Product)
                 .Include(e=>e.Events)
                 .AsNoTracking();
-            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
-            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
 
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
@@ -54,6 +52,9 @@ namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
                     .Where(c => EF.Functions.Like(c.Product.ProductName, $"%{request.Query}%") || !string.IsNullOrWhiteSpace(c.Details) && EF.Functions.Like(c.Details, $"%{request.Query}%"))
                     .AsNoTracking();
             }
+
+            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
 
             var inventoryItems = await query
                 .Skip(PAGE_SIZE * (page - 1))

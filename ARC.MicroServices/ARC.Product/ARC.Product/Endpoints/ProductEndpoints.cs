@@ -1,4 +1,5 @@
-﻿using ARC.Product.Core.CQRS.Product.Commands.UpsertProduct;
+﻿using ARC.Product.Core.CQRS.Product.Commands.RemoveProduct;
+using ARC.Product.Core.CQRS.Product.Commands.UpsertProduct;
 using ARC.Product.Core.CQRS.Product.Queries.GetProductInfo;
 using ARC.Product.Core.CQRS.Product.Queries.SearchProducts;
 using MediatR;
@@ -11,11 +12,12 @@ namespace ARC.Product.Web.Endpoints
         {
             var group = app.MapGroup("/products").WithTags("Products");
 
-            group.MapGet("", async (ISender sender, string? query, int page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, Guid? categoryId, int? page) => await sender.Send(
                 new SearchProductsQuery
                 {
                     Query = query,
-                    Page = page
+                    Page = page,
+                    CategoryId = categoryId,
                 })
             ).WithName("Products");
 
@@ -25,6 +27,10 @@ namespace ARC.Product.Web.Endpoints
 
             group.MapPost("upsert-product", async (ISender sender, UpsertProductCommand command) => await sender.Send(command))
                 .WithName("UpsertProduct")
+                .ProducesValidationProblem();
+
+            group.MapPost("remove-product", async (ISender sender, RemoveProductCommand command) => await sender.Send(command))
+                .WithName("RemoveProduct")
                 .ProducesValidationProblem();
 
             return app;

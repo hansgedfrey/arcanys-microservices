@@ -1,4 +1,4 @@
-﻿using Arc.Common.Automapper;
+﻿using ARC.Infrastructure;
 using ARC.UserManagement.Persistence.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;

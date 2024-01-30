@@ -30,7 +30,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.GetInventoryItem
             _mapper = mapper;
         }
 
-        public async Task<Models.InventoryItemDto> Handle(GetInventoryItemInfoQuery request, CancellationToken cancellationToken)
+        public async Task<Models.InventoryItemDto?> Handle(GetInventoryItemInfoQuery request, CancellationToken cancellationToken)
         {
             var inventoryItem = await _applicationDbContext.InventoryItems
                                 .Where(p => p.InventoryItemId == request.InventoryItemId)
@@ -38,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.GetInventoryItem
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (inventoryItem == null)
-                throw new NotFoundException(nameof(inventoryItem), request.InventoryItemId);
+                return null;
 
             return inventoryItem;
         }

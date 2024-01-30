@@ -8,7 +8,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.RemoveCategory
 {
     public record RemoveCategoryCommand : IRequest
     {
-        public Guid? CategoryId { get; init; }
+        public Guid CategoryId { get; init; }
     }
 
     public class UpsertCategoryCommandValidator : AbstractValidator<RemoveCategoryCommand>
@@ -31,13 +31,12 @@ namespace ARC.Product.Core.CQRS.Category.Commands.RemoveCategory
         }
 
         public async Task Handle(RemoveCategoryCommand request, CancellationToken cancellationToken)
-        {
-            var categoryId = request.CategoryId.GetValueOrDefault();  
+        {  
             var categoryToDelete = await _applicationDbContext.Categories
                           .Include(c=>c.Products)
-                          .Where(p => p.CategoryId == categoryId)
+                          .Where(p => p.CategoryId == request.CategoryId)
                           .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Category));
-
+             
             if (categoryToDelete.Products.Any())
                 throw new InvalidOperationException($"Category {categoryToDelete.Name} is bound to products.");
 

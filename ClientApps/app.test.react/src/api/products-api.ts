@@ -659,75 +659,6 @@ export class InventoryItemsClient {
   /**
    * @return Success
    */
-  upsertInventoryItem(body: UpsertInventoryItemCommand): Promise<string> {
-    let url_ = this.baseUrl + "/inventory-items/upsert-inventory-item";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(body);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.http.fetch(url_, options_).then((_response: Response) => {
-      return this.processUpsertInventoryItem(_response);
-    });
-  }
-
-  protected processUpsertInventoryItem(response: Response): Promise<string> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
-    }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        result200 =
-          _responseText === ""
-            ? null
-            : (JSON.parse(_responseText, this.jsonParseReviver) as string);
-        return result200;
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        result400 =
-          _responseText === ""
-            ? null
-            : (JSON.parse(
-                _responseText,
-                this.jsonParseReviver
-              ) as HttpValidationProblemDetails);
-        return throwException(
-          "Bad Request",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
-    }
-    return Promise.resolve<string>(null as any);
-  }
-
-  /**
-   * @return Success
-   */
   getInventoryItem(inventoryItemId: string): Promise<InventoryItemDto> {
     let url_ =
       this.baseUrl + "/inventory-items/inventory-item/{inventoryItemId}";
@@ -800,6 +731,131 @@ export class InventoryItemsClient {
       });
     }
     return Promise.resolve<InventoryItemDto>(null as any);
+  }
+
+  /**
+   * @return Success
+   */
+  upsertInventoryItem(body: UpsertInventoryItemCommand): Promise<string> {
+    let url_ = this.baseUrl + "/inventory-items/upsert-inventory-item";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUpsertInventoryItem(_response);
+    });
+  }
+
+  protected processUpsertInventoryItem(response: Response): Promise<string> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    }
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ""
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as string);
+        return result200;
+      });
+    } else if (status === 400) {
+      return response.text().then((_responseText) => {
+        let result400: any = null;
+        result400 =
+          _responseText === ""
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver
+              ) as HttpValidationProblemDetails);
+        return throwException(
+          "Bad Request",
+          status,
+          _responseText,
+          _headers,
+          result400
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
+    }
+    return Promise.resolve<string>(null as any);
+  }
+
+  removeInventoryItem(body: RemoveInventoryItemCommand): Promise<void> {
+    let url_ = this.baseUrl + "/inventory-items/remove-inventory-item";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processRemoveInventoryItem(_response);
+    });
+  }
+
+  protected processRemoveInventoryItem(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    }
+    if (status === 400) {
+      return response.text().then((_responseText) => {
+        let result400: any = null;
+        result400 =
+          _responseText === ""
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver
+              ) as HttpValidationProblemDetails);
+        return throwException(
+          "Bad Request",
+          status,
+          _responseText,
+          _headers,
+          result400
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
+    }
+    return Promise.resolve<void>(null as any);
   }
 }
 
@@ -1025,6 +1081,62 @@ export class ProductsClient {
     }
     return Promise.resolve<string>(null as any);
   }
+
+  removeProduct(body: RemoveProductCommand): Promise<void> {
+    let url_ = this.baseUrl + "/products/remove-product";
+    url_ = url_.replace(/[?&]$/, "");
+
+    const content_ = JSON.stringify(body);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processRemoveProduct(_response);
+    });
+  }
+
+  protected processRemoveProduct(response: Response): Promise<void> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    }
+    if (status === 400) {
+      return response.text().then((_responseText) => {
+        let result400: any = null;
+        result400 =
+          _responseText === ""
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver
+              ) as HttpValidationProblemDetails);
+        return throwException(
+          "Bad Request",
+          status,
+          _responseText,
+          _headers,
+          result400
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          "An unexpected server error occurred.",
+          status,
+          _responseText,
+          _headers
+        );
+      });
+    }
+    return Promise.resolve<void>(null as any);
+  }
 }
 
 export class UsersClient {
@@ -1197,12 +1309,20 @@ export interface ProductDto {
 }
 
 export interface RemoveCategoryCommand {
-  categoryId?: string | undefined;
+  categoryId?: string;
 }
 
 export interface RemoveFromCartCommand {
   cartId?: string;
   cartItemId?: string;
+}
+
+export interface RemoveInventoryItemCommand {
+  inventoryItemId?: string;
+}
+
+export interface RemoveProductCommand {
+  productId?: string;
 }
 
 export interface SearchCategoriesResponse {

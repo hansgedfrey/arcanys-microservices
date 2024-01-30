@@ -30,7 +30,7 @@ namespace ARC.Product.Core.CQRS.Product.Queries.GetProductInfo
             _mapper = mapper;
         }
 
-        public async Task<Models.ProductDto> Handle(GetProductInfoQuery request, CancellationToken cancellationToken)
+        public async Task<Models.ProductDto?> Handle(GetProductInfoQuery request, CancellationToken cancellationToken)
         {
             var product = await _applicationDbContext.Products
                                 .Where(p => p.ProductId == request.ProductId)
@@ -38,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Product.Queries.GetProductInfo
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (product == null)
-                throw new NotFoundException(nameof(product), request.ProductId);
+                return null;
 
             return product;
         }

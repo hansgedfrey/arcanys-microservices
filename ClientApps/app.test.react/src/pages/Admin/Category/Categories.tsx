@@ -17,9 +17,12 @@ import {
   debounce,
   TextField,
   InputAdornment,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   getCategoriesAsync,
@@ -47,6 +50,7 @@ function Categories() {
   const { categories, isLoadingCategories } = useAppSelector(
     (state) => state.categories
   );
+  const isSmallScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
   const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
   const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
   const [openAddCategory, setOpenAddCategory] = useState<boolean>(false);
@@ -101,7 +105,7 @@ function Categories() {
               color="primary"
               onClick={() => setOpenAddCategory(true)}
             >
-              Add new Category
+              {!isSmallScreen ? "Add new Category" : <AddIcon />}
             </Button>
           </Stack>
         </MuiGrid>

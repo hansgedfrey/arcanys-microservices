@@ -30,7 +30,7 @@ namespace ARC.Product.Core.CQRS.Category.Queries.GetCategoryInfo
             _mapper = mapper;
         }
 
-        public async Task<Models.CategoryDto> Handle(GetCategoryInfoQuery request, CancellationToken cancellationToken)
+        public async Task<Models.CategoryDto?> Handle(GetCategoryInfoQuery request, CancellationToken cancellationToken)
         {
             var category = await _applicationDbContext.Categories
                                 .Where(p => p.CategoryId == request.CategoryId)
@@ -38,7 +38,7 @@ namespace ARC.Product.Core.CQRS.Category.Queries.GetCategoryInfo
                                 .SingleOrDefaultAsync(cancellationToken);
 
             if (category == null)
-                throw new NotFoundException(nameof(category), request.CategoryId);
+                return null;
 
             return category;
         }

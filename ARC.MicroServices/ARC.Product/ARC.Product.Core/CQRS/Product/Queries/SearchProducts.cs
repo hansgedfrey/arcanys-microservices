@@ -48,9 +48,7 @@ namespace ARC.Product.Core.CQRS.Product.Queries.SearchProducts
                 .AsNoTracking();
             
             var requestPage = request.Page ?? 1;
-            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
-            var page = (requestPage - 1) * PAGE_SIZE > count ? 1 : requestPage;
-
+ 
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
                 query = _applicationDbContext.Products
@@ -62,6 +60,9 @@ namespace ARC.Product.Core.CQRS.Product.Queries.SearchProducts
             if (request.CategoryId != null)
                 query = query.Where(c => c.CategoryId == request.CategoryId);
 
+            var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
+            var page = (requestPage - 1) * PAGE_SIZE > count ? 1 : requestPage;
+             
             var products = await query
                 .Skip(PAGE_SIZE * (page - 1))
                 .Take(PAGE_SIZE)

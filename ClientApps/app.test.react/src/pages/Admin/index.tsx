@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Inventory from "./Inventory";
-import Products from "./Products";
+import Products from "./Product/Products";
 import Categories from "./Category/Categories";
 
 export default function Admin() {

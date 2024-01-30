@@ -1,6 +1,7 @@
 import { createTheme, Typography } from "@mui/material";
 import {} from "@mui/material/styles";
 import { Colors } from "../layouts";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const darkTheme = createTheme({
   palette: {
@@ -51,12 +52,35 @@ const darkTheme = createTheme({
       defaultProps: {
         disableUnderline: true,
       },
-      styleOverrides: { root: { borderRadius: 8 } },
+      styleOverrides: { root: { borderRadius: 4 } },
     },
     MuiTextField: {
       defaultProps: {
         variant: "filled",
         fullWidth: true,
+      },
+    },
+    MuiInputBase: {
+      defaultProps: {
+        fullWidth: true,
+      },
+    },
+    MuiSkeleton: {
+      defaultProps: {
+        animation: "wave",
+      },
+      styleOverrides: {
+        root: {},
+        rounded: {
+          borderRadius: 12,
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: 16,
+        },
       },
     },
   },

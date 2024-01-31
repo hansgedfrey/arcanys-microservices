@@ -94,7 +94,7 @@ export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
               <MuiGrid item xs={12}>
                 <NumberTextInput
                   name="price"
-                  label="Price"
+                  label="Unit Price"
                   isLoading={isSubmitting}
                   valueType="numericString"
                   thousandsSeparator={true}

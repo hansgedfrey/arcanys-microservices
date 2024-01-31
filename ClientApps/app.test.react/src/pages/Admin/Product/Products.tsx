@@ -179,7 +179,11 @@ function Products() {
                                       productId: item.productId!,
                                     })
                                   ).then(() => {
-                                    setOpenEditProduct(true);
+                                    dispatch(
+                                      getCategoriesAsync({ page: 1 })
+                                    ).then((result) => {
+                                      setOpenEditProduct(true);
+                                    });
                                   });
                                 }}
                               >

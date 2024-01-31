@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { Grid as MuiGrid, Stack } from "@mui/material";
 import AddNoteIcon from "@mui/icons-material/NoteAdd";
 import {
@@ -9,53 +9,46 @@ import {
   TextAreaInput,
   TextField,
 } from "../../../components";
-import { number, object, string } from "yup";
+import { object, string } from "yup";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { DialogBoxProps } from "../../../components/DialogBox";
 import { getProductsAsync, upsertProductAsync } from "../../../store/products";
-import { UpsertProductCommand } from "../../../api/products-api";
+import {
+  SearchCategoriesResponse,
+  UpsertProductCommand,
+} from "../../../api/products-api";
 import { SnackbarContext } from "../../../App";
 import {
   SnackbarErrorTop,
   SnackbarSuccessTop,
 } from "../../../components/SnackBar";
 import Select from "../../../components/Select";
-import { getCategoriesAsync } from "../../../store/categories";
 
 const validationSchema = object({
   productName: string().required("Name is required"),
   description: string().required("Description is required"),
   price: string().required("Price is required"),
+  categoryId: string().required("Category is required"),
+  sku: string().required("SKU is required"),
 });
-export const VALUE_LABEL_OPTIONS = [
-  {
-    value: "1",
-    label: "Label 1",
-  },
-  {
-    value: "2",
-    label: "Label 2",
-  },
-  {
-    value: "3",
-    label: "Label 3",
-  },
-  {
-    value: "4",
-    label: "Label 4",
-  },
-];
+
 export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
   const setSnackbar = useContext(SnackbarContext);
   const { isSubmitting } = useAppSelector((state) => state.products);
-  const { categories, isLoadingCategories } = useAppSelector(
-    (state) => state.categories
-  );
-  const test = useCallback(() => {
-    return [{ value: 1, label: "test" }];
-    console.log(categories);
-  }, [categories]);
+  const { categories } = useAppSelector((state) => state.categories);
+  const getCategories = useCallback((categories: SearchCategoriesResponse) => {
+    const options: Array<{ label: string; value: string }> = [];
+
+    categories.results?.map((item) =>
+      options.push({
+        label: item.name!,
+        value: item.categoryId!,
+      })
+    );
+
+    return options;
+  }, []);
 
   return (
     <DialogBox
@@ -69,7 +62,7 @@ export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
           productName: "",
           description: "",
           price: "",
-          sku: "54321",
+          sku: "",
           categoryId: "",
         }}
         onSubmit={(data: UpsertProductCommand) =>
@@ -93,6 +86,9 @@ export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
                 <TextField name="productName" label="Name" fullWidth />
               </MuiGrid>
               <MuiGrid item xs={12}>
+                <TextField name="sku" label="SKU" fullWidth />
+              </MuiGrid>
+              <MuiGrid item xs={12}>
                 <TextAreaInput name="description" label="Description" />
               </MuiGrid>
               <MuiGrid item xs={12}>
@@ -105,7 +101,11 @@ export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
                 />
               </MuiGrid>
               <MuiGrid item xs={12}>
-                <Select name="select" label="Select" options={test()} />
+                <Select
+                  name="categoryId"
+                  label="Category"
+                  options={getCategories(categories!)}
+                />
               </MuiGrid>
               <MuiGrid item xs={12}>
                 <Stack

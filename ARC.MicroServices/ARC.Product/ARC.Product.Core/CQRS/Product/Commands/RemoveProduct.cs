@@ -30,21 +30,22 @@ namespace ARC.Product.Core.CQRS.Product.Commands.RemoveProduct
         }
 
         public async Task Handle(RemoveProductCommand request, CancellationToken cancellationToken)
-        { 
+        {
             var productToDelete = await _applicationDbContext.Products
-                          .Where(p => p.ProductId == request.ProductId)
-                          .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Product));
+                                     .Include(p => p.Events)
+                                      .Where(p => p.ProductId == request.ProductId)
+                                      .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Product));
 
             var inventoriesWithProduct = _applicationDbContext.InventoryItems
                           .Include(i => i.Product)
                           .Where(i => i.Product.ProductId == request.ProductId);
- 
+
             if (inventoriesWithProduct.Any())
                 throw new InvalidOperationException($"Product {productToDelete.ProductName} is bound to invetory items.");
 
             _applicationDbContext.Remove(productToDelete);
 
-            await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false); 
+            await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }

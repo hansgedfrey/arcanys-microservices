@@ -69,6 +69,7 @@ export default function Select<T>({
               <>
                 <InputLabel>{!!error ? error.message : label}</InputLabel>
                 <MuiSelect
+                  label={label}
                   disabled={disabled}
                   onBlur={field.onBlur}
                   onChange={(e) => {

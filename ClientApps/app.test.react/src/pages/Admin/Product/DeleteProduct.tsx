@@ -10,17 +10,14 @@ import {
 } from "../../../components/SnackBar";
 import { SnackbarContext } from "../../../App";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import {
-  getCategoriesAsync,
-  removeCategoryAsync,
-} from "../../../store/categories";
+import { getProductsAsync, removeProductAsync } from "../../../store/products";
 
 export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const setSnackbar = useContext(SnackbarContext);
-  const { selectedCategory, isSubmitting } = useAppSelector(
-    (state) => state.categories
+  const { selectedProduct, isSubmitting } = useAppSelector(
+    (state) => state.products
   );
 
   return (
@@ -30,15 +27,15 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
       okLabel="Delete"
       ok={async () =>
         dispatch(
-          await removeCategoryAsync({
-            categoryId: selectedCategory?.categoryId,
+          await removeProductAsync({
+            productId: selectedProduct?.productId,
           })
         ).then((result: any) => {
           if (result.error) {
             setSnackbar(SnackbarErrorTop(result.payload.detail));
           } else {
             setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
-            dispatch(getCategoriesAsync({ page: 1 }));
+            dispatch(getProductsAsync({ page: 1 }));
             ok && ok();
           }
         })
@@ -51,7 +48,7 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
       title="Confirm Delete"
     >
       <Typography variant="subtitle1">
-        Do you want to delete {selectedCategory?.name} category?
+        Do you want to delete {selectedProduct?.productName} category?
       </Typography>
     </DialogBox>
   );

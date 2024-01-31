@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Primary } from "../theme/Colors";
 
 const screens = [
-  { route: "inventory" },
+  { route: "inventoryItems" },
   { route: "products" },
   { route: "categories" },
 ];
@@ -28,13 +28,14 @@ export default function Navigator() {
     setValue(newValue);
     switch (newValue) {
       case 0:
-        navigate("/admin/inventory");
+        navigate("/admin/categories");
+
         break;
       case 1:
         navigate("/admin/products");
         break;
       case 2:
-        navigate("/admin/categories");
+        navigate("/admin/inventoryItems");
         break;
       default:
         break;
@@ -43,13 +44,13 @@ export default function Navigator() {
 
   useEffect(() => {
     switch (currentScreen?.route) {
-      case "inventory":
+      case "categories":
         setValue(0);
         break;
       case "products":
         setValue(1);
         break;
-      case "categories":
+      case "inventoryItems":
         setValue(2);
         break;
       default:
@@ -66,9 +67,9 @@ export default function Navigator() {
         variant="standard"
         className={classes.tabs}
       >
-        <Tab label="Inventory" />
-        <Tab label="Products" />
         <Tab label="Categories" />
+        <Tab label="Products" />
+        <Tab label="Inventory Items" />
       </Tabs>
     </Box>
   );

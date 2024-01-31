@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
 {
     public record SearchInventoryQuery : IRequest<SearchInventoryResponse>
-    {
-        public int Page { get; init; } = 1;
+    { 
         public string? Query { get; init; }
+        public int? Page { get; set; }
     }
 
     public class SearchInventoryQueryValidator : AbstractValidator<SearchInventoryQuery>
@@ -46,6 +46,8 @@ namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
                 .Include(e=>e.Events)
                 .AsNoTracking();
 
+            var requestPage = request.Page ?? 1;
+
             if (!string.IsNullOrWhiteSpace(request.Query))
             {
                 query = _applicationDbContext.InventoryItems
@@ -54,7 +56,7 @@ namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
             }
 
             var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
-            var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
+            var page = (requestPage - 1) * PAGE_SIZE > count ? 1 : requestPage;
 
             var inventoryItems = await query
                 .Skip(PAGE_SIZE * (page - 1))

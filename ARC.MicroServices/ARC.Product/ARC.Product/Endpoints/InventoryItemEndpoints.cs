@@ -12,7 +12,7 @@ namespace ARC.Product.Web.Endpoints
         {
             var group = app.MapGroup("/inventory-items").WithTags("InventoryItems");
 
-            group.MapGet("", async (ISender sender, string? query, int page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, int? page) => await sender.Send(
                   new SearchInventoryQuery
                   {
                       Query = query,

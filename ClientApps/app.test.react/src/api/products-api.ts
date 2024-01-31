@@ -597,7 +597,7 @@ export class InventoryItemsClient {
    */
   inventoryItems(
     query: string | undefined,
-    page: number
+    page: number | undefined
   ): Promise<SearchInventoryResponse> {
     let url_ = this.baseUrl + "/inventory-items?";
     if (query === null)

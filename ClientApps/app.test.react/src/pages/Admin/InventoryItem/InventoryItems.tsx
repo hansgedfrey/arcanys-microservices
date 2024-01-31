@@ -23,52 +23,55 @@ import {
 import DeleteIcon from "@mui/icons-material/Backspace";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import { AdminScreen, Colors } from "../../../layouts";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import {
-  getCategoriesAsync,
-  getCategoryInfoAsync,
-} from "../../../store/categories";
-import AdminScreen from "../../../layouts/AdminScreen";
-import { Colors } from "../../../layouts";
+import { getProductinfoAsync, getProductsAsync } from "../../../store/products";
 import { Button, ProgressSpinner } from "../../../components";
-import EditCategory from "./EditCategory";
-import DeleteCategory from "./DeleteCategory";
-import AddCategory from "./AddCategory";
+import AddProductInventory from "./AddInventoryItem";
+import EditProduct from "./EditProduct";
+import DeleteProduct from "./DeleteProduct";
+import { MoneyFormat } from "../../../utils";
+import { format } from "date-fns";
+import { getCategoriesAsync } from "../../../store/categories";
+import {
+  getInventoryItemAsync,
+  getInventoryItemsAsync,
+} from "../../../store/inventoryItems";
 
-interface CategorySearchParams {
+interface InventoryItemSearchParams {
   page: number;
   query: string;
 }
 
-const initialSearchState: CategorySearchParams = {
+const initialSearchState: InventoryItemSearchParams = {
   page: 1,
   query: "",
 };
 
-export default function Categories() {
+export default function InventoryItem() {
   const dispatch = useAppDispatch();
-  const { categories, isLoadingCategories } = useAppSelector(
-    (state) => state.categories
+  const { inventoryItems, isLoadingInventoryItems } = useAppSelector(
+    (state) => state.inventoryItems
   );
   const isSmallScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
-  const [openEditCategory, setOpenEditCategory] = useState<boolean>(false);
-  const [openDeleteCategory, setOpenDeleteCategory] = useState<boolean>(false);
-  const [openAddCategory, setOpenAddCategory] = useState<boolean>(false);
-  const [categorySearchParams, setCategorySearchParams] =
-    useState<CategorySearchParams>(initialSearchState);
+  const [openEditProduct, setOpenEditProduct] = useState<boolean>(false);
+  const [openDeleteProduct, setOpenDeleteProduct] = useState<boolean>(false);
+  const [openAddProduct, setOpenAddProduct] = useState<boolean>(false);
+  const [inventoryItemSearchParams, setInventoryItemSearchParams] =
+    useState<InventoryItemSearchParams>(initialSearchState);
 
-  const searchCategories = debounce((query: string) => {
-    setCategorySearchParams({ ...categorySearchParams, query });
+  const searchProducts = debounce((query: string) => {
+    setInventoryItemSearchParams({ ...inventoryItemSearchParams, query });
   }, 999);
 
   const handlePageChange = (_: ChangeEvent<unknown>, page: number) => {
-    setCategorySearchParams({ ...categorySearchParams, page });
+    setInventoryItemSearchParams({ ...inventoryItemSearchParams, page });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
-    dispatch(getCategoriesAsync(categorySearchParams));
-  }, [categorySearchParams]);
+    dispatch(getInventoryItemsAsync(inventoryItemSearchParams));
+  }, [inventoryItemSearchParams]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -85,12 +88,12 @@ export default function Categories() {
             <TextField
               label="Search"
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                searchCategories(evt.target.value);
+                searchProducts(evt.target.value);
               }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    {isLoadingCategories ? (
+                    {isLoadingInventoryItems ? (
                       <ProgressSpinner small />
                     ) : (
                       <SearchIcon />
@@ -103,24 +106,46 @@ export default function Categories() {
               variant="contained"
               size="small"
               color="primary"
-              onClick={() => setOpenAddCategory(true)}
+              onClick={() => {
+                dispatch(getCategoriesAsync({ page: 1 })).then((result) => {
+                  setOpenAddProduct(true);
+                });
+              }}
             >
-              {!isSmallScreen ? "Add new Category" : <AddIcon />}
+              {!isSmallScreen ? "Add new Product" : <AddIcon />}
             </Button>
           </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
-          {categories && !isLoadingCategories ? (
+          {inventoryItems && !isLoadingInventoryItems ? (
             <>
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <StyledTableCell component="th" scope="col" align="left">
+                        Created
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
                         Name
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">
-                        Description
+                        Details
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
+                        SKU
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
+                        Category
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
+                        Unit Price
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
+                        Quantity
+                      </StyledTableCell>
+                      <StyledTableCell component="th" scope="col" align="left">
+                        Total
                       </StyledTableCell>
                       <StyledTableCell
                         component="th"
@@ -133,17 +158,35 @@ export default function Categories() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {categories.results?.map((item, index) => {
+                    {inventoryItems.results?.map((item, index) => {
                       return (
                         <TableRow
                           hover
-                          key={`${item.categoryId} - ${item.name}`}
+                          key={`${item.inventoryItemId} - ${item.product?.productName}`}
                         >
                           <TableCell component="th" scope="row">
-                            {item.name}
+                            {format(item.created!, "dd/MM/yyyy")}
                           </TableCell>
                           <TableCell component="th" scope="row">
-                            {item.description}
+                            {item.product?.productName}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {item.details}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {item.product?.sku}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {item.product?.category?.name}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {MoneyFormat(item.product?.price)}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {item.quantity} item(s)
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {MoneyFormat(item.quantity! * item.product?.price!)}
                           </TableCell>
                           <TableCell component="th" scope="row" align="right">
                             <Stack direction="row" spacing={1}>
@@ -153,11 +196,15 @@ export default function Categories() {
                                 color="primary"
                                 onClick={() => {
                                   dispatch(
-                                    getCategoryInfoAsync({
-                                      categoryId: item.categoryId!,
+                                    getInventoryItemAsync({
+                                      inventoryItemId: item.inventoryItemId!,
                                     })
                                   ).then(() => {
-                                    setOpenEditCategory(true);
+                                    dispatch(
+                                      getCategoriesAsync({ page: 1 })
+                                    ).then((result) => {
+                                      setOpenEditProduct(true);
+                                    });
                                   });
                                 }}
                               >
@@ -169,11 +216,11 @@ export default function Categories() {
                                 color="error"
                                 onClick={async () => {
                                   await dispatch(
-                                    getCategoryInfoAsync({
-                                      categoryId: item.categoryId!,
+                                    getInventoryItemAsync({
+                                      inventoryItemId: item.inventoryItemId!,
                                     })
                                   ).then(() => {
-                                    setOpenDeleteCategory(true);
+                                    setOpenDeleteProduct(true);
                                   });
                                 }}
                               >
@@ -189,8 +236,8 @@ export default function Categories() {
               </TableContainer>
               <Box display="flex" justifyContent="flex-end" pt={1.5} pr={7}>
                 <Pagination
-                  count={categories?.pageCount || 0}
-                  page={categories?.currentPage}
+                  count={inventoryItems?.pageCount || 0}
+                  page={inventoryItems?.currentPage}
                   onChange={handlePageChange}
                   size="small"
                   color="primary"
@@ -205,20 +252,20 @@ export default function Categories() {
           )}
         </MuiGrid>
       </MuiGrid>
-      <AddCategory
-        open={openAddCategory === true}
-        ok={() => setOpenAddCategory(false)}
-        cancel={() => setOpenAddCategory(false)}
+      <AddProductInventory
+        open={openAddProduct === true}
+        ok={() => setOpenAddProduct(false)}
+        cancel={() => setOpenAddProduct(false)}
       />
-      <EditCategory
-        open={openEditCategory === true}
-        ok={() => setOpenEditCategory(false)}
-        cancel={() => setOpenEditCategory(false)}
+      <EditProduct
+        open={openEditProduct === true}
+        ok={() => setOpenEditProduct(false)}
+        cancel={() => setOpenEditProduct(false)}
       />
-      <DeleteCategory
-        open={openDeleteCategory === true}
-        ok={() => setOpenDeleteCategory(false)}
-        cancel={() => setOpenDeleteCategory(false)}
+      <DeleteProduct
+        open={openDeleteProduct === true}
+        ok={() => setOpenDeleteProduct(false)}
+        cancel={() => setOpenDeleteProduct(false)}
       />
     </AdminScreen>
   );

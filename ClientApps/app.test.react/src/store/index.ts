@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import categories from "./categories";
 import products from "./products";
+import inventoryItems from "./inventoryItems";
 import apis from "./apis";
 //export const history = createBrowserHistory();
 
@@ -16,6 +17,7 @@ const store = configureStore({
   reducer: {
     categories,
     products,
+    inventoryItems,
     apis,
     //router: connectRouter(history),
   },

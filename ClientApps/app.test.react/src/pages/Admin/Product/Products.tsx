@@ -20,7 +20,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Clear";
+import DeleteIcon from "@mui/icons-material/Backspace";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { AdminScreen, Colors } from "../../../layouts";
@@ -44,7 +44,7 @@ const initialSearchState: ProductSearchParams = {
   query: "",
 };
 
-function Products() {
+export default function Products() {
   const dispatch = useAppDispatch();
   const { products, isLoadingProducts } = useAppSelector(
     (state) => state.products
@@ -120,7 +120,7 @@ function Products() {
                   <TableHead>
                     <TableRow>
                       <StyledTableCell component="th" scope="col" align="left">
-                        Added
+                        Created
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">
                         Name
@@ -249,5 +249,3 @@ function Products() {
     </AdminScreen>
   );
 }
-
-export default Products;

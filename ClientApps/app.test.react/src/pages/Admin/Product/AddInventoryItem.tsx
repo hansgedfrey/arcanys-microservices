@@ -1,11 +1,13 @@
 import { useCallback, useContext } from "react";
-import { Grid as MuiGrid, Stack } from "@mui/material";
-import AddNoteIcon from "@mui/icons-material/NoteAdd";
+import { Divider, Grid as MuiGrid, Stack } from "@mui/material";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import {
   Button,
   DialogBox,
   Form,
+  LabelValue,
   NumberTextInput,
+  Select,
   TextAreaInput,
   TextField,
 } from "../../../components";
@@ -15,6 +17,7 @@ import { DialogBoxProps } from "../../../components/DialogBox";
 import { getProductsAsync, upsertProductAsync } from "../../../store/products";
 import {
   SearchCategoriesResponse,
+  UpsertInventoryItemCommand,
   UpsertProductCommand,
 } from "../../../api/products-api";
 import { SnackbarContext } from "../../../App";
@@ -22,7 +25,8 @@ import {
   SnackbarErrorTop,
   SnackbarSuccessTop,
 } from "../../../components/SnackBar";
-import Select from "../../../components/Select";
+import { MoneyFormat } from "../../../utils";
+import { upsertInventoryItemAsync } from "../../../store/inventoryItems";
 
 const validationSchema = object({
   productName: string().required("Name is required"),
@@ -30,82 +34,91 @@ const validationSchema = object({
   price: string().required("Price is required"),
   categoryId: string().required("Category is required"),
   sku: string().required("SKU is required"),
+  quantity: string().required("Please specify quantity"),
 });
 
-export default function AddInventoryItem({ open, ok, cancel }: DialogBoxProps) {
+export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
   const setSnackbar = useContext(SnackbarContext);
-  const { isSubmitting } = useAppSelector((state) => state.products);
   const { categories } = useAppSelector((state) => state.categories);
-  const getCategories = useCallback((categories: SearchCategoriesResponse) => {
-    const options: Array<{ label: string; value: string }> = [];
-
-    categories.results?.map((item) =>
-      options.push({
-        label: item.name!,
-        value: item.categoryId!,
-      })
-    );
-
-    return options;
-  }, []);
-
+  const { selectedProduct, isSubmitting } = useAppSelector(
+    (state) => state.products
+  );
   return (
     <DialogBox
       open={open}
-      icon={<AddNoteIcon color="primary" />}
-      title="Add Product"
+      icon={<EditNoteIcon color="primary" />}
+      title="Edit Product"
     >
       <Form
         initialValues={{
-          productId: null,
-          productName: "",
-          description: "",
-          price: "",
-          sku: "",
-          categoryId: "",
+          categoryId: selectedProduct?.category?.categoryId,
+          productId: selectedProduct?.productId,
+          productName: selectedProduct?.productName,
+          description: selectedProduct?.description,
+          sku: selectedProduct?.sku,
+          price: selectedProduct?.price,
+          categoryName: selectedProduct?.category?.name,
+          quantity: 0,
         }}
-        onSubmit={(data: UpsertProductCommand) =>
-          dispatch(upsertProductAsync(data)).then((result: any) => {
+        onSubmit={(data: UpsertInventoryItemCommand) => {
+          dispatch(upsertInventoryItemAsync(data)).then((result: any) => {
             if (!result.error) {
               ok && ok();
               dispatch(getProductsAsync({ page: 1 }));
-              setSnackbar(SnackbarSuccessTop("Product saved successfully"));
+              setSnackbar(
+                SnackbarSuccessTop("Inventory item added successfully!")
+              );
               return;
             }
 
             setSnackbar(SnackbarErrorTop(result.payload.detail));
-          })
-        }
+          });
+        }}
         validationSchema={validationSchema}
       >
-        {({ formState }) => {
+        {({ formState, getValues }) => {
           return (
             <MuiGrid container spacing={2}>
               <MuiGrid item xs={12}>
-                <TextField name="productName" label="Name" fullWidth />
+                <LabelValue label="Product Name">
+                  {formState.defaultValues?.productName}
+                </LabelValue>
               </MuiGrid>
               <MuiGrid item xs={12}>
-                <TextField name="sku" label="SKU" fullWidth />
+                <LabelValue label="Product Description">
+                  {formState.defaultValues?.description}
+                </LabelValue>
+              </MuiGrid>
+              <MuiGrid item xs={6}>
+                <LabelValue label="SKU">
+                  {formState.defaultValues?.sku}
+                </LabelValue>
+              </MuiGrid>
+              <MuiGrid item xs={6}>
+                <LabelValue label="Unit price">
+                  {MoneyFormat(formState.defaultValues?.price)}
+                </LabelValue>
               </MuiGrid>
               <MuiGrid item xs={12}>
-                <TextAreaInput name="description" label="Description" />
+                <LabelValue label="Category">
+                  {formState.defaultValues?.categoryName}
+                </LabelValue>
+              </MuiGrid>
+              <MuiGrid item xs={12}>
+                <Divider orientation="horizontal" />
               </MuiGrid>
               <MuiGrid item xs={12}>
                 <NumberTextInput
-                  name="price"
-                  label="Unit Price"
+                  name="quantity"
+                  label="Quantity"
                   isLoading={isSubmitting}
                   valueType="numericString"
                   thousandsSeparator={true}
                 />
               </MuiGrid>
               <MuiGrid item xs={12}>
-                <Select
-                  name="categoryId"
-                  label="Category"
-                  options={getCategories(categories!)}
-                />
+                <TextAreaInput name="details" label="Details" />
               </MuiGrid>
               <MuiGrid item xs={12}>
                 <Stack
@@ -129,7 +142,7 @@ export default function AddInventoryItem({ open, ok, cancel }: DialogBoxProps) {
                     color="primary"
                     disabled={isSubmitting}
                   >
-                    Save
+                    Add to inventory
                   </Button>
                 </Stack>
               </MuiGrid>

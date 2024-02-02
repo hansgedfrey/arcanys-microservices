@@ -52,7 +52,9 @@ const darkTheme = createTheme({
       defaultProps: {
         disableUnderline: true,
       },
-      styleOverrides: { root: { borderRadius: 4 } },
+      styleOverrides: {
+        root: { borderRadius: 4 },
+      },
     },
     MuiTextField: {
       defaultProps: {
@@ -81,6 +83,17 @@ const darkTheme = createTheme({
         root: {
           fontSize: 16,
         },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {},
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        color: "primary",
+        size: "small",
       },
     },
   },

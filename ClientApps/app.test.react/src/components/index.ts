@@ -9,12 +9,16 @@ import TextAreaInput from "./TextAreaInput";
 import SnackBar from "./SnackBar";
 import NumberTextInput from "./NumberTextInput";
 import Select from "./Select";
+import IconPopover from "./IconPopover";
+import LabelValue from "./LabelValue";
 
 export {
   Button,
   DialogBox,
   Form,
   FormErrorMessage,
+  IconPopover,
+  LabelValue,
   NumberTextInput,
   ProgressSpinner,
   ScrollToFormError,

@@ -19,8 +19,11 @@ import {
   InputAdornment,
   useMediaQuery,
   useTheme,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
+import EditIcon from "@mui/icons-material/Edit";
+import InventoryIcon from "@mui/icons-material/Inventory";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { AdminScreen, Colors } from "../../../layouts";
@@ -33,6 +36,8 @@ import DeleteProduct from "./DeleteProduct";
 import { MoneyFormat } from "../../../utils";
 import { format } from "date-fns";
 import { getCategoriesAsync } from "../../../store/categories";
+import IconPopover from "../../../components/IconPopover";
+import AddInventoryItem from "./AddInventoryItem";
 
 interface ProductSearchParams {
   page: number;
@@ -53,6 +58,8 @@ export default function Products() {
   const [openEditProduct, setOpenEditProduct] = useState<boolean>(false);
   const [openDeleteProduct, setOpenDeleteProduct] = useState<boolean>(false);
   const [openAddProduct, setOpenAddProduct] = useState<boolean>(false);
+  const [openAddInventoryItem, setOpenAddInventoryItem] =
+    useState<boolean>(false);
   const [productSearchParams, setProductSearchParams] =
     useState<ProductSearchParams>(initialSearchState);
 
@@ -132,7 +139,7 @@ export default function Products() {
                         SKU
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">
-                        Price
+                        Unit Price
                       </StyledTableCell>
                       <StyledTableCell
                         component="th"
@@ -169,42 +176,61 @@ export default function Products() {
 
                           <TableCell component="th" scope="row" align="right">
                             <Stack direction="row" spacing={1}>
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="primary"
-                                onClick={() => {
-                                  dispatch(
-                                    getProductinfoAsync({
-                                      productId: item.productId!,
-                                    })
-                                  ).then(() => {
-                                    dispatch(
-                                      getCategoriesAsync({ page: 1 })
-                                    ).then((result) => {
-                                      setOpenEditProduct(true);
+                              <Tooltip title="Add to inventory">
+                                <IconButton
+                                  aria-label="add to inventory"
+                                  color="success"
+                                  onClick={async () => {
+                                    await dispatch(
+                                      getProductinfoAsync({
+                                        productId: item.productId!,
+                                      })
+                                    ).then(() => {
+                                      setOpenAddInventoryItem(true);
                                     });
-                                  });
-                                }}
-                              >
-                                Edit
-                              </Button>
-                              <IconButton
-                                aria-label="delete"
-                                size="small"
-                                color="error"
-                                onClick={async () => {
-                                  await dispatch(
-                                    getProductinfoAsync({
-                                      productId: item.productId!,
-                                    })
-                                  ).then(() => {
-                                    setOpenDeleteProduct(true);
-                                  });
-                                }}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                                  }}
+                                >
+                                  <InventoryIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Edit">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => {
+                                    dispatch(
+                                      getProductinfoAsync({
+                                        productId: item.productId!,
+                                      })
+                                    ).then(() => {
+                                      dispatch(
+                                        getCategoriesAsync({ page: 1 })
+                                      ).then((result) => {
+                                        setOpenEditProduct(true);
+                                      });
+                                    });
+                                  }}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+
+                              <Tooltip title="Remove">
+                                <IconButton
+                                  aria-label="remove"
+                                  color="error"
+                                  onClick={async () => {
+                                    await dispatch(
+                                      getProductinfoAsync({
+                                        productId: item.productId!,
+                                      })
+                                    ).then(() => {
+                                      setOpenDeleteProduct(true);
+                                    });
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
                             </Stack>
                           </TableCell>
                         </TableRow>
@@ -245,6 +271,11 @@ export default function Products() {
         open={openDeleteProduct === true}
         ok={() => setOpenDeleteProduct(false)}
         cancel={() => setOpenDeleteProduct(false)}
+      />
+      <AddInventoryItem
+        open={openAddInventoryItem === true}
+        ok={() => setOpenAddInventoryItem(false)}
+        cancel={() => setOpenAddInventoryItem(false)}
       />
     </AdminScreen>
   );

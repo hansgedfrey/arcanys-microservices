@@ -35,38 +35,46 @@ namespace ARC.Product.Core.CQRS.Inventory.Commands.UpsertInventoryItem
 
         public async Task<Guid> Handle(UpsertInventoryItemCommand request, CancellationToken cancellationToken)
         {
-            var productExists = await _coreHelper.ProductExistsAsync(request.ProductId, cancellationToken);
-     
-            var inventoryItemId = request.InventoryItemId.GetValueOrDefault();
-            var inventoryItemToInsert = new Persistence.Entities.InventoryItem();
-
-            if (productExists)
+            try
             {
-                var inventoryItem = new Persistence.Entities.InventoryItem();
+                var productExists = await _coreHelper.ProductExistsAsync(request.ProductId, cancellationToken);
+
+                var inventoryItemId = request.InventoryItemId.GetValueOrDefault();
+                var inventoryItemToInsert = new Persistence.Entities.InventoryItem();
+
+                if (productExists)
+                {
+                    var inventoryItem = new Persistence.Entities.InventoryItem();
+                }
+
+                if (inventoryItemId == Guid.Empty)
+                {
+                    inventoryItemToInsert.AppendEvent(new Persistence.Events.InventoryItem.AddInventoryItemEvent { Occurred = DateTime.Now, Quantity = request.Quantity });
+                    _applicationDbContext.InventoryItems.Add(inventoryItemToInsert);
+                }
+                else
+                {
+                    inventoryItemToInsert = await _applicationDbContext.InventoryItems
+                                 .Where(p => p.InventoryItemId == inventoryItemId)
+                                 .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Category));
+
+                    inventoryItemToInsert.AppendEvent(new Persistence.Events.InventoryItem.UpdateInventoryItemEvent { Occurred = DateTime.Now, Quantity = request.Quantity });
+                }
+
+                inventoryItemToInsert.Details = request.Details;
+                inventoryItemToInsert.ProductId = request.ProductId;
+                inventoryItemToInsert.Quantity = request.Quantity;
+
+
+                await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+                return inventoryItemToInsert.InventoryItemId;
             }
-
-            if (inventoryItemId == Guid.Empty)
+            catch (Exception ex)
             {
-                inventoryItemToInsert.AppendEvent(new Persistence.Events.InventoryItem.AddInventoryItemEvent { Occurred = DateTime.Now, Quantity = request.Quantity });
-                _applicationDbContext.InventoryItems.Add(inventoryItemToInsert);
-            } 
-            else
-            {
-                inventoryItemToInsert = await _applicationDbContext.InventoryItems
-                             .Where(p => p.InventoryItemId == inventoryItemId)
-                             .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.Category));
 
-                inventoryItemToInsert.AppendEvent(new Persistence.Events.InventoryItem.UpdateInventoryItemEvent { Occurred = DateTime.Now, Quantity = request.Quantity });
+                throw;
             }
-
-            inventoryItemToInsert.Details = request.Details;
-            inventoryItemToInsert.ProductId = request.ProductId;
-            inventoryItemToInsert.Quantity = request.Quantity;
-
-
-            await _applicationDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-            return inventoryItemToInsert.InventoryItemId;
         }
     }
 }

@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ARC.Product.Persistence.Events.InventoryItem;
 
 namespace ARC.Product.Persistence.Entities
-{
-    [Index(nameof(ProductId), IsUnique = true)]
+{ 
     public class InventoryItem
     {
         [Key]

@@ -19,8 +19,10 @@ import {
   InputAdornment,
   useMediaQuery,
   useTheme,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
+import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { useAppDispatch, useAppSelector } from "../../../store";
@@ -34,6 +36,7 @@ import { Button, ProgressSpinner } from "../../../components";
 import EditCategory from "./EditCategory";
 import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
+import { format } from "date-fns";
 
 interface CategorySearchParams {
   page: number;
@@ -125,7 +128,7 @@ export default function Categories() {
                       <StyledTableCell
                         component="th"
                         scope="col"
-                        align="center"
+                        align="right"
                         width="10%"
                       >
                         Actions
@@ -146,39 +149,44 @@ export default function Categories() {
                             {item.description}
                           </TableCell>
                           <TableCell component="th" scope="row" align="right">
-                            <Stack direction="row" spacing={1}>
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="primary"
-                                onClick={() => {
-                                  dispatch(
-                                    getCategoryInfoAsync({
-                                      categoryId: item.categoryId!,
-                                    })
-                                  ).then(() => {
-                                    setOpenEditCategory(true);
-                                  });
-                                }}
-                              >
-                                Edit
-                              </Button>
-                              <IconButton
-                                aria-label="delete"
-                                size="small"
-                                color="error"
-                                onClick={async () => {
-                                  await dispatch(
-                                    getCategoryInfoAsync({
-                                      categoryId: item.categoryId!,
-                                    })
-                                  ).then(() => {
-                                    setOpenDeleteCategory(true);
-                                  });
-                                }}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              justifyContent="right"
+                            >
+                              <Tooltip title="Edit">
+                                <IconButton
+                                  color="primary"
+                                  onClick={() => {
+                                    dispatch(
+                                      getCategoryInfoAsync({
+                                        categoryId: item.categoryId!,
+                                      })
+                                    ).then(() => {
+                                      setOpenEditCategory(true);
+                                    });
+                                  }}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Remove">
+                                <IconButton
+                                  aria-label="remove"
+                                  color="error"
+                                  onClick={async () => {
+                                    await dispatch(
+                                      getCategoryInfoAsync({
+                                        categoryId: item.categoryId!,
+                                      })
+                                    ).then(() => {
+                                      setOpenDeleteCategory(true);
+                                    });
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
                             </Stack>
                           </TableCell>
                         </TableRow>

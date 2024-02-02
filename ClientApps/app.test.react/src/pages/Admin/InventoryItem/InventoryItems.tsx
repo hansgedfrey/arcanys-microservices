@@ -19,15 +19,21 @@ import {
   InputAdornment,
   useMediaQuery,
   useTheme,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select as MuiSelect,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
+import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { AdminScreen, Colors } from "../../../layouts";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { getProductinfoAsync, getProductsAsync } from "../../../store/products";
+import { getProductsAsync } from "../../../store/products";
 import { Button, ProgressSpinner } from "../../../components";
-import AddProductInventory from "./AddInventoryItem";
+// import AddProductInventory from "./AddInventoryItem";
 import EditProduct from "./EditProduct";
 import DeleteProduct from "./DeleteProduct";
 import { MoneyFormat } from "../../../utils";
@@ -50,10 +56,11 @@ const initialSearchState: InventoryItemSearchParams = {
 
 export default function InventoryItem() {
   const dispatch = useAppDispatch();
+  const isSmallScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
   const { inventoryItems, isLoadingInventoryItems } = useAppSelector(
     (state) => state.inventoryItems
   );
-  const isSmallScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
+  const { categories } = useAppSelector((state) => state.categories);
   const [openEditProduct, setOpenEditProduct] = useState<boolean>(false);
   const [openDeleteProduct, setOpenDeleteProduct] = useState<boolean>(false);
   const [openAddProduct, setOpenAddProduct] = useState<boolean>(false);
@@ -73,6 +80,10 @@ export default function InventoryItem() {
     dispatch(getInventoryItemsAsync(inventoryItemSearchParams));
   }, [inventoryItemSearchParams]);
 
+  useEffect(() => {
+    dispatch(getCategoriesAsync({ page: 1 }));
+  }, []);
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: Colors.Primary,
@@ -83,10 +94,11 @@ export default function InventoryItem() {
   return (
     <AdminScreen>
       <MuiGrid container spacing={2}>
-        <MuiGrid item xs={12}>
+        <MuiGrid item md={8} xs={12}>
           <Stack direction="row" spacing={2}>
             <TextField
               label="Search"
+              fullWidth
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 searchProducts(evt.target.value);
               }}
@@ -102,20 +114,42 @@ export default function InventoryItem() {
                 ),
               }}
             />
+          </Stack>
+        </MuiGrid>
+        <MuiGrid item md={4} xs={12}>
+          <Stack direction="row" spacing={2}>
+            <FormControl fullWidth>
+              <InputLabel>Select Category</InputLabel>
+              <MuiSelect label="Select Category">
+                {categories?.results?.map((item) => {
+                  return (
+                    <MenuItem value={item.categoryId} key={item.categoryId}>
+                      {item.name}
+                    </MenuItem>
+                  );
+                })}
+              </MuiSelect>
+            </FormControl>
             <Button
-              variant="contained"
               size="small"
-              color="primary"
+              variant="contained"
               onClick={() => {
                 dispatch(getCategoriesAsync({ page: 1 })).then((result) => {
                   setOpenAddProduct(true);
                 });
+                Promise.all([
+                  dispatch(getCategoriesAsync({ page: 1 })),
+                  dispatch(getProductsAsync({ page: 1 })),
+                ]).then(() => {
+                  setOpenAddProduct(true);
+                });
               }}
             >
-              {!isSmallScreen ? "Add new Product" : <AddIcon />}
+              {!isSmallScreen ? "Add new" : <AddIcon />}
             </Button>
           </Stack>
         </MuiGrid>
+        <MuiGrid item md={2} xs={12}></MuiGrid>
         <MuiGrid item xs={12}>
           {inventoryItems && !isLoadingInventoryItems ? (
             <>
@@ -150,7 +184,7 @@ export default function InventoryItem() {
                       <StyledTableCell
                         component="th"
                         scope="col"
-                        align="center"
+                        align="right"
                         width="10%"
                       >
                         Actions
@@ -189,43 +223,48 @@ export default function InventoryItem() {
                             {MoneyFormat(item.quantity! * item.product?.price!)}
                           </TableCell>
                           <TableCell component="th" scope="row" align="right">
-                            <Stack direction="row" spacing={1}>
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="primary"
-                                onClick={() => {
-                                  dispatch(
-                                    getInventoryItemAsync({
-                                      inventoryItemId: item.inventoryItemId!,
-                                    })
-                                  ).then(() => {
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              justifyContent="right"
+                            >
+                              <Tooltip title="Edit">
+                                <IconButton
+                                  aria-label="edit"
+                                  onClick={() => {
                                     dispatch(
-                                      getCategoriesAsync({ page: 1 })
-                                    ).then((result) => {
-                                      setOpenEditProduct(true);
+                                      getInventoryItemAsync({
+                                        inventoryItemId: item.inventoryItemId!,
+                                      })
+                                    ).then(() => {
+                                      dispatch(
+                                        getCategoriesAsync({ page: 1 })
+                                      ).then((result) => {
+                                        setOpenEditProduct(true);
+                                      });
                                     });
-                                  });
-                                }}
-                              >
-                                Edit
-                              </Button>
-                              <IconButton
-                                aria-label="delete"
-                                size="small"
-                                color="error"
-                                onClick={async () => {
-                                  await dispatch(
-                                    getInventoryItemAsync({
-                                      inventoryItemId: item.inventoryItemId!,
-                                    })
-                                  ).then(() => {
-                                    setOpenDeleteProduct(true);
-                                  });
-                                }}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                                  }}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Remove">
+                                <IconButton
+                                  aria-label="delete"
+                                  color="error"
+                                  onClick={async () => {
+                                    await dispatch(
+                                      getInventoryItemAsync({
+                                        inventoryItemId: item.inventoryItemId!,
+                                      })
+                                    ).then(() => {
+                                      setOpenDeleteProduct(true);
+                                    });
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
                             </Stack>
                           </TableCell>
                         </TableRow>
@@ -252,11 +291,11 @@ export default function InventoryItem() {
           )}
         </MuiGrid>
       </MuiGrid>
-      <AddProductInventory
+      {/* <AddProductInventory
         open={openAddProduct === true}
         ok={() => setOpenAddProduct(false)}
         cancel={() => setOpenAddProduct(false)}
-      />
+      /> */}
       <EditProduct
         open={openEditProduct === true}
         ok={() => setOpenEditProduct(false)}

@@ -102,7 +102,7 @@ export default function Select<T>({
                 >
                   {stringOptions.map((label) => (
                     <MenuItem key={label} value={label}>
-                      <ListItemText>{label}</ListItemText>
+                      {label}
                     </MenuItem>
                   ))}
                 </MuiSelect>

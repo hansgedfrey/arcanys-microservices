@@ -10,7 +10,7 @@ namespace ARC.Product.Web.Endpoints
     {
         public static WebApplication MapCategoryEndpoints(this WebApplication app)
         {
-            var group = app.MapGroup("/categories").WithTags("Categories");
+            var group = app.MapGroup("/categories").WithTags("Categories").WithOpenApi();
 
             group.MapGet("", async (ISender sender, string? query, int page) => await sender.Send(
                new SearchCategoriesQuery

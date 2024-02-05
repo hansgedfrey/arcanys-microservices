@@ -2,7 +2,7 @@
 using ARC.Product.Core.CQRS.Inventory.Commands.GetInventoryItem;
 using ARC.Product.Core.CQRS.Inventory.Commands.UpsertInventoryItem;
 using ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory;
-using MediatR;
+using MediatR; 
 
 namespace ARC.Product.Web.Endpoints
 {
@@ -10,13 +10,14 @@ namespace ARC.Product.Web.Endpoints
     {
         public static WebApplication MapInventoryItemEndpoints(this WebApplication app)
         {
-            var group = app.MapGroup("/inventory-items").WithTags("InventoryItems");
+            var group = app.MapGroup("/inventory-items").WithTags("InventoryItems").WithOpenApi();
 
-            group.MapGet("", async (ISender sender, string? query, int? page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, int? page, InventoryItemSortOptions sortOrder) => await sender.Send(
                   new SearchInventoryQuery
                   {
                       Query = query,
-                      Page = page
+                      Page = page,
+                      SortOrder = sortOrder
                   })
               ).WithName("InventoryItems");
 

@@ -10,7 +10,7 @@ namespace ARC.Product.Web.Endpoints
     {
         public static WebApplication MapCartEndpoints(this WebApplication app)
         {
-            var group = app.MapGroup("/cart").WithTags("Carts");
+            var group = app.MapGroup("/cart").WithTags("Carts").WithOpenApi();
 
             group.MapPost("create-cart", async (ISender sender, CreateCartCommand command) => await sender.Send(command))
                  .WithName("CreateCart")

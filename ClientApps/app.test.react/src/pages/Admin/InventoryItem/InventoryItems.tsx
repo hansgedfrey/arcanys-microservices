@@ -43,15 +43,18 @@ import {
   getInventoryItemAsync,
   getInventoryItemsAsync,
 } from "../../../store/inventoryItems";
+import { InventoryItemSortOptions } from "../../../api/products-api";
 
 interface InventoryItemSearchParams {
   page: number;
   query: string;
+  sortOption: InventoryItemSortOptions;
 }
 
 const initialSearchState: InventoryItemSearchParams = {
   page: 1,
   query: "",
+  sortOption: InventoryItemSortOptions.Created,
 };
 
 export default function InventoryItem() {

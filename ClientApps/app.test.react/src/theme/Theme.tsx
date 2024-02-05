@@ -96,6 +96,19 @@ const darkTheme = createTheme({
         size: "small",
       },
     },
+    MuiTableSortLabel: {
+      defaultProps: {
+        color: "secondary",
+      },
+      styleOverrides: {
+        root: {
+          color: Colors.White,
+          ":hover": {
+            color: Colors.White,
+          },
+        },
+      },
+    },
   },
 });
 

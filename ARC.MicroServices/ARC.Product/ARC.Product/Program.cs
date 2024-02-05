@@ -12,13 +12,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using NSwag.AspNetCore;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCore(builder.Configuration, typeof(NotFoundException).Assembly, typeof(RequestLogger<>).Assembly, typeof(Program).Assembly);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 //builder.Services.AddAuthentication(options =>
 //{
@@ -61,7 +62,22 @@ builder.Services.AddCors(cfg =>
         .AllowAnyMethod());
 });
 
+#region Swagger Stuff
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.SerializerOptions.Converters.Add(new JsonStringTrimmerConverter());
+    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "Arc Products API";
+});
+#endregion
 
 var app = builder.Build();
 
@@ -84,7 +100,7 @@ if (app.Environment.IsDevelopment())
 await using var scope = app.Services.CreateAsyncScope();
 using var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
 await db!.Database.MigrateAsync();
- 
+
 app.UseValidationExceptionHandling();
 
 app
@@ -97,3 +113,4 @@ app
 app.UseCors("CorsApi");
 
 app.Run();
+ 

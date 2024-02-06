@@ -18,7 +18,7 @@ export class ProductsClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    products(query: string | null | undefined, categoryId: string | null | undefined, page: number | null | undefined, signal?: AbortSignal): Promise<SearchProductsResponse> {
+    products(query: string | null | undefined, categoryId: string | null | undefined, page: number | null | undefined, sortOrder: ProductSortOptions, signal?: AbortSignal): Promise<SearchProductsResponse> {
         let url_ = this.baseUrl + "/products?";
         if (query !== undefined && query !== null)
             url_ += "query=" + encodeURIComponent("" + query) + "&";
@@ -26,6 +26,10 @@ export class ProductsClient {
             url_ += "categoryId=" + encodeURIComponent("" + categoryId) + "&";
         if (page !== undefined && page !== null)
             url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (sortOrder === undefined || sortOrder === null)
+            throw new Error("The parameter 'sortOrder' must be defined and cannot be null.");
+        else
+            url_ += "sortOrder=" + encodeURIComponent("" + sortOrder) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -193,7 +197,7 @@ export class CategoriesClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    categories(query: string | null | undefined, page: number, signal?: AbortSignal): Promise<SearchCategoriesResponse> {
+    categories(query: string | null | undefined, page: number, sortOrder: CategorySortOptions, signal?: AbortSignal): Promise<SearchCategoriesResponse> {
         let url_ = this.baseUrl + "/categories?";
         if (query !== undefined && query !== null)
             url_ += "query=" + encodeURIComponent("" + query) + "&";
@@ -201,6 +205,10 @@ export class CategoriesClient {
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
             url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (sortOrder === undefined || sortOrder === null)
+            throw new Error("The parameter 'sortOrder' must be defined and cannot be null.");
+        else
+            url_ += "sortOrder=" + encodeURIComponent("" + sortOrder) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -805,6 +813,17 @@ export interface CategoryDto {
     description?: string | undefined;
 }
 
+export enum ProductSortOptions {
+    Created = "Created",
+    CreatedDesc = "CreatedDesc",
+    ProductName = "ProductName",
+    ProductNameDesc = "ProductNameDesc",
+    CategoryName = "CategoryName",
+    CategoryNameDesc = "CategoryNameDesc",
+    UnitPrice = "UnitPrice",
+    UnitPriceDesc = "UnitPriceDesc",
+}
+
 export interface ProblemDetails {
     type?: string | undefined;
     title?: string | undefined;
@@ -839,6 +858,11 @@ export interface SearchCategoriesResponse {
     pageCount?: number;
     pageSize?: number;
     results?: CategoryDto[];
+}
+
+export enum CategorySortOptions {
+    CategoryName = "CategoryName",
+    CategoryNameDesc = "CategoryNameDesc",
 }
 
 export interface UpsertCategoryCommand {

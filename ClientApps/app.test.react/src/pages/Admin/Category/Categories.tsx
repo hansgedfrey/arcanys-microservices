@@ -36,16 +36,18 @@ import { Button, ProgressSpinner } from "../../../components";
 import EditCategory from "./EditCategory";
 import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
-import { format } from "date-fns";
+import { CategorySortOptions } from "../../../api/products-api";
 
 interface CategorySearchParams {
   page: number;
   query: string;
+  sortOption: CategorySortOptions;
 }
 
 const initialSearchState: CategorySearchParams = {
   page: 1,
   query: "",
+  sortOption: CategorySortOptions.CategoryName,
 };
 
 export default function Categories() {
@@ -113,7 +115,7 @@ export default function Categories() {
           </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
-          {categories && !isLoadingCategories ? (
+          {categories ? (
             <>
               <TableContainer component={Paper}>
                 <Table>

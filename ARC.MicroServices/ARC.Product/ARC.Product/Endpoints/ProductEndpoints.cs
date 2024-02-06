@@ -1,4 +1,5 @@
-﻿using ARC.Product.Core.CQRS.Product.Commands.RemoveProduct;
+﻿using ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory;
+using ARC.Product.Core.CQRS.Product.Commands.RemoveProduct;
 using ARC.Product.Core.CQRS.Product.Commands.UpsertProduct;
 using ARC.Product.Core.CQRS.Product.Queries.GetProductInfo;
 using ARC.Product.Core.CQRS.Product.Queries.SearchProducts;
@@ -12,12 +13,13 @@ namespace ARC.Product.Web.Endpoints
         {
             var group = app.MapGroup("/products").WithTags("Products").WithOpenApi();
 
-            group.MapGet("", async (ISender sender, string? query, Guid? categoryId, int? page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, Guid? categoryId, int? page, ProductSortOptions sortOrder) => await sender.Send(
                 new SearchProductsQuery
                 {
                     Query = query,
                     Page = page,
                     CategoryId = categoryId,
+                    SortOrder = sortOrder
                 })
             ).WithName("Products");
 

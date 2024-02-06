@@ -19,22 +19,16 @@ import {
   InputAdornment,
   useMediaQuery,
   useTheme,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Select as MuiSelect,
   Tooltip,
   TableSortLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from "@mui/icons-material/Add";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { AdminScreen, Colors } from "../../../layouts";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { getProductsAsync } from "../../../store/products";
-import { Button, ProgressSpinner } from "../../../components";
+import { ProgressSpinner } from "../../../components";
 import EditProduct from "./EditProduct";
 import DeleteProduct from "./DeleteProduct";
 import { MoneyFormat } from "../../../utils";
@@ -44,7 +38,10 @@ import {
   getInventoryItemAsync,
   getInventoryItemsAsync,
 } from "../../../store/inventoryItems";
-import { InventoryItemSortOptions } from "../../../api/products-api";
+import {
+  CategorySortOptions,
+  InventoryItemSortOptions,
+} from "../../../api/products-api";
 import { makeStyles } from "@mui/styles";
 
 interface InventoryItemSearchParams {
@@ -189,7 +186,12 @@ export default function InventoryItem() {
   }, [inventoryItemSearchParams]);
 
   useEffect(() => {
-    dispatch(getCategoriesAsync({ page: 1 }));
+    dispatch(
+      getCategoriesAsync({
+        page: 1,
+        sortOption: CategorySortOptions.CategoryName,
+      })
+    );
   }, []);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -222,39 +224,6 @@ export default function InventoryItem() {
                 ),
               }}
             />
-          </Stack>
-        </MuiGrid>
-        <MuiGrid item md={4} xs={12}>
-          <Stack direction="row" spacing={2}>
-            <FormControl fullWidth>
-              <InputLabel>Select Category</InputLabel>
-              <MuiSelect label="Select Category">
-                {categories?.results?.map((item) => {
-                  return (
-                    <MenuItem value={item.categoryId} key={item.categoryId}>
-                      {item.name}
-                    </MenuItem>
-                  );
-                })}
-              </MuiSelect>
-            </FormControl>
-            <Button
-              size="small"
-              variant="contained"
-              onClick={() => {
-                dispatch(getCategoriesAsync({ page: 1 })).then((result) => {
-                  setOpenAddProduct(true);
-                });
-                Promise.all([
-                  dispatch(getCategoriesAsync({ page: 1 })),
-                  dispatch(getProductsAsync({ page: 1 })),
-                ]).then(() => {
-                  setOpenAddProduct(true);
-                });
-              }}
-            >
-              {!isSmallScreen ? "Add new" : <AddIcon />}
-            </Button>
           </Stack>
         </MuiGrid>
         <MuiGrid item md={2} xs={12}></MuiGrid>
@@ -431,7 +400,11 @@ export default function InventoryItem() {
                                       })
                                     ).then(() => {
                                       dispatch(
-                                        getCategoriesAsync({ page: 1 })
+                                        getCategoriesAsync({
+                                          page: 1,
+                                          sortOption:
+                                            CategorySortOptions.CategoryName,
+                                        })
                                       ).then((result) => {
                                         setOpenEditProduct(true);
                                       });
@@ -484,11 +457,6 @@ export default function InventoryItem() {
           )}
         </MuiGrid>
       </MuiGrid>
-      {/* <AddProductInventory
-        open={openAddProduct === true}
-        ok={() => setOpenAddProduct(false)}
-        cancel={() => setOpenAddProduct(false)}
-      /> */}
       <EditProduct
         open={openEditProduct === true}
         ok={() => setOpenEditProduct(false)}

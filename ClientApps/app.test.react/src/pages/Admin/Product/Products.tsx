@@ -36,17 +36,22 @@ import DeleteProduct from "./DeleteProduct";
 import { MoneyFormat } from "../../../utils";
 import { format } from "date-fns";
 import { getCategoriesAsync } from "../../../store/categories";
-import IconPopover from "../../../components/IconPopover";
 import AddInventoryItem from "./AddInventoryItem";
+import {
+  CategorySortOptions,
+  ProductSortOptions,
+} from "../../../api/products-api";
 
 interface ProductSearchParams {
   page: number;
   query: string;
+  sortOption: ProductSortOptions;
 }
 
 const initialSearchState: ProductSearchParams = {
   page: 1,
   query: "",
+  sortOption: ProductSortOptions.Created,
 };
 
 export default function Products() {
@@ -110,7 +115,12 @@ export default function Products() {
               size="small"
               color="primary"
               onClick={() => {
-                dispatch(getCategoriesAsync({ page: 1 })).then((result) => {
+                dispatch(
+                  getCategoriesAsync({
+                    page: 1,
+                    sortOption: CategorySortOptions.CategoryName,
+                  })
+                ).then((result) => {
                   setOpenAddProduct(true);
                 });
               }}
@@ -120,7 +130,7 @@ export default function Products() {
           </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
-          {products && !isLoadingProducts ? (
+          {products ? (
             <>
               <TableContainer component={Paper}>
                 <Table>
@@ -203,7 +213,11 @@ export default function Products() {
                                       })
                                     ).then(() => {
                                       dispatch(
-                                        getCategoriesAsync({ page: 1 })
+                                        getCategoriesAsync({
+                                          page: 1,
+                                          sortOption:
+                                            CategorySortOptions.CategoryName,
+                                        })
                                       ).then((result) => {
                                         setOpenEditProduct(true);
                                       });

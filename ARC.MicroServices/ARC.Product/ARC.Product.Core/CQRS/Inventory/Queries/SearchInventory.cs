@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 namespace ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory
-{
-
+{ 
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum InventoryItemSortOptions
     {

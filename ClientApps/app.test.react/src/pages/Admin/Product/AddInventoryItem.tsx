@@ -11,7 +11,7 @@ import {
   TextAreaInput,
   TextField,
 } from "../../../components";
-import { object, string } from "yup";
+import { number, object, string } from "yup";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { DialogBoxProps } from "../../../components/DialogBox";
 import { getProductsAsync, upsertProductAsync } from "../../../store/products";
@@ -34,7 +34,7 @@ const validationSchema = object({
   price: string().required("Price is required"),
   categoryId: string().required("Category is required"),
   sku: string().required("SKU is required"),
-  quantity: string().required("Please specify quantity"),
+  quantity: number().required("Please specify quantity").min(1),
 });
 
 export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
@@ -59,7 +59,7 @@ export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
           sku: selectedProduct?.sku,
           price: selectedProduct?.price,
           categoryName: selectedProduct?.category?.name,
-          quantity: 0,
+          quantity: undefined,
         }}
         onSubmit={(data: UpsertInventoryItemCommand) => {
           dispatch(upsertInventoryItemAsync(data)).then((result: any) => {

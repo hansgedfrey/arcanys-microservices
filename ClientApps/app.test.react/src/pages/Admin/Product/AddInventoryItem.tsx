@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import { Divider, Grid as MuiGrid, Stack } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import {
@@ -7,19 +7,15 @@ import {
   Form,
   LabelValue,
   NumberTextInput,
-  Select,
   TextAreaInput,
-  TextField,
 } from "../../../components";
 import { number, object, string } from "yup";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { DialogBoxProps } from "../../../components/DialogBox";
-import { getProductsAsync, upsertProductAsync } from "../../../store/products";
+import { getProductsAsync } from "../../../store/products";
 import {
   ProductSortOptions,
-  SearchCategoriesResponse,
   UpsertInventoryItemCommand,
-  UpsertProductCommand,
 } from "../../../api/products-api";
 import { SnackbarContext } from "../../../App";
 import {
@@ -41,7 +37,6 @@ const validationSchema = object({
 export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
   const setSnackbar = useContext(SnackbarContext);
-  const { categories } = useAppSelector((state) => state.categories);
   const { selectedProduct, isSubmitting } = useAppSelector(
     (state) => state.products
   );

@@ -11,6 +11,7 @@ import {
 import { SnackbarContext } from "../../../App";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { getProductsAsync, removeProductAsync } from "../../../store/products";
+import { ProductSortOptions } from "../../../api/products-api";
 
 export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
@@ -35,7 +36,12 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
             setSnackbar(SnackbarErrorTop(result.payload.detail));
           } else {
             setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
-            dispatch(getProductsAsync({ page: 1 }));
+            dispatch(
+              getProductsAsync({
+                page: 1,
+                sortOption: ProductSortOptions.Created,
+              })
+            );
             ok && ok();
           }
         })

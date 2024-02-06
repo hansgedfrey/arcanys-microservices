@@ -97,14 +97,15 @@ const darkTheme = createTheme({
       },
     },
     MuiTableSortLabel: {
-      defaultProps: {
-        color: "secondary",
-      },
       styleOverrides: {
         root: {
-          color: Colors.White,
-          ":hover": {
-            color: Colors.White,
+          fontSize: 14,
+          backgroundColor: Colors.Primary,
+          color: `${Colors.White} !important`,
+          "& > svg": {
+            color: `${Colors.White} !important`,
+            width: 24,
+            height: 24,
           },
         },
       },

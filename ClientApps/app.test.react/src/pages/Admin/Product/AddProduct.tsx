@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../store";
 import { DialogBoxProps } from "../../../components/DialogBox";
 import { getProductsAsync, upsertProductAsync } from "../../../store/products";
 import {
+  ProductSortOptions,
   SearchCategoriesResponse,
   UpsertProductCommand,
 } from "../../../api/products-api";
@@ -69,7 +70,12 @@ export default function AddProduct({ open, ok, cancel }: DialogBoxProps) {
           dispatch(upsertProductAsync(data)).then((result: any) => {
             if (!result.error) {
               ok && ok();
-              dispatch(getProductsAsync({ page: 1 }));
+              dispatch(
+                getProductsAsync({
+                  page: 1,
+                  sortOption: ProductSortOptions.Created,
+                })
+              );
               setSnackbar(SnackbarSuccessTop("Product saved successfully"));
               return;
             }

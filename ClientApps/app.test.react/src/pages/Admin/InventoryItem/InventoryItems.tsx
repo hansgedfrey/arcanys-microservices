@@ -17,8 +17,6 @@ import {
   debounce,
   TextField,
   InputAdornment,
-  useMediaQuery,
-  useTheme,
   Tooltip,
   TableSortLabel,
 } from "@mui/material";
@@ -42,7 +40,6 @@ import {
   CategorySortOptions,
   InventoryItemSortOptions,
 } from "../../../api/products-api";
-import { makeStyles } from "@mui/styles";
 
 interface InventoryItemSearchParams {
   page: number;
@@ -58,15 +55,11 @@ const initialSearchState: InventoryItemSearchParams = {
 
 export default function InventoryItem() {
   const dispatch = useAppDispatch();
-  const classNames = useStyles();
-  const isSmallScreen = useMediaQuery(useTheme().breakpoints.down("sm"));
   const { inventoryItems, isLoadingInventoryItems } = useAppSelector(
     (state) => state.inventoryItems
   );
-  const { categories } = useAppSelector((state) => state.categories);
   const [openEditProduct, setOpenEditProduct] = useState<boolean>(false);
   const [openDeleteProduct, setOpenDeleteProduct] = useState<boolean>(false);
-  const [openAddProduct, setOpenAddProduct] = useState<boolean>(false);
   const [inventoryItemSearchParams, setInventoryItemSearchParams] =
     useState<InventoryItemSearchParams>(initialSearchState);
 
@@ -232,7 +225,7 @@ export default function InventoryItem() {
             <>
               <TableContainer component={Paper}>
                 <Table>
-                  <TableHead className={classNames.tableHeader}>
+                  <TableHead>
                     <TableRow>
                       <StyledTableCell
                         component="th"
@@ -470,22 +463,3 @@ export default function InventoryItem() {
     </AdminScreen>
   );
 }
-
-const useStyles = makeStyles({
-  tableHeader: {
-    "& th": {
-      fontSize: 14,
-      backgroundColor: Colors.Primary,
-      color: Colors.White,
-      padding: 10,
-      "& span": {
-        color: `${Colors.White} !important`,
-        "& > svg": {
-          color: `${Colors.White} !important`,
-          width: 24,
-          height: 24,
-        },
-      },
-    },
-  },
-});

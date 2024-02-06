@@ -1,4 +1,5 @@
 ﻿using ARC.Product.Persistence.Events.InventoryItem;
+using ARC.Product.Persistence.Events.Product;
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
@@ -81,14 +82,14 @@ namespace ARC.Product.Core.CQRS.Product.Queries.SearchProducts
 
             query = request.SortOrder switch
             {
-                ProductSortOptions.Created => query.OrderBy(i => i.Events.OfType<AddInventoryItemEvent>().Select(i => (DateTime)i.Occurred).SingleOrDefault()),
-                ProductSortOptions.CreatedDesc => query.OrderByDescending(i => i.Events.OfType<AddInventoryItemEvent>().Select(i => (DateTime)i.Occurred).SingleOrDefault()),
+                ProductSortOptions.Created => query.OrderBy(i => i.Events.OfType<AddProductEvent>().Select(i => (DateTime)i.Occurred).SingleOrDefault()),
+                ProductSortOptions.CreatedDesc => query.OrderByDescending(i => i.Events.OfType<AddProductEvent>().Select(i => (DateTime)i.Occurred).SingleOrDefault()),
                 ProductSortOptions.ProductName => query.OrderBy(i => i.ProductName),
                 ProductSortOptions.ProductNameDesc => query.OrderByDescending(i => i.ProductName),
                 ProductSortOptions.UnitPrice => query.OrderBy(i => i.Price),
                 ProductSortOptions.UnitPriceDesc => query.OrderByDescending(i => i.Price),
                 ProductSortOptions.CategoryName => query.OrderBy(i => i.Category.Name),
-                ProductSortOptions.CategoryNameDesc => query.OrderByDescending(i => i.Category.Name), 
+                ProductSortOptions.CategoryNameDesc => query.OrderByDescending(i => i.Category.Name),
                 _ => query,
             };
 

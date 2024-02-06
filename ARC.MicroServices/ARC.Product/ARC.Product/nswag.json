@@ -1,20 +1,22 @@
 {
   "runtime": "Default",
+  "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
       "project": "ARC.Product.Web.csproj",
       "noBuild": true,
-      "verbose": true,
       "requireParametersWithoutDefault": false,
-      "useDocumentProvider": true
+      "useDocumentProvider": true,
     }
   },
   "codeGenerators": {
-    "openApiToCSharpClient": {
-      "namespace": "ARC.Product.Web",
-      "useBaseUrl": false,
-      "generateExceptionClasses": false, 
-      "output": "Client.cs"
+    "openApiToTypeScriptClient": {
+      "operationGenerationMode": "MultipleClientsFromFirstTagAndOperationId",
+      "typeStyle": "Interface",
+      "markOptionalProperties": true,
+      "useAbortSignal": true,
+      "output": "../../../ClientApps/app.test.react/src/api/products-api.ts",
+      "newLineBehavior": "Auto"
     }
   }
 }

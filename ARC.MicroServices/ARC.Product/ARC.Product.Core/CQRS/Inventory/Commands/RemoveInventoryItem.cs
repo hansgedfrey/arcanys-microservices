@@ -33,6 +33,7 @@ namespace ARC.Product.Core.CQRS.Category.Commands.RemoveInventoryItem
         public async Task Handle(RemoveInventoryItemCommand request, CancellationToken cancellationToken)
         {  
             var inventoryItemToDelete = await _applicationDbContext.InventoryItems
+                          .Include(i=>i.Events)
                           .Where(p => p.InventoryItemId == request.InventoryItemId)
                           .SingleOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(nameof(Persistence.Entities.InventoryItem));
  

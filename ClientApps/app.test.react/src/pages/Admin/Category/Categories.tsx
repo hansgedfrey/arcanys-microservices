@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import {
   Grid as MuiGrid,
   TableContainer,
@@ -20,11 +20,13 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
+  TableSortLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   getCategoriesAsync,
@@ -36,16 +38,18 @@ import { Button, ProgressSpinner } from "../../../components";
 import EditCategory from "./EditCategory";
 import DeleteCategory from "./DeleteCategory";
 import AddCategory from "./AddCategory";
-import { format } from "date-fns";
+import { CategorySortOptions } from "../../../api/products-api";
 
 interface CategorySearchParams {
   page: number;
   query: string;
+  sortOption: CategorySortOptions;
 }
 
 const initialSearchState: CategorySearchParams = {
   page: 1,
   query: "",
+  sortOption: CategorySortOptions.CategoryName,
 };
 
 export default function Categories() {
@@ -68,6 +72,50 @@ export default function Categories() {
     setCategorySearchParams({ ...categorySearchParams, page });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const sort = useCallback(
+    (sortOption: CategorySortOptions) => {
+      setCategorySearchParams({
+        ...categorySearchParams,
+        sortOption,
+      });
+    },
+    [categorySearchParams]
+  );
+
+  const getSortOption = useCallback(
+    (sortOption: CategorySortOptions) => {
+      switch (sortOption) {
+        case CategorySortOptions.CategoryName:
+          return categorySearchParams.sortOption ===
+            CategorySortOptions.CategoryName
+            ? CategorySortOptions.CategoryNameDesc
+            : CategorySortOptions.CategoryName;
+          break;
+      }
+    },
+    [categorySearchParams]
+  );
+
+  const getSortDirection = useCallback(() => {
+    return categorySearchParams.sortOption.endsWith("Desc") ? "desc" : "asc";
+  }, [categorySearchParams]);
+
+  const getActiveState = useCallback(
+    (sortOption: CategorySortOptions) => {
+      switch (sortOption) {
+        case CategorySortOptions.CategoryName:
+          return (
+            categorySearchParams.sortOption ===
+              CategorySortOptions.CategoryName ||
+            categorySearchParams.sortOption ===
+              CategorySortOptions.CategoryNameDesc
+          );
+          break;
+      }
+    },
+    [categorySearchParams]
+  );
 
   useEffect(() => {
     dispatch(getCategoriesAsync(categorySearchParams));
@@ -113,14 +161,29 @@ export default function Categories() {
           </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
-          {categories && !isLoadingCategories ? (
+          {categories ? (
             <>
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell component="th" scope="col" align="left">
-                        Name
+                      <StyledTableCell
+                        component="th"
+                        scope="col"
+                        align="left"
+                        onClick={() =>
+                          sort(getSortOption(CategorySortOptions.CategoryName)!)
+                        }
+                      >
+                        <TableSortLabel
+                          active={getActiveState(
+                            CategorySortOptions.CategoryName
+                          )}
+                          IconComponent={ArrowDropDownIcon}
+                          direction={getSortDirection()}
+                        >
+                          Name
+                        </TableSortLabel>
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">
                         Description

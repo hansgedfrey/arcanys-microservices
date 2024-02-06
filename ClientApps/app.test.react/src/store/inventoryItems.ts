@@ -3,6 +3,7 @@ import { RootState } from ".";
 import {
   HttpValidationProblemDetails,
   InventoryItemDto,
+  InventoryItemSortOptions,
   RemoveInventoryItemCommand,
   SearchInventoryResponse,
   UpsertInventoryItemCommand,
@@ -27,16 +28,24 @@ const initialState: {
 
 export const getInventoryItemsAsync = createAsyncThunk<
   SearchInventoryResponse,
-  { page?: number; query?: string; categoryId?: string },
+  { page?: number; query?: string; sortOption: InventoryItemSortOptions },
   { state: RootState }
 >(
   "inventoryItems",
   (
-    payload: { page?: number; query?: string; categoryId?: string },
+    payload: {
+      page?: number;
+      query?: string;
+      sortOption: InventoryItemSortOptions;
+    },
     { getState, rejectWithValue }
   ) =>
     getState()
-      .apis.inventoryItemsClient.inventoryItems(payload.query, payload.page)
+      .apis.inventoryItemsClient.inventoryItems(
+        payload.query,
+        payload.page,
+        payload.sortOption
+      )
       .catch(rejectWithValue)
 );
 

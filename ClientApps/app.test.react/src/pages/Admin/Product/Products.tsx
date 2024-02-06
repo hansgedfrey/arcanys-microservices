@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import {
   Grid as MuiGrid,
   TableContainer,
@@ -20,12 +20,14 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
+  TableSortLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Backspace";
 import EditIcon from "@mui/icons-material/Edit";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { AdminScreen, Colors } from "../../../layouts";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { getProductinfoAsync, getProductsAsync } from "../../../store/products";
@@ -36,17 +38,22 @@ import DeleteProduct from "./DeleteProduct";
 import { MoneyFormat } from "../../../utils";
 import { format } from "date-fns";
 import { getCategoriesAsync } from "../../../store/categories";
-import IconPopover from "../../../components/IconPopover";
 import AddInventoryItem from "./AddInventoryItem";
+import {
+  CategorySortOptions,
+  ProductSortOptions,
+} from "../../../api/products-api";
 
 interface ProductSearchParams {
   page: number;
   query: string;
+  sortOption: ProductSortOptions;
 }
 
 const initialSearchState: ProductSearchParams = {
   page: 1,
   query: "",
+  sortOption: ProductSortOptions.Created,
 };
 
 export default function Products() {
@@ -71,6 +78,85 @@ export default function Products() {
     setProductSearchParams({ ...productSearchParams, page });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const sort = useCallback(
+    (sortOption: ProductSortOptions) => {
+      setProductSearchParams({
+        ...productSearchParams,
+        sortOption,
+      });
+    },
+    [productSearchParams]
+  );
+
+  const getSortOption = useCallback(
+    (sortOption: ProductSortOptions) => {
+      switch (sortOption) {
+        case ProductSortOptions.Created:
+          return productSearchParams.sortOption === ProductSortOptions.Created
+            ? ProductSortOptions.CreatedDesc
+            : ProductSortOptions.Created;
+          break;
+        case ProductSortOptions.ProductName:
+          return productSearchParams.sortOption ===
+            ProductSortOptions.ProductName
+            ? ProductSortOptions.ProductNameDesc
+            : ProductSortOptions.ProductName;
+          break;
+        case ProductSortOptions.CategoryName:
+          return productSearchParams.sortOption ===
+            ProductSortOptions.CategoryName
+            ? ProductSortOptions.CategoryNameDesc
+            : ProductSortOptions.CategoryName;
+          break;
+        case ProductSortOptions.UnitPrice:
+          return productSearchParams.sortOption === ProductSortOptions.UnitPrice
+            ? ProductSortOptions.UnitPriceDesc
+            : ProductSortOptions.UnitPrice;
+          break;
+      }
+    },
+    [productSearchParams]
+  );
+
+  const getSortDirection = useCallback(() => {
+    return productSearchParams.sortOption.endsWith("Desc") ? "desc" : "asc";
+  }, [productSearchParams]);
+
+  const getActiveState = useCallback(
+    (sortOption: ProductSortOptions) => {
+      switch (sortOption) {
+        case ProductSortOptions.Created:
+          return (
+            productSearchParams.sortOption === ProductSortOptions.Created ||
+            productSearchParams.sortOption === ProductSortOptions.CreatedDesc
+          );
+          break;
+        case ProductSortOptions.ProductName:
+          return (
+            productSearchParams.sortOption === ProductSortOptions.ProductName ||
+            productSearchParams.sortOption ===
+              ProductSortOptions.ProductNameDesc
+          );
+          break;
+        case ProductSortOptions.CategoryName:
+          return (
+            productSearchParams.sortOption ===
+              ProductSortOptions.CategoryName ||
+            productSearchParams.sortOption ===
+              ProductSortOptions.CategoryNameDesc
+          );
+          break;
+        case ProductSortOptions.UnitPrice:
+          return (
+            productSearchParams.sortOption === ProductSortOptions.UnitPrice ||
+            productSearchParams.sortOption === ProductSortOptions.UnitPriceDesc
+          );
+          break;
+      }
+    },
+    [productSearchParams]
+  );
 
   useEffect(() => {
     dispatch(getProductsAsync(productSearchParams));
@@ -110,7 +196,12 @@ export default function Products() {
               size="small"
               color="primary"
               onClick={() => {
-                dispatch(getCategoriesAsync({ page: 1 })).then((result) => {
+                dispatch(
+                  getCategoriesAsync({
+                    page: 1,
+                    sortOption: CategorySortOptions.CategoryName,
+                  })
+                ).then((result) => {
                   setOpenAddProduct(true);
                 });
               }}
@@ -120,17 +211,63 @@ export default function Products() {
           </Stack>
         </MuiGrid>
         <MuiGrid item xs={12}>
-          {products && !isLoadingProducts ? (
+          {products ? (
             <>
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell component="th" scope="col" align="left">
-                        Created
+                      <StyledTableCell
+                        component="th"
+                        scope="col"
+                        align="left"
+                        onClick={() =>
+                          sort(getSortOption(ProductSortOptions.Created)!)
+                        }
+                      >
+                        <TableSortLabel
+                          active={getActiveState(ProductSortOptions.Created)}
+                          IconComponent={ArrowDropDownIcon}
+                          direction={getSortDirection()}
+                        >
+                          Created
+                        </TableSortLabel>
                       </StyledTableCell>
-                      <StyledTableCell component="th" scope="col" align="left">
-                        Name
+                      <StyledTableCell
+                        component="th"
+                        scope="col"
+                        align="left"
+                        onClick={() =>
+                          sort(getSortOption(ProductSortOptions.CategoryName)!)
+                        }
+                      >
+                        <TableSortLabel
+                          active={getActiveState(
+                            ProductSortOptions.CategoryName
+                          )}
+                          IconComponent={ArrowDropDownIcon}
+                          direction={getSortDirection()}
+                        >
+                          Category
+                        </TableSortLabel>
+                      </StyledTableCell>
+                      <StyledTableCell
+                        component="th"
+                        scope="col"
+                        align="left"
+                        onClick={() =>
+                          sort(getSortOption(ProductSortOptions.ProductName)!)
+                        }
+                      >
+                        <TableSortLabel
+                          active={getActiveState(
+                            ProductSortOptions.ProductName
+                          )}
+                          IconComponent={ArrowDropDownIcon}
+                          direction={getSortDirection()}
+                        >
+                          Product Name
+                        </TableSortLabel>
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">
                         Description
@@ -138,8 +275,21 @@ export default function Products() {
                       <StyledTableCell component="th" scope="col" align="left">
                         SKU
                       </StyledTableCell>
-                      <StyledTableCell component="th" scope="col" align="left">
-                        Unit Price
+                      <StyledTableCell
+                        component="th"
+                        scope="col"
+                        align="left"
+                        onClick={() =>
+                          sort(getSortOption(ProductSortOptions.UnitPrice)!)
+                        }
+                      >
+                        <TableSortLabel
+                          active={getActiveState(ProductSortOptions.UnitPrice)}
+                          IconComponent={ArrowDropDownIcon}
+                          direction={getSortDirection()}
+                        >
+                          Unit Price
+                        </TableSortLabel>
                       </StyledTableCell>
                       <StyledTableCell
                         component="th"
@@ -160,6 +310,9 @@ export default function Products() {
                         >
                           <TableCell component="th" scope="row">
                             {format(item.created!, "dd/MM/yyyy")}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {item.category?.name}
                           </TableCell>
                           <TableCell component="th" scope="row">
                             {item.productName}
@@ -203,7 +356,11 @@ export default function Products() {
                                       })
                                     ).then(() => {
                                       dispatch(
-                                        getCategoriesAsync({ page: 1 })
+                                        getCategoriesAsync({
+                                          page: 1,
+                                          sortOption:
+                                            CategorySortOptions.CategoryName,
+                                        })
                                       ).then((result) => {
                                         setOpenEditProduct(true);
                                       });

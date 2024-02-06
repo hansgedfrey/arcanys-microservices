@@ -96,6 +96,20 @@ const darkTheme = createTheme({
         size: "small",
       },
     },
+    MuiTableSortLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: 14,
+          backgroundColor: Colors.Primary,
+          color: `${Colors.White} !important`,
+          "& > svg": {
+            color: `${Colors.White} !important`,
+            width: 24,
+            height: 24,
+          },
+        },
+      },
+    },
   },
 });
 

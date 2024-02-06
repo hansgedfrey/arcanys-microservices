@@ -10,14 +10,17 @@ import {
 } from "../../../components/SnackBar";
 import { SnackbarContext } from "../../../App";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { getProductsAsync, removeProductAsync } from "../../../store/products";
+import { InventoryItemSortOptions } from "../../../api/products-api";
+import {
+  getInventoryItemsAsync,
+  removeInventoryItemAsync,
+} from "../../../store/inventoryItems";
 
 export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const setSnackbar = useContext(SnackbarContext);
-  const { selectedProduct, isSubmitting } = useAppSelector(
-    (state) => state.products
+  const { selectedInventoryItem, isSubmitting } = useAppSelector(
+    (state) => state.inventoryItems
   );
 
   return (
@@ -27,15 +30,22 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
       okLabel="Delete"
       ok={async () =>
         dispatch(
-          await removeProductAsync({
-            productId: selectedProduct?.productId,
+          await removeInventoryItemAsync({
+            inventoryItemId: selectedInventoryItem?.inventoryItemId,
           })
         ).then((result: any) => {
           if (result.error) {
             setSnackbar(SnackbarErrorTop(result.payload.detail));
           } else {
-            setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
-            dispatch(getProductsAsync({ page: 1 }));
+            setSnackbar(
+              SnackbarSuccessTop("Inventory item deleted successfully")
+            );
+            dispatch(
+              getInventoryItemsAsync({
+                page: 1,
+                sortOption: InventoryItemSortOptions.Created,
+              })
+            );
             ok && ok();
           }
         })
@@ -48,7 +58,8 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
       title="Confirm Delete"
     >
       <Typography variant="subtitle1">
-        Do you want to delete {selectedProduct?.productName} category?
+        Do you want to delete {selectedInventoryItem?.product?.productName}{" "}
+        inventory item?
       </Typography>
     </DialogBox>
   );

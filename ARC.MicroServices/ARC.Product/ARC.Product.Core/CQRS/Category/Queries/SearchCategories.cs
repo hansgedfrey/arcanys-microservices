@@ -2,13 +2,22 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace ARC.Product.Core.CQRS.Category.Queries.SearchCategories
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum CategorySortOptions
+    {
+        CategoryName,
+        CategoryNameDesc
+    }
+
     public record SearchCategoriesQuery : IRequest<SearchCategoriesResponse>
     {
         public int Page { get; init; } = 1;
         public string? Query { get; init; }
+        public CategorySortOptions SortOrder { get; set; }
     }
 
     public class SearchCategoriesQueryValidator : AbstractValidator<SearchCategoriesQuery>
@@ -52,6 +61,13 @@ namespace ARC.Product.Core.CQRS.Category.Queries.SearchCategories
 
             var count = await query.CountAsync(cancellationToken).ConfigureAwait(false);
             var page = (request.Page - 1) * PAGE_SIZE > count ? 1 : request.Page;
+
+            query = request.SortOrder switch
+            {
+                CategorySortOptions.CategoryName => query.OrderBy(i => i.Name),
+                CategorySortOptions.CategoryNameDesc => query.OrderByDescending(i => i.Name),
+                _ => query,
+            };
 
             var products = await query
                 .Skip(PAGE_SIZE * (page - 1))

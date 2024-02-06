@@ -14,6 +14,7 @@ import {
 } from "../../store/categories";
 import { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
+import { CategorySortOptions } from "../../api/products-api";
 
 function Categories() {
   const dispatch = useAppDispatch();
@@ -22,7 +23,12 @@ function Categories() {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getCategoriesAsync({ page: 1 }));
+    dispatch(
+      getCategoriesAsync({
+        page: 1,
+        sortOption: CategorySortOptions.CategoryName,
+      })
+    );
   }, [dispatch]);
 
   return (

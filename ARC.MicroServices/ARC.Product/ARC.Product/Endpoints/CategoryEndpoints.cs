@@ -2,6 +2,7 @@
 using ARC.Product.Core.CQRS.Category.Commands.UpsertCategory;
 using ARC.Product.Core.CQRS.Category.Queries.GetCategoryInfo;
 using ARC.Product.Core.CQRS.Category.Queries.SearchCategories;
+using ARC.Product.Core.CQRS.Inventory.Queries.SearchInventory;
 using MediatR;
 
 namespace ARC.Product.Web.Endpoints
@@ -10,13 +11,14 @@ namespace ARC.Product.Web.Endpoints
     {
         public static WebApplication MapCategoryEndpoints(this WebApplication app)
         {
-            var group = app.MapGroup("/categories").WithTags("Categories");
+            var group = app.MapGroup("/categories").WithTags("Categories").WithOpenApi();
 
-            group.MapGet("", async (ISender sender, string? query, int page) => await sender.Send(
+            group.MapGet("", async (ISender sender, string? query, int page, CategorySortOptions sortOrder) => await sender.Send(
                new SearchCategoriesQuery
                {
                    Query = query,
-                   Page = page
+                   Page = page,
+                   SortOrder = sortOrder
                })
            ).WithName("Categories");
 

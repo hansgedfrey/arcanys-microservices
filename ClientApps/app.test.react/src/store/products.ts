@@ -3,6 +3,7 @@ import { RootState } from ".";
 import {
   HttpValidationProblemDetails,
   ProductDto,
+  ProductSortOptions,
   RemoveProductCommand,
   SearchProductsResponse,
   UpsertProductCommand,
@@ -27,19 +28,30 @@ const initialState: {
 
 export const getProductsAsync = createAsyncThunk<
   SearchProductsResponse,
-  { page?: number; query?: string; categoryId?: string },
+  {
+    page?: number;
+    query?: string;
+    categoryId?: string;
+    sortOption: ProductSortOptions;
+  },
   { state: RootState }
 >(
   "products",
   (
-    payload: { page?: number; query?: string; categoryId?: string },
+    payload: {
+      page?: number;
+      query?: string;
+      categoryId?: string;
+      sortOption: ProductSortOptions;
+    },
     { getState, rejectWithValue }
   ) =>
     getState()
       .apis.productsClient.products(
         payload.query,
         payload.categoryId,
-        payload.page
+        payload.page,
+        payload.sortOption
       )
       .catch(rejectWithValue)
 );

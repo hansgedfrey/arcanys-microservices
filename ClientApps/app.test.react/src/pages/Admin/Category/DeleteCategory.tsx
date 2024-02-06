@@ -14,6 +14,7 @@ import {
   getCategoriesAsync,
   removeCategoryAsync,
 } from "../../../store/categories";
+import { CategorySortOptions } from "../../../api/products-api";
 
 export default function DeleteCategory({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
@@ -38,7 +39,12 @@ export default function DeleteCategory({ open, ok, cancel }: DialogBoxProps) {
             setSnackbar(SnackbarErrorTop(result.payload.detail));
           } else {
             setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
-            dispatch(getCategoriesAsync({ page: 1 }));
+            dispatch(
+              getCategoriesAsync({
+                page: 1,
+                sortOption: CategorySortOptions.CategoryName,
+              })
+            );
             ok && ok();
           }
         })

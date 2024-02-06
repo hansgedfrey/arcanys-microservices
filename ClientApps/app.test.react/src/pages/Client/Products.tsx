@@ -1,7 +1,5 @@
 import {
   Grid as MuiGrid,
-  Button as MuiButton,
-  ButtonProps as MuiButtonProps,
   Typography,
   ListItem,
   ListItemButton,
@@ -14,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { useEffect } from "react";
 import { getCategoryInfoAsync } from "../../store/categories";
 import { getProductsAsync } from "../../store/products";
+import { ProductSortOptions } from "../../api/products-api";
 
 function Products() {
   const dispatch = useAppDispatch();
@@ -31,7 +30,12 @@ function Products() {
   }, [dispatch, selectedCategory, categories]);
 
   useEffect(() => {
-    dispatch(getProductsAsync({ categoryId: selectedCategory?.categoryId }));
+    dispatch(
+      getProductsAsync({
+        categoryId: selectedCategory?.categoryId,
+        sortOption: ProductSortOptions.Created,
+      })
+    );
   }, [dispatch, selectedCategory]);
 
   return (

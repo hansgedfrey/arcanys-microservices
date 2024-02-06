@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import {
   CategoryDto,
+  CategorySortOptions,
   HttpValidationProblemDetails,
-  RemoveCategoryCommand,
   SearchCategoriesResponse,
   UpsertCategoryCommand,
 } from "../api/products-api";
@@ -27,16 +27,20 @@ const initialState: {
 
 export const getCategoriesAsync = createAsyncThunk<
   SearchCategoriesResponse,
-  { page: number; query?: string },
+  { page: number; query?: string; sortOption: CategorySortOptions },
   { state: RootState; rejectValue: HttpValidationProblemDetails }
 >(
   "categories",
   (
-    payload: { page: number; query?: string },
+    payload: { page: number; query?: string; sortOption: CategorySortOptions },
     { getState, rejectWithValue, signal }
   ) =>
     getState()
-      .apis.categoriesClient.categories(payload.query, payload.page)
+      .apis.categoriesClient.categories(
+        payload.query,
+        payload.page,
+        payload.sortOption
+      )
       .catch(rejectWithValue)
 );
 

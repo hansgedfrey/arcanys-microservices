@@ -15,7 +15,10 @@ import {
   getCategoriesAsync,
   upsertCategoryAsync,
 } from "../../../store/categories";
-import { UpsertCategoryCommand } from "../../../api/products-api";
+import {
+  CategorySortOptions,
+  UpsertCategoryCommand,
+} from "../../../api/products-api";
 import { SnackbarContext } from "../../../App";
 import {
   SnackbarErrorTop,
@@ -48,7 +51,12 @@ export default function AddCategory({ open, ok, cancel }: DialogBoxProps) {
           dispatch(upsertCategoryAsync(data)).then((result: any) => {
             if (!result.error) {
               ok && ok();
-              dispatch(getCategoriesAsync({ page: 1 }));
+              dispatch(
+                getCategoriesAsync({
+                  page: 1,
+                  sortOption: CategorySortOptions.CategoryName,
+                })
+              );
               setSnackbar(SnackbarSuccessTop("Category saved successfully"));
               return;
             }

@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 import { Divider, Grid as MuiGrid, Stack } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import {
@@ -7,18 +7,15 @@ import {
   Form,
   LabelValue,
   NumberTextInput,
-  Select,
   TextAreaInput,
-  TextField,
 } from "../../../components";
-import { object, string } from "yup";
+import { number, object, string } from "yup";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { DialogBoxProps } from "../../../components/DialogBox";
-import { getProductsAsync, upsertProductAsync } from "../../../store/products";
+import { getProductsAsync } from "../../../store/products";
 import {
-  SearchCategoriesResponse,
+  ProductSortOptions,
   UpsertInventoryItemCommand,
-  UpsertProductCommand,
 } from "../../../api/products-api";
 import { SnackbarContext } from "../../../App";
 import {
@@ -34,13 +31,12 @@ const validationSchema = object({
   price: string().required("Price is required"),
   categoryId: string().required("Category is required"),
   sku: string().required("SKU is required"),
-  quantity: string().required("Please specify quantity"),
+  quantity: number().required("Please specify quantity").min(1),
 });
 
 export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
   const dispatch = useAppDispatch();
   const setSnackbar = useContext(SnackbarContext);
-  const { categories } = useAppSelector((state) => state.categories);
   const { selectedProduct, isSubmitting } = useAppSelector(
     (state) => state.products
   );
@@ -59,13 +55,18 @@ export default function EditProduct({ open, ok, cancel }: DialogBoxProps) {
           sku: selectedProduct?.sku,
           price: selectedProduct?.price,
           categoryName: selectedProduct?.category?.name,
-          quantity: 0,
+          quantity: undefined,
         }}
         onSubmit={(data: UpsertInventoryItemCommand) => {
           dispatch(upsertInventoryItemAsync(data)).then((result: any) => {
             if (!result.error) {
               ok && ok();
-              dispatch(getProductsAsync({ page: 1 }));
+              dispatch(
+                getProductsAsync({
+                  page: 1,
+                  sortOption: ProductSortOptions.Created,
+                })
+              );
               setSnackbar(
                 SnackbarSuccessTop("Inventory item added successfully!")
               );

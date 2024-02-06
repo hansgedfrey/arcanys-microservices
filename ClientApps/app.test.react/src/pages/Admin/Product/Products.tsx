@@ -266,7 +266,7 @@ export default function Products() {
                           IconComponent={ArrowDropDownIcon}
                           direction={getSortDirection()}
                         >
-                          Name
+                          Product Name
                         </TableSortLabel>
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">

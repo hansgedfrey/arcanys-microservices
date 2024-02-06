@@ -197,7 +197,7 @@ export default function InventoryItem() {
   return (
     <AdminScreen>
       <MuiGrid container spacing={2}>
-        <MuiGrid item md={8} xs={12}>
+        <MuiGrid item xs={12}>
           <Stack direction="row" spacing={2}>
             <TextField
               label="Search"
@@ -219,7 +219,6 @@ export default function InventoryItem() {
             />
           </Stack>
         </MuiGrid>
-        <MuiGrid item md={2} xs={12}></MuiGrid>
         <MuiGrid item xs={12}>
           {inventoryItems ? (
             <>
@@ -262,7 +261,7 @@ export default function InventoryItem() {
                           IconComponent={ArrowDropDownIcon}
                           direction={getSortDirection()}
                         >
-                          Name
+                          Product Name
                         </TableSortLabel>
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="col" align="left">

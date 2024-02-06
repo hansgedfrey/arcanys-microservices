@@ -35,7 +35,7 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
           if (result.error) {
             setSnackbar(SnackbarErrorTop(result.payload.detail));
           } else {
-            setSnackbar(SnackbarSuccessTop("Category deleted successfully"));
+            setSnackbar(SnackbarSuccessTop("Product deleted successfully"));
             dispatch(
               getProductsAsync({
                 page: 1,
@@ -54,7 +54,7 @@ export default function DeleteProduct({ open, ok, cancel }: DialogBoxProps) {
       title="Confirm Delete"
     >
       <Typography variant="subtitle1">
-        Do you want to delete {selectedProduct?.productName} category?
+        Do you want to delete {selectedProduct?.productName} product?
       </Typography>
     </DialogBox>
   );
